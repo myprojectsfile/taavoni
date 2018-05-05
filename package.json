@@ -1,9 +1,10 @@
 {
-  "name": "taavoni0",
+  "name": "taavoni",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "dev": "nodemon server.js",
     "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
@@ -23,7 +24,17 @@
     "@angular/router": "^5.2.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "http": "^0.0.0",
+    "jade": "^1.11.0",
+    "mongodb": "^3.0.7",
+    "mongoose": "^5.0.17",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",
@@ -43,6 +54,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "nodemon": "^1.17.3"
   }
 }
