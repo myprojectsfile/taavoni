@@ -26,7 +26,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="#">صفحه اصلی
+              <a class="nav-link" routerLink="">صفحه اصلی
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -41,7 +41,7 @@
                 سهام
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">درخواست خرید / فروش</a>
+                <a class="dropdown-item" routerLink="/queue">درخواست خرید / فروش</a>
                 <a class="dropdown-item" href="#">مشاهده صف</a>
               </div>
             </li>
@@ -51,11 +51,5 @@
     </div>
   </div>
   <br>
-  <div class="row justify-content-center">
-    <div class="col-xs-12 align-center">
-      <img src="/assets/master.jpg" class="img-fluid" alt="Responsive image">
-    </div>
-  </div>
-  <div class="row"></div>
-  <div class="row"></div>
+  <router-outlet></router-outlet>
 </div>
