@@ -22,19 +22,22 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
+    "bootstrap-v4-rtl": "^4.0.0-0",
+    "core-js": "^2.4.1",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "http": "^0.0.0",
     "jade": "^1.11.0",
+    "jquery": "^3.3.1",
     "mongodb": "^3.0.7",
     "mongoose": "^5.0.17",
     "path": "^0.12.7",
-    "serve-favicon": "^2.5.0"
+    "popper.js": "^1.14.3",
+    "rxjs": "^5.5.6",
+    "serve-favicon": "^2.5.0",
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",
@@ -51,10 +54,10 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "nodemon": "^1.17.3",
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3",
-    "nodemon": "^1.17.3"
+    "typescript": "~2.5.3"
   }
 }
