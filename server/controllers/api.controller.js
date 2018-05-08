@@ -1,66 +1,63 @@
-var QueueModel = require('../context/context').QueueModel;
+// var QueueModel = require('../context/context').SafeKharid;
+var context = require('../context/context');
 
 module.exports = function (app) {
-    var apiController = require('../controllers/api.controller')
 
-    // queue Routes
-    app.route('/api/queue')
-        .get(get_all_queue)
-        .post(post_a_queue);
+    app.route('/api/safeKharid')
+        .get(get_safeKharid)
+        .post(post_darkhastKharid);
 
-    // app.route('/queue/:id')
-    //   .get(apiController.get_queue)
-    //   .put(apiController.update_queue)
-    //   .delete(apiController.delete_queue);
+    app.route('/api/safeKharid/:id')
+        .get(get_safeKharid_byid)
+        .put(update_darkhastKharid)
+        .delete(del_safeKharid_byid);
 };
 
-get_all_queue = function (req, res) {
-    QueueModel.find({}, function (err, result) {
+get_safeKharid = function (req, res) {
+    context.SafeKharid.find({}, function (err, result) {
         if (err)
             res.send(err);
         res.json(result);
     });
 };
 
-
-
-
-post_a_queue = function (req, res) {
-    var new_queue = new QueueModel(req.body);
-    new_queue.save(function (err, queue) {
-        if (err)
+post_darkhastKharid = function (req, res) {
+    var darkhastKharid = new context.SafeKharid(req.body);
+    darkhastKharid.save(function (err, darkhast) {
+        console.log('saving ...');
+        if (err) {
+            console.log(`this is error: ${err}`);
             res.send(err);
-        res.json(queue);
+        }
+        res.json(darkhast);
     });
 };
 
 
-// exports.read_a_task = function (req, res) {
-//     QueueModel.findById(req.params.taskId, function (err, task) {
-//         if (err)
-//             res.send(err);
-//         res.json(task);
-//     });
-// };
+get_safeKharid_byid = function (req, res) {
+    context.SafeKharid.findById(req.params.id, function (err, darkhast) {
+        if (err)
+            res.send(err);
+        res.json(darkhast);
+    });
+};
 
 
-// exports.update_a_task = function (req, res) {
-//     QueueModel.findOneAndUpdate({ _id: req.params.taskId }, req.body, { new: true }, function (err, task) {
-//         if (err)
-//             res.send(err);
-//         res.json(task);
-//     });
-// };
+update_darkhastKharid = function (req, res) {
+    context.SafeKharid.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
+        if (err)
+            res.send(err);
+        res.json(darkhast);
+    });
+};
 
 
-// exports.delete_a_task = function (req, res) {
-
-
-//     QueueModel.remove({
-//         _id: req.params.taskId
-//     }, function (err, task) {
-//         if (err)
-//             res.send(err);
-//         res.json({ message: 'Task successfully deleted' });
-//     });
-// };
+del_safeKharid_byid = function (req, res) {
+    context.SafeKharid.remove({
+        _id: req.params.id
+    }, function (err, darkhast) {
+        if (err)
+            res.send(err);
+        res.json({ message: 'درخواست مورد نظر با موفقیت حذف شد' });
+    });
+};

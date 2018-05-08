@@ -1,11 +1,23 @@
 var mongoose = require('mongoose');
 
-var QueueSchema = new mongoose.Schema({
-    name: String,
-    status: { type: Boolean, required: true }
+// Define Shcemas
+var DarkhastSchema = new mongoose.Schema({
+    username: String,
+    tedadSahm: Number,
+    arzeshSahm: Number,
+    tarikhDarkhast: { type: Date, default: Date.now }
 });
 
-var QueueModel = mongoose.model('QueueModel', QueueSchema);
 
+// Define Models
+var SafeKharid = mongoose.model('SafeKharid', DarkhastSchema);
+var SafeForush = mongoose.model('SafeForush', DarkhastSchema);
 
-module.exports.QueueModel = QueueModel;
+// Export Models
+module.exports.SafeForush = SafeForush;
+module.exports.SafeKharid = SafeKharid;
+
+module.exports.context = {
+    SafeForush: SafeForush,
+    SafeKharid: SafeKharid
+}

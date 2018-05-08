@@ -10,7 +10,7 @@ var path = require('path');
 var apiController = require('./server/controllers/api.controller');
 var app = express();
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '/server/views'));
 app.set('view engine', 'jade');
 
 
