@@ -7,8 +7,7 @@ var bluebird = require('bluebird');
 mongoose.Promise = bluebird;
 var cors = require('cors');
 var path = require('path');
-const api = require('./server/routes/api');
-
+var apiController = require('./server/controllers/api.controller');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -21,8 +20,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.use('/api', api);
-
+// app.use('/api', api);
+apiController(app);
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
