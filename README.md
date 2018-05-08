@@ -1,6 +1,6 @@
 # Taavoni
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+این نرم افزار مدیریت سهام تعاونی است.
 
 ## Development server
 

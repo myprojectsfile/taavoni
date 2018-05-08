@@ -7,6 +7,7 @@ var bluebird = require('bluebird');
 mongoose.Promise = bluebird;
 var cors = require('cors');
 var path = require('path');
+const api = require('./server/routes/api');
 
 var app = express();
 
@@ -20,9 +21,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
+app.use('/api', api);
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
+
 
 
 // catch 404 and forward to error handler
@@ -67,8 +71,9 @@ app.set('port', port);
 var mongoConnectPromise = mongoose.connect('mongodb://localhost/TaavoniDb', {});
 
 mongoConnectPromise.then(function (db) {
+    console.log('1- Connected to mongodb Successfully');
     const server = http.createServer(app);
-    server.listen(port, () => console.log(`Taavoni app running on localhost:${port}`));
+    server.listen(port, () => console.log(`2- Taavoni app running on localhost:${port}`));
 });
 
 
