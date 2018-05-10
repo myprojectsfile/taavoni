@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { QueueService, QueueType } from './queue.service';
+import 'rxjs/add/operator/catch';
 
 @Component({
   selector: 'app-queue',
@@ -9,16 +11,36 @@ import { DxDataGridComponent } from 'devextreme-angular';
 export class QueueComponent implements OnInit {
 
   @ViewChild("safeKharidGrid") dataGrid: DxDataGridComponent
+  safeKharid: QueueType[];
+  username: string;
+  tedadSahm: number;
+  arzeshSahm: number;
 
   ngOnInit(): void {
     this.dataGrid.rtlEnabled = true;
+    this.dataGrid.showBorders = true;
+    this.getSafeKharid();
   }
 
-  constructor() { }
+  constructor(private queuService: QueueService) { }
 
-  books = [
-    { author: 'D. Adams', title: "The Hitchhiker's Guide to the Galaxy", year: 1979, genre: 'Comedy, sci-fi' },
-    { author: 'K. Vonnegut', title: "Cat's Cradle", year: 1963, genre: 'Satire, sci-fi' },
-    { author: 'M. Mitchell', title: "Gone with the Wind", year: 1936, genre: 'Historical fiction' }
-  ];
+  getSafeKharid() {
+    this.queuService.getSafeKharid().subscribe((data) => {
+      this.safeKharid = data;
+    });
+  }
+
+  sabtDarkhast() {
+    let darkhast: QueueType = {
+      username: this.username,
+      tedadSahm: this.tedadSahm,
+      arzeshSahm: this.arzeshSahm
+    }
+
+    this.queuService.sabtDarkhast(darkhast).subscribe((result) => {
+      this.getSafeKharid();
+    }, (error) => {
+      console.log(error);
+    })
+  }
 }

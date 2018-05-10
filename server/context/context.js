@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 // Define Shcemas
 var DarkhastSchema = new mongoose.Schema({
-    username: String,
+    username: { type: String, required: true },
     tedadSahm: Number,
     arzeshSahm: Number,
     tarikhDarkhast: { type: Date, default: Date.now }

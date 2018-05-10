@@ -5,6 +5,9 @@ import { QueueComponent } from './queue/queue.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DxDataGridModule } from 'devextreme-angular';
+import { QueueService } from './queue/queue.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,9 +18,11 @@ import { DxDataGridModule } from 'devextreme-angular';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DxDataGridModule
+    DxDataGridModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [QueueService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

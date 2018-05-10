@@ -15,8 +15,10 @@ module.exports = function (app) {
 
 get_safeKharid = function (req, res) {
     context.SafeKharid.find({}, function (err, result) {
-        if (err)
+        if (err) {
+            res.statusCode = 400;
             res.send(err);
+        }
         res.json(result);
     });
 };
@@ -27,6 +29,7 @@ post_darkhastKharid = function (req, res) {
         console.log('saving ...');
         if (err) {
             console.log(`this is error: ${err}`);
+            res.statusCode = 400;
             res.send(err);
         }
         res.json(darkhast);
@@ -36,8 +39,10 @@ post_darkhastKharid = function (req, res) {
 
 get_safeKharid_byid = function (req, res) {
     context.SafeKharid.findById(req.params.id, function (err, darkhast) {
-        if (err)
+        if (err) {
+            res.statusCode = 400;
             res.send(err);
+        }
         res.json(darkhast);
     });
 };
@@ -45,8 +50,10 @@ get_safeKharid_byid = function (req, res) {
 
 update_darkhastKharid = function (req, res) {
     context.SafeKharid.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
-        if (err)
+        if (err) {
+            res.statusCode = 400;
             res.send(err);
+        }
         res.json(darkhast);
     });
 };
@@ -56,8 +63,10 @@ del_safeKharid_byid = function (req, res) {
     context.SafeKharid.remove({
         _id: req.params.id
     }, function (err, darkhast) {
-        if (err)
+        if (err) {
+            res.statusCode = 400;
             res.send(err);
+        }
         res.json({ message: 'درخواست مورد نظر با موفقیت حذف شد' });
     });
 };
