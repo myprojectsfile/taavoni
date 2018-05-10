@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { QueueComponent } from './queue/queue.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AppRoutingModule } from './app-routing.module';
-
+import { DxDataGridModule } from 'devextreme-angular';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    DxDataGridModule
   ],
   providers: [],
   bootstrap: [AppComponent]

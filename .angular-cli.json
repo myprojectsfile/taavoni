@@ -22,6 +22,8 @@
         "../node_modules/bootstrap-v4-rtl/dist/css/bootstrap-reboot.css",
         "../node_modules/bootstrap-v4-rtl/dist/css/bootstrap-rtl.css",
         "./rtlBootstrap/bootstrap-rtl.modify.css",
+        "../node_modules/devextreme/dist/css/dx.common.css",
+        "../node_modules/devextreme/dist/css/dx.android5.light.css",
         "styles.css"
       ],
       "scripts": [
