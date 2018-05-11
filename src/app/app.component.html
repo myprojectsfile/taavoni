@@ -6,9 +6,10 @@
     </div>
     <div class="col-sm-2">
       <div class="btn-group" role="group">
-        <button type="button" [routerLink]="['./login']" class="btn btn-sm btn-primary">ثبت نام</button>
-        <button type="button" [routerLink]="['./register']" class="btn btn-sm btn-success">ورود</button>
+        <button type="button" *ngIf="!authService.isAuthenticated()" [routerLink]="['./register']" class="btn btn-sm btn-primary">ثبت نام</button>
+        <button type="button" *ngIf="!authService.isAuthenticated()" [routerLink]="['./login']" class="btn btn-sm btn-success">ورود</button>
       </div>
+      <button type="button" *ngIf="authService.isAuthenticated()" (click)="authService.logout()" class="btn btn-sm btn-warning">خروج</button>
     </div>
     <div class="col-sm-5"></div>
     <div class="col-sm-3">

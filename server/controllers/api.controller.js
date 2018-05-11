@@ -88,7 +88,6 @@ post_login = function (req, res) {
         } else {
             bcrypt.compare(userData.password, user.password, function (err, isMatch) {
                 if (err) {
-                    console.log('compare error:' + err);
                     res.status(401).send(err);
                 }
 
@@ -112,7 +111,11 @@ post_register = function (req, res) {
         if (err) {
             res.status(400).send(err);
         }
-        res.status(200).send(user);
+
+        var payload = { subject: user._id };
+        var token = jwt.encode(payload, 'asdfghjkl');
+
+        res.status(200).send({ token });
     });
 
 };
