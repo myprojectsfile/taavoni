@@ -1,5 +1,7 @@
 // var QueueModel = require('../context/context').SafeKharid;
 var context = require('../context/context');
+var jwt = require('jwt-simple');
+var bcrypt = require('bcrypt');
 
 module.exports = function (app) {
 
@@ -11,6 +13,12 @@ module.exports = function (app) {
         .get(get_safeKharid_byid)
         .put(update_darkhastKharid)
         .delete(del_safeKharid_byid);
+
+    // define auth routes
+    app.route('/api/login')
+        .post(post_login);
+    app.route('/api/register')
+        .post(post_register);
 };
 
 get_safeKharid = function (req, res) {
@@ -69,4 +77,42 @@ del_safeKharid_byid = function (req, res) {
         }
         res.json({ message: 'درخواست مورد نظر با موفقیت حذف شد' });
     });
+};
+
+post_login = function (req, res) {
+    var userData = req.body;
+    context.User.findOne({ 'username': userData.username }, function (err, user) {
+        if (!user) {
+            res.statusCode = 401;
+            res.json({ message: 'نام کاربری اشتباه است یا وجود ندارد' });
+        } else {
+            bcrypt.compare(userData.password, user.password, function (err, isMatch) {
+                if (err) {
+                    console.log('compare error:' + err);
+                    res.status(401).send(err);
+                }
+
+                if (isMatch) {
+                    var payload = { subject: user._id };
+                    var token = jwt.encode(payload, 'asdfghjkl');
+
+                    res.status(200).send({ token });
+                } else return res.status(401).send({ message: 'کلمه عبور اشتباه است' });
+
+            });
+        }
+    });
+}
+
+
+post_register = function (req, res) {
+    var newUser = new context.User(req.body);
+
+    newUser.save(function (err, user) {
+        if (err) {
+            res.status(400).send(err);
+        }
+        res.status(200).send(user);
+    });
+
 };
