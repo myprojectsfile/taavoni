@@ -5,14 +5,25 @@ var bcrypt = require('bcrypt');
 
 module.exports = function (app) {
 
+    // SafeKharid routes
     app.route('/api/safeKharid')
         .get(get_safeKharid)
-        .post(post_darkhastKharid);
+        .post(checkIsAuthenticated, post_darkhastKharid);
 
     app.route('/api/safeKharid/:id')
         .get(get_safeKharid_byid)
         .put(update_darkhastKharid)
         .delete(del_safeKharid_byid);
+
+    // SafeForush routes
+    app.route('/api/safeForush')
+        .get(get_safeForush)
+        .post(checkIsAuthenticated, post_darkhastForush);
+
+    app.route('/api/safeForush/:id')
+        .get(get_safeForush_byid)
+        .put(update_darkhastForush)
+        .delete(del_safeForush_byid);
 
     // define auth routes
     app.route('/api/login')
@@ -31,12 +42,61 @@ get_safeKharid = function (req, res) {
     });
 };
 
+get_safeForush = function (req, res) {
+    context.SafeForush.find({}, function (err, result) {
+        if (err) {
+            res.statusCode = 400;
+            res.send(err);
+        }
+        res.json(result);
+    });
+};
+
+
 post_darkhastKharid = function (req, res) {
     var darkhastKharid = new context.SafeKharid(req.body);
-    darkhastKharid.save(function (err, darkhast) {
-        console.log('saving ...');
+    var user = context.User.findOne({ '_id': req.userId }, function (err, user) {
+        if (err) res.status(400).send(err);
+
+        if (!user) res.status(404).send();
+
+        darkhastKharid.username = user.username;
+        darkhastKharid.save(function (err, darkhast) {
+            if (err) {
+                console.log(`this is error: ${err}`);
+                res.statusCode = 400;
+                res.send(err);
+            }
+
+            res.json(darkhast);
+        });
+    });
+};
+
+post_darkhastForush = function (req, res) {
+    var darkhastForush = new context.SafeForush(req.body);
+    var user = context.User.findOne({ '_id': req.userId }, function (err, user) {
+        if (err) res.status(400).send(err);
+
+        if (!user) res.status(404).send();
+
+        darkhastForush.username = user.username;
+        darkhastForush.save(function (err, darkhast) {
+            if (err) {
+                console.log(`this is error: ${err}`);
+                res.statusCode = 400;
+                res.send(err);
+            }
+
+            res.json(darkhast);
+        });
+    });
+};
+
+
+get_safeKharid_byid = function (req, res) {
+    context.SafeKharid.findById(req.params.id, function (err, darkhast) {
         if (err) {
-            console.log(`this is error: ${err}`);
             res.statusCode = 400;
             res.send(err);
         }
@@ -44,9 +104,8 @@ post_darkhastKharid = function (req, res) {
     });
 };
 
-
-get_safeKharid_byid = function (req, res) {
-    context.SafeKharid.findById(req.params.id, function (err, darkhast) {
+get_safeForush_byid = function (req, res) {
+    context.SafeForush.findById(req.params.id, function (err, darkhast) {
         if (err) {
             res.statusCode = 400;
             res.send(err);
@@ -66,9 +125,31 @@ update_darkhastKharid = function (req, res) {
     });
 };
 
+update_darkhastForush = function (req, res) {
+    context.SafeForush.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
+        if (err) {
+            res.statusCode = 400;
+            res.send(err);
+        }
+        res.json(darkhast);
+    });
+};
+
 
 del_safeKharid_byid = function (req, res) {
     context.SafeKharid.remove({
+        _id: req.params.id
+    }, function (err, darkhast) {
+        if (err) {
+            res.statusCode = 400;
+            res.send(err);
+        }
+        res.json({ message: 'درخواست مورد نظر با موفقیت حذف شد' });
+    });
+};
+
+del_safeForush_byid = function (req, res) {
+    context.SafeForush.remove({
         _id: req.params.id
     }, function (err, darkhast) {
         if (err) {
@@ -119,3 +200,17 @@ post_register = function (req, res) {
     });
 
 };
+
+function checkIsAuthenticated(req, res, next) {
+    if (!req.header('Authorization'))
+        return res.status(401).send({ message: 'Authorization required' });
+
+    var token = req.header('Authorization').split(' ')[1];
+
+    var payload = jwt.decode(token, 'asdfghjkl');
+    if (!payload) return res.status(401).send({ message: 'Authorizaion Header is Invalid' });
+
+    req.userId = payload.subject;
+
+    next();
+}

@@ -12,14 +12,23 @@ export class QueueService {
   getSafeKharid() {
     return this.httpClient.get<QueueType[]>(this.apiUri + '/safeKharid');
   }
-
-  sabtDarkhast(darkhast: QueueType) {
+  
+  getSafeForush() {
+    return this.httpClient.get<QueueType[]>(this.apiUri + '/safeForush');
+  }
+  
+  sabtDarkhastKharid(darkhast: QueueType) {
     return this.httpClient.post(this.apiUri + '/safeKharid', darkhast);
   }
+
+  sabtDarkhastForush(darkhast: QueueType) {
+    return this.httpClient.post(this.apiUri + '/safeForush', darkhast);
+  }
+
 }
 
 export interface QueueType {
-  username: string;
+  username?: string;
   tedadSahm: number;
   arzeshSahm: number;
   tarikhDarkhast?: Date;

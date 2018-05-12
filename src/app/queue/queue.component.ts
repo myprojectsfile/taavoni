@@ -10,16 +10,25 @@ import 'rxjs/add/operator/catch';
 })
 export class QueueComponent implements OnInit {
 
-  @ViewChild("safeKharidGrid") dataGrid: DxDataGridComponent
+  @ViewChild("safeKharidGrid") gridSafeKharid: DxDataGridComponent
+  @ViewChild("safeForushGrid") gridSafeForush: DxDataGridComponent
+  @ViewChild("noeDarkhastSelect") noeDarkhastSelect: any
+
   safeKharid: QueueType[];
-  username: string;
+  safeForush: QueueType[];
+
   tedadSahm: number;
   arzeshSahm: number;
 
   ngOnInit(): void {
-    this.dataGrid.rtlEnabled = true;
-    this.dataGrid.showBorders = true;
+    this.gridSafeKharid.rtlEnabled = true;
+    this.gridSafeKharid.showBorders = true;
+
+    this.gridSafeForush.rtlEnabled = true;
+    this.gridSafeForush.showBorders = true;
+
     this.getSafeKharid();
+    this.getSafeForush();
   }
 
   constructor(private queuService: QueueService) { }
@@ -30,17 +39,36 @@ export class QueueComponent implements OnInit {
     });
   }
 
+  getSafeForush() {
+    this.queuService.getSafeForush().subscribe((data) => {
+      this.safeForush = data;
+    });
+  }
+
   sabtDarkhast() {
     let darkhast: QueueType = {
-      username: this.username,
       tedadSahm: this.tedadSahm,
       arzeshSahm: this.arzeshSahm
     }
 
-    this.queuService.sabtDarkhast(darkhast).subscribe((result) => {
-      this.getSafeKharid();
-    }, (error) => {
-      console.log(error);
-    })
+    let noeDarkhast = this.noeDarkhastSelect.nativeElement.selectedIndex;
+    // kharid sahm
+    if (noeDarkhast == 0) {
+      this.queuService.sabtDarkhastKharid(darkhast).subscribe((result) => {
+        this.getSafeKharid();
+      }, (error) => {
+        console.log(error);
+      })
+    }
+    //forush sahm
+    else if (noeDarkhast == 1) {
+      this.queuService.sabtDarkhastForush(darkhast).subscribe((result) => {
+        this.getSafeForush();
+      }, (error) => {
+        console.log(error);
+      })
+    }
+
+
   }
 }
