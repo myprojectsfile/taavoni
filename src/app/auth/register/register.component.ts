@@ -10,8 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterComponent {
 
-  constructor(private authService: AuthService,private toastr:ToastrService,private location:Location) { }
-
+  constructor(private authService: AuthService, private toastr: ToastrService, private location: Location) { }
+  errorMessage: string = null;
   username: string;
   password: string;
   name: string;
@@ -23,11 +23,11 @@ export class RegisterComponent {
       .subscribe(
         res => {
           this.authService.saveToken(res.token);
-          this.toastr.success('به سامانه تعاونی کارکنان بندر بوشهر خوش آمدید','ثبت نام در سامانه');
+          this.toastr.success('به سامانه تعاونی کارکنان بندر بوشهر خوش آمدید');
           this.location.back();
         },
-        error => {
-          console.log(`register error: ${error}`);
+        errRes => {
+          this.errorMessage = errRes.error.message;
         }
       );
   }

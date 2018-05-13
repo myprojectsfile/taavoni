@@ -1,3 +1,4 @@
+\
 <div class="row">
   <div class="col-sm-4">
     <form style="direction: rtl;">
@@ -24,5 +25,13 @@
 
       <button type="button" class="btn btn-sm btn-primary" (click)="register()">ثبت نام</button>
     </form>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-sm-4 col-lg-4">
+    <div *ngIf="errorMessage" class="text-right alert alert-danger" role="alert">
+      {{errorMessage}}
+    </div>
   </div>
 </div>

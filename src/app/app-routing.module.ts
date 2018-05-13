@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { QueueComponent } from './queue/queue.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent
   },
-  { path: 'queue', component: QueueComponent },
+  { path: 'queue', component: QueueComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
 

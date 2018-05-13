@@ -14,6 +14,8 @@ import { RegisterComponent } from './auth/register/register.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { JwtHelper } from 'angular2-jwt';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,7 @@ import { ToastrModule } from 'ngx-toastr';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }],
+  }, JwtHelper, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

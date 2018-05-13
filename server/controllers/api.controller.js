@@ -173,8 +173,16 @@ post_login = function (req, res) {
                 }
 
                 if (isMatch) {
-                    var payload = { subject: user._id };
-                    var token = jwt.encode(payload, 'asdfghjkl');
+
+                    var expirationDate = getExpirationDate();
+
+                    var payload = {
+                        iss: 'taavoni.bpmo.ir',
+                        sub: user._id,
+                        exp: expirationDate,
+                        claims: getUserClaims(user._id)
+                    };
+                    var token = jwt.encode(payload, getTokenSecret());
 
                     res.status(200).send({ token });
                 } else return res.status(401).send({ message: 'کلمه عبور اشتباه است' });
@@ -193,8 +201,15 @@ post_register = function (req, res) {
             res.status(400).send(err);
         }
 
-        var payload = { subject: user._id };
-        var token = jwt.encode(payload, 'asdfghjkl');
+        var expirationDate = getExpirationDate();
+        var payload = {
+            iss: 'taavoni.bpmo.ir',
+            sub: user._id,
+            exp: expirationDate,
+            claims: getUserClaims(user._id)
+        };
+
+        var token = jwt.encode(payload, getTokenSecret());
 
         res.status(200).send({ token });
     });
@@ -207,10 +222,24 @@ function checkIsAuthenticated(req, res, next) {
 
     var token = req.header('Authorization').split(' ')[1];
 
-    var payload = jwt.decode(token, 'asdfghjkl');
+    var payload = jwt.decode(token, getTokenSecret());
     if (!payload) return res.status(401).send({ message: 'Authorizaion Header is Invalid' });
 
-    req.userId = payload.subject;
+    req.userId = payload.sub;
 
     next();
+}
+
+function getUserClaims(userId) {
+    return ['shareholder'];
+}
+
+function getTokenSecret() {
+    return 'asdfghjkl';
+}
+
+function getExpirationDate() {
+    var now = new Date();
+    var validationHours = 4;
+    var expirationDate = now.setMinutes(now.getMinutes() + (validationHours * 60));
 }
