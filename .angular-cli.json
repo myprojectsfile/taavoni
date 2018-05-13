@@ -24,6 +24,7 @@
         "./rtlBootstrap/bootstrap-rtl.modify.css",
         "../node_modules/devextreme/dist/css/dx.common.css",
         "../node_modules/devextreme/dist/css/dx.android5.light.css",
+        "../node_modules/ngx-toastr/toastr.css",
         "styles.css"
       ],
       "scripts": [

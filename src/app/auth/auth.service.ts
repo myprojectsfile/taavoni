@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,private router:Router) { }
 
   apiUri = environment.apiUri;
 
@@ -36,6 +37,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this.isAuthenticated();
+    this.router.navigate(['']);
   }
 
   saveToken(token) {
