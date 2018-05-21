@@ -7,10 +7,6 @@
         <option id="forush">فروش سهم</option>
       </select>
     </div>
-    <!-- <div class="form-group">
-      <label for="username">شناسه درخواست کننده</label>
-      <input type="text" [(ngModel)]="username" class="form-control form-control-sm" name="username" id="username" placeholder="کد ملی">
-    </div> -->
     <div class="form-group">
       <label for="tedadSahm">تعداد سهم</label>
       <input type="text" [(ngModel)]="tedadSahm" class="form-control form-control-sm" name="tedadSahm" id="tedadSahm" placeholder="تعداد سهم مورد نظر">
@@ -25,20 +21,36 @@
 <hr>
 <div class="row">
   <div class="col-sm-6">
-    <dx-data-grid #safeKharidGrid [dataSource]="safeKharid">
-      <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-      <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-      <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
-      <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
-    </dx-data-grid>
+    <div class="row">
+      <blockquote class="blockquote  text-center">
+        <p>صف درخواست های خرید</p>
+      </blockquote>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <dx-data-grid #safeKharidGrid [dataSource]="safeKharid">
+          <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
+          <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+          <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
+          <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
+        </dx-data-grid>
+      </div>
+    </div>
   </div>
   <div class="col-sm-6">
-    <dx-data-grid #safeForushGrid [dataSource]="safeForush">
-      <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-      <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-      <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
-      <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
-    </dx-data-grid>
-    <br>
+    <div class="row">
+      <blockquote class="blockquote  text-center">
+        <p>صف درخواست های فروش</p>
+      </blockquote>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <dx-data-grid #safeForushGrid [dataSource]="safeForush">
+          <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
+          <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+          <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
+          <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
+        </dx-data-grid>
+      </div>
+    </div>
   </div>
-</div>
