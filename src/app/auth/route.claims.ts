@@ -14,6 +14,11 @@ export default {
             "routeUrl": "/queue",
             "signInRequired": "true",
             "claims": ["shareholder"]
+        },
+        {
+            "routeUrl": "/queueAdmin",
+            "signInRequired": "true",
+            "claims": ["shareholder"]
         }
     ]
 }

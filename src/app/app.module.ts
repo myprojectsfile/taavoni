@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from './auth/auth.guard';
+import { QueueAdminComponent } from './queue/queue-admin.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AuthGuard } from './auth/auth.guard';
     QueueComponent,
     HomePageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    QueueAdminComponent
   ],
   imports: [
     BrowserModule,

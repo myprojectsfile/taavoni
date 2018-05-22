@@ -3,3 +3,5 @@
     max-width: 120%;
     height: auto;
 }
+
+.carousel .item { height: 400px; }  

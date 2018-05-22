@@ -74,6 +74,8 @@ export class AuthService {
   }
 
   tokenPayload() {
-    return this.jwt.decodeToken(this.getToken());
+    let tokenPayload = this.jwt.decodeToken(this.getToken());
+    console.log(`payload:${JSON.stringify(tokenPayload)}`);
+    return tokenPayload;
   }
 }

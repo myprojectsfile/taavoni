@@ -175,12 +175,13 @@ post_login = function (req, res) {
                 if (isMatch) {
 
                     var expirationDate = getExpirationDate();
-
+                    var userClaims = getUserClaims(user._id);
+                    console.log(`claims is :${JSON.stringify(userClaims)}`);
                     var payload = {
                         iss: 'taavoni.bpmo.ir',
                         sub: user._id,
                         exp: expirationDate,
-                        claims: getUserClaims(user._id)
+                        claims: userClaims
                     };
                     var token = jwt.encode(payload, getTokenSecret());
 
@@ -200,13 +201,14 @@ post_register = function (req, res) {
         if (err) {
             res.status(400).send(err);
         }
-
+        var userClaims = getUserClaims(user._id);
+        console.log(`claims is :${userClaims}`);
         var expirationDate = getExpirationDate();
         var payload = {
             iss: 'taavoni.bpmo.ir',
             sub: user._id,
             exp: expirationDate,
-            claims: getUserClaims(user._id)
+            claims: userClaims
         };
 
         var token = jwt.encode(payload, getTokenSecret());
@@ -231,7 +233,16 @@ function checkIsAuthenticated(req, res, next) {
 }
 
 function getUserClaims(userId) {
-    return ['shareholder'];
+    // context.User.findById(userId, function (err, user) {
+    //     if (err) return err;
+    //     var userClaims = [];
+
+    //     if (user.username == 'admin') { userClaims = ['shareAdmin']; }
+    //     else { userClaim = ['shareholder']; }
+    //     console.log(userClaims);
+    //     return userClaims;
+        return ['shareholder'];
+    // });
 }
 
 function getTokenSecret() {
