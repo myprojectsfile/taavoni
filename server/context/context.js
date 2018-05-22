@@ -7,8 +7,7 @@ var DarkhastSchema = new mongoose.Schema({
     fullName: String,
     tedadSahm: Number,
     arzeshSahm: Number,
-    tarikhDarkhast: { type: Date, default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    tarikhDarkhast: { type: Date, default: Date.now }
 });
 
 var UserSchema = new mongoose.Schema({
