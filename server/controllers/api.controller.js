@@ -61,6 +61,7 @@ post_darkhastKharid = function (req, res) {
         if (!user) res.status(404).send();
 
         darkhastKharid.username = user.username;
+        darkhastKharid.fullName = `${user.name} ${user.family}`;
         darkhastKharid.save(function (err, darkhast) {
             if (err) {
                 console.log(`this is error: ${err}`);
@@ -81,6 +82,7 @@ post_darkhastForush = function (req, res) {
         if (!user) res.status(404).send();
 
         darkhastForush.username = user.username;
+        darkhastForush.fullName = `${user.name} ${user.family}`;        
         darkhastForush.save(function (err, darkhast) {
             if (err) {
                 console.log(`this is error: ${err}`);
@@ -241,7 +243,7 @@ function getUserClaims(userId) {
     //     else { userClaim = ['shareholder']; }
     //     console.log(userClaims);
     //     return userClaims;
-        return ['shareholder'];
+    return ['shareholder'];
     // });
 }
 

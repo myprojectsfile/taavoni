@@ -12,16 +12,8 @@ export class QueueService {
   getSafeKharid() {
     return this.httpClient.get<QueueType[]>(this.apiUri + '/safeKharid');
   }
-  
-  getSafeKharidFullName() {
-    return this.httpClient.get<QueueType[]>(this.apiUri + '/safeKharid');
-  }
 
   getSafeForush() {
-    return this.httpClient.get<QueueType[]>(this.apiUri + '/safeForush');
-  }
-
-  getSafeForushFullName() {
     return this.httpClient.get<QueueType[]>(this.apiUri + '/safeForush');
   }
 
@@ -37,6 +29,7 @@ export class QueueService {
 
 export interface QueueType {
   username?: string;
+  fullName?: string;
   tedadSahm: number;
   arzeshSahm: number;
   tarikhDarkhast?: Date;
