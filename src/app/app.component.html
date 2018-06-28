@@ -16,19 +16,24 @@
   </div>
 </div> -->
 <!-- Carousel Section -->
-<nav class="navbar navbar-expand-sm  navbar-dark bg-dark">
+<nav class="navbar navbar-expand-sm  navbar-dark bg-dark justify-content-between">
+    <a routerLink="/">
+      <span class="fa fa-home text-white" style="font-size: 1.5rem;"></span>
+    </a>
   <div class="container">
     <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <ul class="navbar-nav ml-auto  text-right">
+        
+        <li class="nav-item dropdown pull-right">
+          <a class="nav-link dropdown-toggle pull-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
             سهام
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <div class="dropdown-menu text-right" style="left: -180%;direction: rtl;" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" routerLink="/queue">ثبت درخواست خرید / فروش</a>
             <a class="dropdown-item" routerLink="/queueAdmin">مدیریت صف درخواست خرید / فروش</a>
           </div>
@@ -38,6 +43,24 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">پروژه ها</a>
+        </li>
+
+      </ul>
+      <ul class="navbar-nav  text-right">
+        <li class="nav-item" *ngIf="!authService.isAuthenticated()">
+          <a class="nav-link" routerLink="/register">
+            <i class="fa fa-user-plus"></i> ثبت نام
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="!authService.isAuthenticated()">
+          <a class="nav-link"  routerLink="/login">
+            <i class="fa fa-sign-in"></i> ورود
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="authService.isAuthenticated()">
+          <a class="nav-link btn" (click)="authService.logout()">
+            <i class="fa fa-sign-out"></i> خروج
+          </a>
         </li>
       </ul>
     </div>
