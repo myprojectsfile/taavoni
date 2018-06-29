@@ -1,60 +1,39 @@
-<!-- <div class="row" dir="rtl">
-  <form class="form-inline col-sm-12" action="/action_page.php">
-    <div class="form-group">
-      <label for="noeDarkhast">نوع درخواست</label>
-      <select class="form-control form-control-sm" id="noeDarkhast" #noeDarkhastSelect style="max-width: 120px;">
-        <option id="kharid">خرید سهم</option>
-        <option id="forush">فروش سهم</option>
-      </select>
+<div class="container-fluid">
+  <div class="row mt-3">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm d-flex justify-content-center">
+          <h5>صف درخواست های خرید</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <dx-data-grid #safeKharidGrid [dataSource]="safeKharid">
+            <dxi-column dataField="fullName" width="130" caption="نام درخواست کننده"></dxi-column>
+            <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
+            <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+            <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
+            <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
+          </dx-data-grid>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="tedadSahm">تعداد سهم</label>
-      <input type="text" [(ngModel)]="tedadSahm" class="form-control form-control-sm" name="tedadSahm" id="tedadSahm" placeholder="تعداد سهم مورد نظر">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm d-flex justify-content-center">
+          <h5>صف درخواست های فروش</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <dx-data-grid #safeForushGrid [dataSource]="safeForush">
+            <dxi-column dataField="fullName" width="130" caption="نام درخواست کننده"></dxi-column>
+            <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
+            <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+            <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
+            <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
+          </dx-data-grid>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="arzeshSahm">ارزش سهم</label>
-      <input type="text" [(ngModel)]="arzeshSahm" class="form-control form-control-sm" name="arzeshSahm" id="arzeshSahm" placeholder="ارزش سهم (تومان)">
-    </div>
-    <button type="button" class="btn btn-sm btn-default" (click)="sabtDarkhast()">ثبت درخواست</button>
-  </form>
 </div>
-<hr> -->
-<div class="row">
-  <div class="col-sm-6">
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-3">
-        <h5>صف درخواست های خرید</h5>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <dx-data-grid #safeKharidGrid [dataSource]="safeKharid">
-          <dxi-column dataField="fullName" width="130" caption="نام درخواست کننده"></dxi-column>
-          <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-          <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-          <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
-          <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
-        </dx-data-grid>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-3">
-        <h5>صف درخواست های فروش</h5>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <dx-data-grid #safeForushGrid [dataSource]="safeForush">
-          <dxi-column dataField="fullName" width="130" caption="نام درخواست کننده"></dxi-column>
-          <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-          <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-          <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
-          <dxi-column dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
-        </dx-data-grid>
-      </div>
-    </div>
-  </div>

@@ -19,6 +19,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { QueueAdminComponent } from './queue/queue-admin.component';
 import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
 import {Angular2ImageGalleryModule} from 'angular2-image-gallery';
+import { ProjectsShowComponent } from './projects-show/projects-show.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,8 @@ import {Angular2ImageGalleryModule} from 'angular2-image-gallery';
     LoginComponent,
     RegisterComponent,
     QueueAdminComponent,
-    PhotoGalleryComponent
+    PhotoGalleryComponent,
+    ProjectsShowComponent
   ],
   imports: [
     BrowserModule,
