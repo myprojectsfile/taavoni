@@ -17,7 +17,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from './auth/auth.guard';
 import { QueueAdminComponent } from './queue/queue-admin.component';
-
+import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
+import {Angular2ImageGalleryModule} from 'angular2-image-gallery';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,8 @@ import { QueueAdminComponent } from './queue/queue-admin.component';
     HomePageComponent,
     LoginComponent,
     RegisterComponent,
-    QueueAdminComponent
+    QueueAdminComponent,
+    PhotoGalleryComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,8 @@ import { QueueAdminComponent } from './queue/queue-admin.component';
     AppRoutingModule,
     DxDataGridModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    Angular2ImageGalleryModule
   ],
   providers: [QueueService, AuthService, {
     provide: HTTP_INTERCEPTORS,
