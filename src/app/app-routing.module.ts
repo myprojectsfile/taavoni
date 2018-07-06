@@ -7,6 +7,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AuthGuard } from './auth/auth.guard';
 import { QueueAdminComponent } from './queue/queue-admin.component';
+import { RequestAdminComponent } from './request-admin/request-admin.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     component: RegisterComponent
   },
   { path: 'queue', component: QueueComponent, canActivate: [AuthGuard] },
+  { path: 'requests', component: RequestAdminComponent, canActivate: [AuthGuard] },
   { path: 'queueAdmin', component: QueueAdminComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];

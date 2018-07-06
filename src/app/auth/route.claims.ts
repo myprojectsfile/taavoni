@@ -16,6 +16,11 @@ export default {
             "claims": ["shareholder"]
         },
         {
+            "routeUrl": "/requests",
+            "signInRequired": "true",
+            "claims": ["shareholder"]
+        },
+        {
             "routeUrl": "/queueAdmin",
             "signInRequired": "true",
             "claims": ["shareholder"]

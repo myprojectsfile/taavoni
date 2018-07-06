@@ -30,6 +30,10 @@ module.exports = function (app) {
         .post(post_login);
     app.route('/api/register')
         .post(post_register);
+
+    // listdarkhast routes
+    app.route('/api/darkhast/:username')
+        .get(getListDarkhastByUsername);
 };
 
 get_safeKharid = function (req, res) {
@@ -49,6 +53,32 @@ get_safeForush = function (req, res) {
             res.send(err);
         }
         res.json(result);
+    });
+};
+
+getListDarkhastByUsername = function (req, res) {
+    let listDarkhasthayeKharid = [];
+    let listDarkhasthayeForush = [];
+
+    context.SafeKharid.find({ 'username': req.params.username }, function (err, darkhasthayeKharid) {
+        if (err) {
+            res.statusCode = 400;
+            res.send(err);
+        }
+
+        listDarkhasthayeKharid = darkhasthayeKharid;
+        context.SafeForush.find({ 'username': req.params.username }, function (err, darkhasthayeForush) {
+            if (err) {
+                res.statusCode = 400;
+                res.send(err);
+            }
+            listDarkhasthayeForush = darkhasthayeForush;
+
+            let listDarkhastha = listDarkhasthayeKharid.concat(listDarkhasthayeForush);
+
+            res.json(listDarkhastha);
+
+        });
     });
 };
 
@@ -82,7 +112,7 @@ post_darkhastForush = function (req, res) {
         if (!user) res.status(404).send();
 
         darkhastForush.username = user.username;
-        darkhastForush.fullName = `${user.name} ${user.family}`;        
+        darkhastForush.fullName = `${user.name} ${user.family}`;
         darkhastForush.save(function (err, darkhast) {
             if (err) {
                 console.log(`this is error: ${err}`);

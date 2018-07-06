@@ -22,12 +22,13 @@ export class AuthService {
 
   }
 
-  register(username, password, name, family, mobile) {
+  register(username, password, name, family,codeMelli, mobile) {
     let body = {
       username: username,
       password: password,
       name: name,
       family: family,
+      codeMelli:codeMelli,
       mobile: mobile
     }
 

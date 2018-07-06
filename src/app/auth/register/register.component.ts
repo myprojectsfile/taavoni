@@ -16,10 +16,11 @@ export class RegisterComponent {
   password: string;
   name: string;
   family: string;
+  codeMelli: string;
   mobile: string;
 
   register() {
-    this.authService.register(this.username, this.password, this.name, this.family, this.mobile)
+    this.authService.register(this.username, this.password, this.name, this.family, this.codeMelli, this.mobile)
       .subscribe(
         res => {
           this.authService.saveToken(res.token);
