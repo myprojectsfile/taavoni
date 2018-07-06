@@ -5,12 +5,13 @@ var bcrypt = require('bcrypt');
 var DarkhastSchema = new mongoose.Schema({
     username: { type: String, required: true },
     fullName: String,
+    noeDarkhast: { type: String, enum: ['خرید', 'فروش'], required: true },
     tedadSahm: Number,
+    arzeshSahm: Number,
     tedadMoamelehShodeh: { type: Number, required: false, default: 0 },
     tedadBaghiMandeh: { type: Number, required: false, default: 0 },
-    arzeshSahm: Number,
     tarikhDarkhast: { type: Date, default: Date.now },
-    vazeiat: { type: String, enum: ['در انتظار', 'لغو شده', 'انجام شده', 'در حال انجام'], required: false, default: 'در انتظار' },
+    vazeiat: { type: String, enum: ['در انتظار', 'لغو شده', 'انجام شده', 'در حال انجام'], required: true, default: 'در انتظار' },
     tozihat: { type: String, required: false }
 });
 
@@ -24,12 +25,12 @@ var UserSchema = new mongoose.Schema({
     codeMelli: { type: String, required: false }
 });
 
+UserSchema.virtual('fullName').get(function () { return this.name + ' ' + this.family });
+
 // Define Models
-var SafeKharid = mongoose.model('SafeKharid', DarkhastSchema);
-var SafeForush = mongoose.model('SafeForush', DarkhastSchema);
+var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
 var User = mongoose.model('User', UserSchema);
 
-// DarkhastSchema.virtual('tedadBaghiMandeh').get(function () { return this.tedadSahm - this.tedadMoamelehShodeh });
 
 
 // hash password before saving user
@@ -54,7 +55,6 @@ UserSchema.pre('save', function (next) {
 })
 
 module.exports = {
-    SafeForush: SafeForush,
-    SafeKharid: SafeKharid,
+    Darkhast: Darkhast,
     User: User
 }

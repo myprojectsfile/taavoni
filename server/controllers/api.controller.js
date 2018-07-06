@@ -34,10 +34,13 @@ module.exports = function (app) {
     // listdarkhast routes
     app.route('/api/darkhast/:username')
         .get(getListDarkhastByUsername);
+
+    app.route('/api/darkhast/:id')
+        .put(update_darkhast_byid);
 };
 
 get_safeKharid = function (req, res) {
-    context.SafeKharid.find({}, function (err, result) {
+    context.Darkhast.find({ 'noeDarkhast': 'خرید' }, function (err, result) {
         if (err) {
             res.statusCode = 400;
             res.send(err);
@@ -47,7 +50,7 @@ get_safeKharid = function (req, res) {
 };
 
 get_safeForush = function (req, res) {
-    context.SafeForush.find({}, function (err, result) {
+    context.Darkhast.find({ 'noeDarkhast': 'فروش' }, function (err, result) {
         if (err) {
             res.statusCode = 400;
             res.send(err);
@@ -57,45 +60,34 @@ get_safeForush = function (req, res) {
 };
 
 getListDarkhastByUsername = function (req, res) {
-    let listDarkhasthayeKharid = [];
-    let listDarkhasthayeForush = [];
-
-    context.SafeKharid.find({ 'username': req.params.username }, function (err, darkhasthayeKharid) {
+    context.Darkhast.find({ 'username': req.params.username }, function (err, darkhastha) {
         if (err) {
-            res.statusCode = 400;
+            res.statusCode = 500;
             res.send(err);
         }
 
-        listDarkhasthayeKharid = darkhasthayeKharid;
-        context.SafeForush.find({ 'username': req.params.username }, function (err, darkhasthayeForush) {
-            if (err) {
-                res.statusCode = 400;
-                res.send(err);
-            }
-            listDarkhasthayeForush = darkhasthayeForush;
-
-            let listDarkhastha = listDarkhasthayeKharid.concat(listDarkhasthayeForush);
-
-            res.json(listDarkhastha);
-
-        });
+        res.json(darkhastha);
     });
 };
 
 
 post_darkhastKharid = function (req, res) {
-    var darkhastKharid = new context.SafeKharid(req.body);
-    var user = context.User.findOne({ '_id': req.userId }, function (err, user) {
-        if (err) res.status(400).send(err);
+    // find user by id
+    context.User.findOne({ '_id': req.userId }, function (err, user) {
+
+        if (err) res.status(500).send(err);
 
         if (!user) res.status(404).send();
-
+        // create new darkhast
+        var darkhastKharid = new context.Darkhast(req.body);
+        // set username & noedarkhast
         darkhastKharid.username = user.username;
-        darkhastKharid.fullName = `${user.name} ${user.family}`;
+        darkhastKharid.noeDarkhast = 'خرید';
+        darkhastKharid.fullName = user.fullName;
         darkhastKharid.save(function (err, darkhast) {
             if (err) {
                 console.log(`this is error: ${err}`);
-                res.statusCode = 400;
+                res.statusCode = 500;
                 res.send(err);
             }
 
@@ -105,18 +97,22 @@ post_darkhastKharid = function (req, res) {
 };
 
 post_darkhastForush = function (req, res) {
-    var darkhastForush = new context.SafeForush(req.body);
-    var user = context.User.findOne({ '_id': req.userId }, function (err, user) {
-        if (err) res.status(400).send(err);
+    // find user by id
+    context.User.findOne({ '_id': req.userId }, function (err, user) {
+
+        if (err) res.status(500).send(err);
 
         if (!user) res.status(404).send();
-
+        // create new darkhast
+        var darkhastForush = new context.Darkhast(req.body);
+        // set username & noedarkhast
         darkhastForush.username = user.username;
-        darkhastForush.fullName = `${user.name} ${user.family}`;
+        darkhastForush.noeDarkhast = 'فروش';
+        darkhastForush.fullName = user.fullName;
         darkhastForush.save(function (err, darkhast) {
             if (err) {
                 console.log(`this is error: ${err}`);
-                res.statusCode = 400;
+                res.statusCode = 500;
                 res.send(err);
             }
 
@@ -127,67 +123,73 @@ post_darkhastForush = function (req, res) {
 
 
 get_safeKharid_byid = function (req, res) {
-    context.SafeKharid.findById(req.params.id, function (err, darkhast) {
-        if (err) {
-            res.statusCode = 400;
-            res.send(err);
-        }
+    context.Darkhast.findById(req.params.id, function (err, darkhast) {
+        if (err) res.status(500).send(err);
+
+        if (!darkhast) res.status(404).send();
+
         res.json(darkhast);
     });
 };
 
 get_safeForush_byid = function (req, res) {
-    context.SafeForush.findById(req.params.id, function (err, darkhast) {
-        if (err) {
-            res.statusCode = 400;
-            res.send(err);
-        }
+    context.Darkhast.findById(req.params.id, function (err, darkhast) {
+        if (err) res.status(500).send(err);
+
+        if (!darkhast) res.status(404).send();
+
         res.json(darkhast);
     });
 };
 
 
 update_darkhastKharid = function (req, res) {
-    context.SafeKharid.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
-        if (err) {
-            res.statusCode = 400;
-            res.send(err);
-        }
+    context.Darkhast.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
+        if (err) res.status(500).send(err);
+
+        if (!darkhast) res.status(404).send();
+
         res.json(darkhast);
     });
 };
 
 update_darkhastForush = function (req, res) {
-    context.SafeForush.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
-        if (err) {
-            res.statusCode = 400;
-            res.send(err);
-        }
+    context.Darkhast.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
+        if (err) res.status(500).send(err);
+
+        if (!darkhast) res.status(404).send();
+
+        res.json(darkhast);
+    });
+};
+
+update_darkhast_byid = function (req, res) {
+    context.Darkhast.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
+        if (err) res.status(500).send(err);
+
+        if (!darkhast) res.status(404).send();
+
         res.json(darkhast);
     });
 };
 
 
 del_safeKharid_byid = function (req, res) {
-    context.SafeKharid.remove({
-        _id: req.params.id
-    }, function (err, darkhast) {
-        if (err) {
-            res.statusCode = 400;
-            res.send(err);
-        }
+    context.Darkhast.remove({ _id: req.params.id }, function (err, darkhast) {
+        if (err) res.status(404).send(err);
+
+        if (!darkhast) res.status(404).send();
+
         res.json({ message: 'درخواست مورد نظر با موفقیت حذف شد' });
     });
 };
 
 del_safeForush_byid = function (req, res) {
-    context.SafeForush.remove({
-        _id: req.params.id
-    }, function (err, darkhast) {
-        if (err) {
-            res.statusCode = 400;
-            res.send(err);
-        }
+    context.Darkhast.remove({ _id: req.params.id }, function (err, darkhast) {
+        if (err) res.status(404).send(err);
+
+        if (!darkhast) res.status(404).send();
+
         res.json({ message: 'درخواست مورد نظر با موفقیت حذف شد' });
     });
 };
@@ -213,7 +215,8 @@ post_login = function (req, res) {
                         iss: 'taavoni.bpmo.ir',
                         sub: user._id,
                         exp: expirationDate,
-                        claims: userClaims
+                        claims: userClaims,
+                        username:user.username
                     };
                     var token = jwt.encode(payload, getTokenSecret());
 

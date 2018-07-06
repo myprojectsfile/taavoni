@@ -18,9 +18,10 @@ import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from './auth/auth.guard';
 import { QueueAdminComponent } from './queue/queue-admin.component';
 import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
-import {Angular2ImageGalleryModule} from 'angular2-image-gallery';
+import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
 import { ProjectsShowComponent } from './projects-show/projects-show.component';
 import { RequestAdminComponent } from './request-admin/request-admin.component';
+import { RequestService } from './request-admin/request.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,7 @@ import { RequestAdminComponent } from './request-admin/request-admin.component';
     FormsModule,
     Angular2ImageGalleryModule
   ],
-  providers: [QueueService, AuthService, {
+  providers: [QueueService, AuthService, RequestService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true

@@ -22,13 +22,13 @@ export class AuthService {
 
   }
 
-  register(username, password, name, family,codeMelli, mobile) {
+  register(username, password, name, family, codeMelli, mobile) {
     let body = {
       username: username,
       password: password,
       name: name,
       family: family,
-      codeMelli:codeMelli,
+      codeMelli: codeMelli,
       mobile: mobile
     }
 
@@ -76,7 +76,12 @@ export class AuthService {
 
   tokenPayload() {
     let tokenPayload = this.jwt.decodeToken(this.getToken());
-    console.log(`payload:${JSON.stringify(tokenPayload)}`);
     return tokenPayload;
+  }
+
+  getUsername() {
+    let tokenPayload = this.jwt.decodeToken(this.getToken());
+    if (tokenPayload) return tokenPayload.username;
+    return null;
   }
 }
