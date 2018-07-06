@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12 m-3">
-    <dx-data-grid #safeKharidGrid [showBorders]="true" [rtlEnabled]="true" [dataSource]="listDarkhast">
+    <dx-data-grid #safeKharidGrid [editing]="{allowUpdating:true}" [showBorders]="true" [rtlEnabled]="true" [dataSource]="listDarkhast">
       <dxo-paging [pageSize]="10"></dxo-paging>
       <dxi-column alignment="center" dataField="noeDarkhast" width="90" caption="نوع درخواست"></dxi-column>
       <dxi-column alignment="center" dataField="vazeiat" width="110" caption="وضعیت"></dxi-column>
@@ -11,14 +11,14 @@
       <dxi-column alignment="center" dataField="tarikhDarkhast" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
       <dxi-column alignment="center" dataField="tozihat" width="250" caption="توضیحات"></dxi-column>
       <dxi-column alignment="center" cellTemplate="cancelButtonTemplate" caption="لغو" width="50"></dxi-column>
-      <dxi-column alignment="center" cellTemplate="saveButtonTemplate" caption="ثبت" width="50"></dxi-column>
+      <!-- <dxi-column alignment="center" cellTemplate="saveButtonTemplate" caption="ثبت" width="50"></dxi-column> -->
 
       <div *dxTemplate="let d of 'cancelButtonTemplate'">
         <button (click)="cancel('لغو')">لغو</button>
       </div>
-      <div *dxTemplate="let d of 'saveButtonTemplate'">
-        <button (click)="cancel('ثبت')">ثبت</button>
-      </div>
+      <!-- <div *dxTemplate="let d of 'saveButtonTemplate'">
+        <button (click)="save(d)">ثبت</button>
+      </div> -->
     </dx-data-grid>
   </div>
 </div>
