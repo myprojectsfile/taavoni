@@ -84,6 +84,7 @@ export class RequestAdminComponent implements OnInit {
     } else {
       this.toastr.error('شما تنها مجاز به کاهش تعداد هستید');
       e.cancel = true;
+      this.editingMode = false;
       this.listDarkhastGrid.instance.cancelEditData();
     }
   }
