@@ -39,7 +39,7 @@ import { RequestService } from './request-admin/request.service';
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 2000,
-      positionClass: 'toast-top-center',
+      positionClass: 'toast-bottom-left',
       preventDuplicates: true,
     }),
     AppRoutingModule,

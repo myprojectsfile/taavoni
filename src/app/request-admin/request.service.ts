@@ -15,14 +15,15 @@ export class RequestService {
     return this.httpClient.get<DarkhastType[]>(this.apiUri + '/darkhast/' + username);
   }
 
-  sabtDarkhastKharid(darkhast: DarkhastType) {
-    return this.httpClient.post(this.apiUri + '/safeKharid', darkhast);
+  updateDarkhast(darkhast: DarkhastType, rowKey: string) {
+    return this.httpClient.put(this.apiUri + '/darkhast/' + rowKey, darkhast);
   }
 
 }
 
 
 export interface DarkhastType {
+  _id?: string;
   username?: string;
   fullName?: string;
   tedadSahm: number;
