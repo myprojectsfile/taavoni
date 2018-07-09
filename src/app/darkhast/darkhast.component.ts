@@ -1,0 +1,58 @@
+import { Component, OnInit, HostBinding, Input } from '@angular/core';
+import { DarkhastService } from './darkhast.service';
+import { DarkhastType } from '../shared/types/darkhast';
+
+@Component({
+  selector: 'app-darkhast',
+  templateUrl: './darkhast.component.html',
+  styleUrls: ['./darkhast.component.css']
+})
+export class DarkhastComponent implements OnInit {
+
+  constructor(private darkhastServivce: DarkhastService) { }
+
+  @HostBinding('attr.noe-darkhast')
+  @Input() noeDarkhast: string;
+
+  @HostBinding('attr.columns-list')
+  @Input() columnsList: string[];
+
+  listDarkhastDataSource: any;
+  listDarkhast: DarkhastType[];
+
+  showNoeDarkhast: boolean;
+  showVazeiat: boolean;
+  showTedadSahm: boolean;
+  showTedadMoamelehShodeh: boolean;
+  showTedadBaghiMandeh: boolean;
+  showArzeshSahm: boolean;
+  showTarikhDarkhast: boolean;
+  showTozihat: boolean;
+  showUsername: boolean;
+  showFullName: boolean;
+
+  ngOnInit() {
+    this.darkhastServivce.getListDarkhast(this.noeDarkhast).subscribe((data) => {
+      this.listDarkhast = data;
+      this.listDarkhastDataSource = {
+        store: {
+          type: 'array',
+          key: '_id',
+          data: this.listDarkhast
+        }
+      };
+    });
+
+    this.showNoeDarkhast= this.columnsList.indexOf('noeDarkhast')>0;
+    this.showVazeiat= this.columnsList.indexOf('vazeiat')>0;
+    this.showTedadSahm= this.columnsList.indexOf('tedadSahm')>0;
+    this.showTedadMoamelehShodeh= this.columnsList.indexOf('tedadMoamelehShodeh')>0;
+    this.showTedadBaghiMandeh= this.columnsList.indexOf('tedadBaghiMandeh')>0;
+    this.showArzeshSahm= this.columnsList.indexOf('arzeshSahm')>0;
+    this.showTarikhDarkhast= this.columnsList.indexOf('tarikhDarkhast')>0;
+    this.showTozihat= this.columnsList.indexOf('tozihat')>0;
+    this.showUsername= this.columnsList.indexOf('username')>0;
+    this.showFullName= this.columnsList.indexOf('fullName')>0;
+  }
+
+}

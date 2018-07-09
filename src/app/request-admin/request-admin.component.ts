@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import 'rxjs/add/operator/catch';
-import { RequestService, DarkhastType } from './request.service';
+import { RequestService } from './request.service';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { ToastrService } from 'ngx-toastr';
+import { DarkhastType } from '../shared/types/darkhast';
 
 declare var $: any;
 @Component({

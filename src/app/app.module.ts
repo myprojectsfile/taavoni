@@ -22,6 +22,9 @@ import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
 import { ProjectsShowComponent } from './projects-show/projects-show.component';
 import { RequestAdminComponent } from './request-admin/request-admin.component';
 import { RequestService } from './request-admin/request.service';
+import { DarkhastComponent } from './darkhast/darkhast.component';
+import { DarkhastService } from './darkhast/darkhast.service';
+import { MoamelelatComponent } from './moamelelat/moamelelat.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +35,9 @@ import { RequestService } from './request-admin/request.service';
     QueueAdminComponent,
     PhotoGalleryComponent,
     ProjectsShowComponent,
-    RequestAdminComponent
+    RequestAdminComponent,
+    DarkhastComponent,
+    MoamelelatComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +57,7 @@ import { RequestService } from './request-admin/request.service';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }, JwtHelper, AuthGuard],
+  }, JwtHelper, AuthGuard, DarkhastService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

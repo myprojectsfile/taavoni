@@ -8,6 +8,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { AuthGuard } from './auth/auth.guard';
 import { QueueAdminComponent } from './queue/queue-admin.component';
 import { RequestAdminComponent } from './request-admin/request-admin.component';
+import { MoamelelatComponent } from './moamelelat/moamelelat.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'queue', component: QueueComponent, canActivate: [AuthGuard] },
   { path: 'requests', component: RequestAdminComponent, canActivate: [AuthGuard] },
   { path: 'queueAdmin', component: QueueAdminComponent, canActivate: [AuthGuard] },
+  { path: 'trades', component: MoamelelatComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
 

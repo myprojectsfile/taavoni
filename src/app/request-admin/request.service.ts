@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
+import { DarkhastType } from '../shared/types/darkhast';
 
 @Injectable()
 export class RequestService {
@@ -22,16 +23,3 @@ export class RequestService {
 }
 
 
-export interface DarkhastType {
-  _id?: string;
-  username?: string;
-  fullName?: string;
-  tedadSahm: number;
-  tedadMoamelehShodeh: number;
-  tedadBaghiMandeh: number;
-  arzeshSahm: number;
-  tarikhDarkhast?: Date;
-  vazeiat: string;
-  tozihat: string;
-  noeDarkhst: string;
-}

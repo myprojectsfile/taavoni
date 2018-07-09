@@ -24,6 +24,11 @@ export default {
             "routeUrl": "/queueAdmin",
             "signInRequired": "true",
             "claims": ["shareholder"]
+        },
+        {
+            "routeUrl": "/trades",
+            "signInRequired": "true",
+            "claims": ["shareholder"]
         }
     ]
 }
