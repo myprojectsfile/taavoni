@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Input } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, Output, EventEmitter } from '@angular/core';
 import { DarkhastService } from './darkhast.service';
 import { DarkhastType } from '../shared/types/darkhast';
 
@@ -12,10 +12,14 @@ export class DarkhastComponent implements OnInit {
   constructor(private darkhastServivce: DarkhastService) { }
 
   @HostBinding('attr.noe-darkhast')
-  @Input() noeDarkhast: string;
+  @Input()
+  noeDarkhast: string;
 
   @HostBinding('attr.columns-list')
-  @Input() columnsList: string[];
+  @Input()
+  columnsList: string[];
+
+  @Output() listChanged = new EventEmitter<DarkhastType[]>();
 
   listDarkhastDataSource: any;
   listDarkhast: DarkhastType[];
@@ -34,6 +38,7 @@ export class DarkhastComponent implements OnInit {
   ngOnInit() {
     this.darkhastServivce.getListDarkhast(this.noeDarkhast).subscribe((data) => {
       this.listDarkhast = data;
+      this.listChanged.emit(data);
       this.listDarkhastDataSource = {
         store: {
           type: 'array',
@@ -43,16 +48,24 @@ export class DarkhastComponent implements OnInit {
       };
     });
 
-    this.showNoeDarkhast= this.columnsList.indexOf('noeDarkhast')>0;
-    this.showVazeiat= this.columnsList.indexOf('vazeiat')>0;
-    this.showTedadSahm= this.columnsList.indexOf('tedadSahm')>0;
-    this.showTedadMoamelehShodeh= this.columnsList.indexOf('tedadMoamelehShodeh')>0;
-    this.showTedadBaghiMandeh= this.columnsList.indexOf('tedadBaghiMandeh')>0;
-    this.showArzeshSahm= this.columnsList.indexOf('arzeshSahm')>0;
-    this.showTarikhDarkhast= this.columnsList.indexOf('tarikhDarkhast')>0;
-    this.showTozihat= this.columnsList.indexOf('tozihat')>0;
-    this.showUsername= this.columnsList.indexOf('username')>0;
-    this.showFullName= this.columnsList.indexOf('fullName')>0;
+    // مدیریت نمایش ستون های انتخاب شده
+    this.showNoeDarkhast = this.columnsList.indexOf('noeDarkhast') > 0;
+    this.showVazeiat = this.columnsList.indexOf('vazeiat') > 0;
+    this.showTedadSahm = this.columnsList.indexOf('tedadSahm') > 0;
+    this.showTedadMoamelehShodeh = this.columnsList.indexOf('tedadMoamelehShodeh') > 0;
+    this.showTedadBaghiMandeh = this.columnsList.indexOf('tedadBaghiMandeh') > 0;
+    this.showArzeshSahm = this.columnsList.indexOf('arzeshSahm') > 0;
+    this.showTarikhDarkhast = this.columnsList.indexOf('tarikhDarkhast') > 0;
+    this.showTozihat = this.columnsList.indexOf('tozihat') > 0;
+    this.showUsername = this.columnsList.indexOf('username') > 0;
+    this.showFullName = this.columnsList.indexOf('fullName') > 0;
   }
 
+  // انتخاب اولین ردیف صف درخواست
+  public getAvalinDarkhast() {
+    if (this.listDarkhast.length > 0) {
+      return this.listDarkhast[0];
+    }
+    return null;
+  }
 }

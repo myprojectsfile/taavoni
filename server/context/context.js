@@ -4,18 +4,14 @@ var bcrypt = require('bcrypt');
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
     tarikhMoameleh: { type: Date, default: Date.now },
-    tedadSahm: Number,
-    arzeshSahm: Number,
-    forushandeh: {
-        username: String,
-        fullName: String,
-        darkhastId: String
-    },
-    kharidar: {
-        username: String,
-        fullName: String,
-        darkhastId: String
-    },
+    tedadSahmMoameleh: Number,
+    arzeshSahmMoameleh: Number,
+    forushandeh_username: String,
+    forushandeh_fullName: String,
+    forushandeh_darkhastId: String,
+    kharidar_username: String,
+    kharidar_fullName: String,
+    kharidar_darkhastId: String,
     userIdSabtKonandeh: { type: String, required: false },
     usernameSabtKonandeh: { type: String, required: false },
     fullnameSabtKonandeh: { type: String, required: false }
@@ -29,7 +25,7 @@ var DarkhastSchema = new mongoose.Schema({
     tedadSahm: Number,
     arzeshSahm: Number,
     tedadMoamelehShodeh: { type: Number, required: false, default: 0 },
-    tedadBaghiMandeh: { type: Number, required: false, default: 0 },
+    tedadBaghiMandeh: { type: Number, required: false },
     tarikhDarkhast: { type: Date, default: Date.now },
     vazeiat: { type: String, enum: ['در انتظار', 'لغو شده', 'انجام شده', 'در حال انجام'], required: true, default: 'در انتظار' },
     tozihat: { type: String, required: false },

@@ -1,17 +1,13 @@
 export interface MoamelehType {
     tarikhMoameleh?: Date,
-    tedadSahm: number,
-    arzeshSahm: number,
-    forushandeh: {
-        username: string,
-        fullName: string,
-        darkhastId: string
-    },
-    kharidar: {
-        username: string,
-        fullName: string,
-        darkhastId: string
-    },
+    tedadSahmMoameleh: number,
+    arzeshSahmMoameleh: number,
+    forushandeh_username: string,
+    forushandeh_fullName: string,
+    forushandeh_darkhastId: string,
+    kharidar_username: string,
+    kharidar_fullName: string,
+    kharidar_darkhastId: string,
     userIdSabtKonandeh?: string,
     usernameSabtKonandeh?: string,
     fullnameSabtKonandeh?: string

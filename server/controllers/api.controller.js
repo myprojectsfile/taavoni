@@ -56,7 +56,8 @@ get_safeKharid = function (req, res) {
             res.send(err);
         }
         res.json(result);
-    });
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+        .sort('tarikhDarkhast');
 };
 
 get_safeForush = function (req, res) {
@@ -66,7 +67,8 @@ get_safeForush = function (req, res) {
             res.send(err);
         }
         res.json(result);
-    });
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+        .sort('tarikhDarkhast');
 };
 
 get_moameleh = function (req, res) {
@@ -104,6 +106,7 @@ post_darkhastKharid = function (req, res) {
         darkhastKharid.username = user.username;
         darkhastKharid.noeDarkhast = 'خرید';
         darkhastKharid.fullName = user.fullName;
+        darkhastKharid.tedadBaghiMandeh = req.body.tedadSahm;
         darkhastKharid.save(function (err, darkhast) {
             if (err) {
                 console.log(`this is error: ${err}`);
@@ -129,6 +132,7 @@ post_darkhastForush = function (req, res) {
         darkhastForush.username = user.username;
         darkhastForush.noeDarkhast = 'فروش';
         darkhastForush.fullName = user.fullName;
+        darkhastForush.tedadBaghiMandeh = req.body.tedadSahm;
         darkhastForush.save(function (err, darkhast) {
             if (err) {
                 console.log(`this is error: ${err}`);
@@ -146,7 +150,7 @@ post_moameleh = function (req, res) {
     // userid is added to req by checkIsAuthenticated middleware
     context.User.findOne({ '_id': req.userId }, function (err, user) {
 
-        if (err) res.status(500).send(err); 
+        if (err) res.status(500).send(err);
 
         if (!user) res.status(404).send();
         // create new moameleh

@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col-sm d-flex justify-content-center">
-        <app-darkhast class="p-2" #safeKharid noeDarkhast="kharid" columnsList="['fullName','username','noeDarkhast','tedadSahm','arzeshSahm','tedadMoamelehShodeh','tedadBaghiMandeh','tarikhDarkhast','vazeiat']"></app-darkhast>
+        <app-darkhast class="p-2" (listChanged)="listKharidChanged($event)" #safeKharid noeDarkhast="kharid" columnsList="['fullName','username','noeDarkhast','tedadSahm','arzeshSahm','tedadMoamelehShodeh','tedadBaghiMandeh','tarikhDarkhast','vazeiat']"></app-darkhast>
     </div>
 </div>
 <div class="row">
@@ -16,12 +16,12 @@
 </div>
 <div class="row">
     <div class="col-sm d-flex justify-content-center">
-        <app-darkhast class="p-2" #safeKharid noeDarkhast="forush" columnsList="['fullName','username','noeDarkhast','tedadSahm','arzeshSahm','tedadMoamelehShodeh','tedadBaghiMandeh','tarikhDarkhast','vazeiat']"></app-darkhast>
+        <app-darkhast class="p-2" (listChanged)="listForushChanged($event)" #safeForush noeDarkhast="forush" columnsList="['fullName','username','noeDarkhast','tedadSahm','arzeshSahm','tedadMoamelehShodeh','tedadBaghiMandeh','tarikhDarkhast','vazeiat']"></app-darkhast>
     </div>
 </div>
 <!-- operation section -->
 <div class="row">
     <div class="col-sm-1 mr-2">
-        <div class="btn btn-primary btn-sm" (click)="doTrade()">ثبت معامله</div>
+        <button class="btn btn-primary btn-sm" [disabled]="!tradeButtonEnabled" (click)="doTrade()">ثبت معامله</button>
     </div>
 </div>
