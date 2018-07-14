@@ -37,12 +37,22 @@ module.exports = function (app) {
 
     app.route('/api/darkhast/:id')
         .put(update_darkhast_byid);
+
+    // Moameleh routes
+    app.route('/api/moameleh')
+        .get(get_moameleh)
+        .post(checkIsAuthenticated, post_moameleh);
+
+    app.route('/api/moameleh/:id')
+        .get(get_moameleh_byid)
+        .put(update_moameleh)
+        .delete(del_moameleh_byid);
 };
 
 get_safeKharid = function (req, res) {
     context.Darkhast.find({ 'noeDarkhast': 'خرید' }, function (err, result) {
         if (err) {
-            res.statusCode = 400;
+            res.statusCode = 500;
             res.send(err);
         }
         res.json(result);
@@ -52,7 +62,17 @@ get_safeKharid = function (req, res) {
 get_safeForush = function (req, res) {
     context.Darkhast.find({ 'noeDarkhast': 'فروش' }, function (err, result) {
         if (err) {
-            res.statusCode = 400;
+            res.statusCode = 500;
+            res.send(err);
+        }
+        res.json(result);
+    });
+};
+
+get_moameleh = function (req, res) {
+    context.Moameleh.find({}, function (err, result) {
+        if (err) {
+            res.statusCode = 500;
             res.send(err);
         }
         res.json(result);
@@ -121,6 +141,33 @@ post_darkhastForush = function (req, res) {
     });
 };
 
+post_moameleh = function (req, res) {
+    // find user by id
+    // userid is added to req by checkIsAuthenticated middleware
+    context.User.findOne({ '_id': req.userId }, function (err, user) {
+
+        if (err) res.status(500).send(err); 
+
+        if (!user) res.status(404).send();
+        // create new moameleh
+        var moameleh = new context.Moameleh(req.body);
+        // set username
+        moameleh.userIdSabtKonandeh = user._id;
+        moameleh.usernameSabtKonandeh = user.username;
+        moameleh.fullnameSabtKonandeh = user.fullName;
+        // save new moameleh
+        moameleh.save(function (err, newMoameleh) {
+            if (err) {
+                console.log(`this is error: ${err}`);
+                res.statusCode = 500;
+                res.send(err);
+            }
+
+            res.json(newMoameleh);
+        });
+    });
+};
+
 
 get_safeKharid_byid = function (req, res) {
     context.Darkhast.findById(req.params.id, function (err, darkhast) {
@@ -142,6 +189,16 @@ get_safeForush_byid = function (req, res) {
     });
 };
 
+get_moameleh_byid = function (req, res) {
+    context.Moameleh.findById(req.params.id, function (err, moameleh) {
+        if (err) res.status(500).send(err);
+
+        if (!moameleh) res.status(404).send();
+
+        res.json(moameleh);
+    });
+};
+
 
 update_darkhastKharid = function (req, res) {
     context.Darkhast.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, darkhast) {
@@ -160,6 +217,16 @@ update_darkhastForush = function (req, res) {
         if (!darkhast) res.status(404).send();
 
         res.json(darkhast);
+    });
+};
+
+update_moameleh = function (req, res) {
+    context.Moameleh.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, moameleh) {
+        if (err) res.status(500).send(err);
+
+        if (!moameleh) res.status(404).send();
+
+        res.json(moameleh);
     });
 };
 
@@ -194,6 +261,16 @@ del_safeForush_byid = function (req, res) {
     });
 };
 
+del_moameleh_byid = function (req, res) {
+    context.Moameleh.remove({ _id: req.params.id }, function (err, moameleh) {
+        if (err) res.status(404).send(err);
+
+        if (!moameleh) res.status(404).send();
+
+        res.json({ message: 'معامله مورد نظر با موفقیت حذف شد' });
+    });
+};
+
 post_login = function (req, res) {
     var userData = req.body;
     context.User.findOne({ 'username': userData.username }, function (err, user) {
@@ -216,7 +293,7 @@ post_login = function (req, res) {
                         sub: user._id,
                         exp: expirationDate,
                         claims: userClaims,
-                        username:user.username
+                        username: user.username
                     };
                     var token = jwt.encode(payload, getTokenSecret());
 
