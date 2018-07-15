@@ -36,17 +36,7 @@ export class DarkhastComponent implements OnInit {
   showFullName: boolean;
 
   ngOnInit() {
-    this.darkhastServivce.getListDarkhast(this.noeDarkhast).subscribe((data) => {
-      this.listDarkhast = data;
-      this.listChanged.emit(data);
-      this.listDarkhastDataSource = {
-        store: {
-          type: 'array',
-          key: '_id',
-          data: this.listDarkhast
-        }
-      };
-    });
+    this.loadDarkhastData();
 
     // مدیریت نمایش ستون های انتخاب شده
     this.showNoeDarkhast = this.columnsList.indexOf('noeDarkhast') > 0;
@@ -59,6 +49,20 @@ export class DarkhastComponent implements OnInit {
     this.showTozihat = this.columnsList.indexOf('tozihat') > 0;
     this.showUsername = this.columnsList.indexOf('username') > 0;
     this.showFullName = this.columnsList.indexOf('fullName') > 0;
+  }
+
+  public loadDarkhastData() {
+    this.darkhastServivce.getListDarkhast(this.noeDarkhast).subscribe((data) => {
+      this.listDarkhast = data;
+      this.listChanged.emit(data);
+      this.listDarkhastDataSource = {
+        store: {
+          type: 'array',
+          key: '_id',
+          data: this.listDarkhast
+        }
+      };
+    });
   }
 
   // انتخاب اولین ردیف صف درخواست

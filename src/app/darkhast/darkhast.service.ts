@@ -17,4 +17,8 @@ export class DarkhastService {
     }
     else return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeForush');
   }
+
+  updateDarkhastById(darkhast: DarkhastType, id: string) {
+    return this.httpClient.put<DarkhastType>(this.apiUri + '/darkhast/' + id, darkhast);
+  }
 }
