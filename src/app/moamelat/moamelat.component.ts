@@ -76,6 +76,8 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
     // ردیف معامله را آماده میکنیم
     let moamelehNewRow = this.prepareNewMoamelehRow(avalinForushandeh, avalinKharidar, _tedadSahmMoameleh, _arzeshSahmMoameleh);
     // آبجکت به روز رسانی درخواست خرید و فروش را ایجاد می کنیم
+    let moamelatDarkhastKharid = avalinKharidar.moamelat || [];
+    let moamelatDarkhastForush = avalinForushandeh.moamelat || [];
     let darkhastKharidUpdateObj: DarkhastType = {};
     let darkhastForushUpdateObj: DarkhastType = {};
     let darkhastKharidId: string = avalinKharidar._id;
@@ -84,26 +86,31 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
     darkhastKharidUpdateObj.tedadMoamelehShodeh = _tedadMoamelehShodehKharidar;
     darkhastKharidUpdateObj.tedadBaghiMandeh = _tedadBaghimandehKharidar;
     darkhastKharidUpdateObj.vazeiat = vazeiatDarkhastKharid;
-    if (darkhastKharidUpdateObj.moamelat == null) darkhastKharidUpdateObj.moamelat = [];
-    darkhastKharidUpdateObj.moamelat.push(moamelehNewRow);
+    moamelatDarkhastKharid.push(moamelehNewRow);
+    darkhastKharidUpdateObj.moamelat = moamelatDarkhastKharid;
 
     darkhastForushUpdateObj.tedadBaghiMandeh = _tedadBaghimandehForushandeh;
     darkhastForushUpdateObj.tedadMoamelehShodeh = _tedadMoamelehShodehForushandeh;
     darkhastForushUpdateObj.vazeiat = vazeiatDarkhastForush;
-    if (darkhastForushUpdateObj.moamelat == null) darkhastForushUpdateObj.moamelat = [];
-    darkhastForushUpdateObj.moamelat.push(moamelehNewRow);
+    moamelatDarkhastForush.push(moamelehNewRow);
+    darkhastForushUpdateObj.moamelat = moamelatDarkhastForush;
 
     // ثبت معامله  
     this.moamelehService.sabtMoameleh(moamelehNewRow).subscribe((newMoameleh) => {
       this.toastr.success('معامله جدید با موفقیت ثبت شد');
       this.updateDarkhastKharid(darkhastKharidUpdateObj, darkhastKharidId)
         .subscribe((data) => {
+          // برای ردیف درخواست خرید ، یک ردیف معامله ثبت میکنیم          
           this.toastr.success('مشخصات درخواست خرید با موفقیت به روزرسانی شد');
           this.updateDarkhastForush(darkhastForushUpdateObj, darkhastForushId)
             .subscribe((data) => {
+              // برای ردیف درخواست فروش ، یک ردیف معامله ثبت میکنیم
               this.toastr.success('مشخصات درخواست فروش با موفقیت به روزرسانی شد');
+              // نمای گریدهای خرید و فروش را به روز رسانی میکنیم
               this.safeKharidComponent.loadDarkhastData();
               this.safeForushComponent.loadDarkhastData();
+              // جدول دارایی سهام را به روز رسانی میکنیم
+
             }, (error) => {
               console.log(error);
               this.toastr.error('خطا در به روز رسانی مشخصات درخواست فروش.با پشتیبان سامانه تماس بگیرید');
@@ -115,18 +122,6 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
     }, (error) => {
       console.log(error);
     });
-
-
-
-
-    // برای ردیف های درخواست خرید و فروش ، یک ردیف معامله ثبت میکنیم
-
-    // جدول دارایی سهام را به روز رسانی میکنیم
-
-    // لیست صف خرید و فروش را به روز رسانی میکنیم 
-
-    // نمای گریدهای خرید و فروش را به روز رسانی میکنیم
-
   };
 
   private prepareNewMoamelehRow(avalinForushandeh: DarkhastType, avalinKharidar: DarkhastType, _tedadSahmMoameleh: number, _arzeshSahmMoameleh: number): MoamelehType {

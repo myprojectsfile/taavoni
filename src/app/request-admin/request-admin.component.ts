@@ -50,8 +50,6 @@ export class RequestAdminComponent implements OnInit {
       this.toastr.error('خطا در لغو درخواست');
       console.log(error);
     });
-
-
   }
 
   editRow(d) {
