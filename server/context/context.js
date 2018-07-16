@@ -33,12 +33,12 @@ var DarkhastSchema = new mongoose.Schema({
 });
 
 // Portfo Schema
-var PortfoSchema=new mongoogse.Schema({
-    username:String,
-    fullName:String,
-    tedadSahm:Number,
-    arzeshSahm:Number,
-    
+var PortfoSchema = new mongoose.Schema({
+    username: String,
+    userId: String,
+    fullName: String,
+    tedadSahm: Number,
+    moamelat: { type: [MoamelehSchema], required: false }
 });
 
 var UserSchema = new mongoose.Schema({
@@ -57,6 +57,7 @@ UserSchema.virtual('fullName').get(function () { return this.name + ' ' + this.f
 var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
 var User = mongoose.model('User', UserSchema);
 var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
+var Portfo = mongoose.model('Portfo', PortfoSchema)
 
 
 // hash password before saving user
@@ -83,5 +84,6 @@ UserSchema.pre('save', function (next) {
 module.exports = {
     Darkhast: Darkhast,
     User: User,
-    Moameleh: Moameleh
+    Moameleh: Moameleh,
+    Portfo: Portfo
 }

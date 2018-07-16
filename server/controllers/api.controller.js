@@ -7,23 +7,23 @@ module.exports = function (app) {
 
     // SafeKharid routes
     app.route('/api/safeKharid')
-        .get(get_safeKharid)
-        .post(checkIsAuthenticated, post_darkhastKharid);
+        .get(checkIsAuthenticated, get_safeKharid)
+        .post(checkIsAuthenticated, checkIsAuthenticated, post_darkhastKharid);
 
     app.route('/api/safeKharid/:id')
-        .get(get_safeKharid_byid)
-        .put(update_darkhastKharid)
-        .delete(del_safeKharid_byid);
+        .get(checkIsAuthenticated, get_safeKharid_byid)
+        .put(checkIsAuthenticated, update_darkhastKharid)
+        .delete(checkIsAuthenticated, del_safeKharid_byid);
 
     // SafeForush routes
     app.route('/api/safeForush')
-        .get(get_safeForush)
+        .get(checkIsAuthenticated, get_safeForush)
         .post(checkIsAuthenticated, post_darkhastForush);
 
     app.route('/api/safeForush/:id')
-        .get(get_safeForush_byid)
-        .put(update_darkhastForush)
-        .delete(del_safeForush_byid);
+        .get(checkIsAuthenticated, get_safeForush_byid)
+        .put(checkIsAuthenticated, update_darkhastForush)
+        .delete(checkIsAuthenticated, del_safeForush_byid);
 
     // define auth routes
     app.route('/api/login')
@@ -32,21 +32,33 @@ module.exports = function (app) {
         .post(post_register);
 
     // listdarkhast routes
-    app.route('/api/darkhast/:username')
-        .get(getListDarkhastByUsername);
+    app.route('/api/darkhast/byUsername/:username')
+        .get(checkIsAuthenticated, getListDarkhastByUsername);
 
     app.route('/api/darkhast/:id')
-        .put(update_darkhast_byid);
+        .put(checkIsAuthenticated, update_darkhast_byid);
 
     // Moameleh routes
     app.route('/api/moameleh')
-        .get(get_moameleh)
+        .get(checkIsAuthenticated, get_moameleh)
         .post(checkIsAuthenticated, post_moameleh);
 
     app.route('/api/moameleh/:id')
-        .get(get_moameleh_byid)
-        .put(update_moameleh)
-        .delete(del_moameleh_byid);
+        .get(checkIsAuthenticated, get_moameleh_byid)
+        .put(checkIsAuthenticated, update_moameleh)
+        .delete(checkIsAuthenticated, del_moameleh_byid);
+
+    // portfo routes
+
+    app.route('/api/portfo')
+        .post(checkIsAuthenticated, post_portfo);
+
+    app.route('/api/portfo/byUsername/:username')
+        .get(checkIsAuthenticated, getPortfoByUsername);
+
+    app.route('/api/portfo/:id')
+        .put(checkIsAuthenticated, update_portfo_byid)
+        .delete(checkIsAuthenticated, del_portfo_byid);
 };
 
 get_safeKharid = function (req, res) {
@@ -89,6 +101,17 @@ getListDarkhastByUsername = function (req, res) {
         }
 
         res.json(darkhastha);
+    });
+};
+
+getPortfoByUsername = function (req, res) {
+    context.Portfo.find({ 'username': req.params.username }, function (err, portfo) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+        if (!portfo) res.status(404).send();
+        res.json(portfo);
     });
 };
 
@@ -172,6 +195,33 @@ post_moameleh = function (req, res) {
     });
 };
 
+post_portfo = function (req, res) {
+    // find user by id
+    // userid is added to req by checkIsAuthenticated middleware
+    context.User.findOne({ '_id': req.userId }, function (err, user) {
+
+        if (err) res.status(500).send(err);
+
+        if (!user) res.status(404).send('کاربری با این شناسه وجود ندارد');
+        // create new portfo
+        var portfo = new context.Portfo(req.body);
+        // set username
+        portfo.username = user.username;
+        portfo.userId = user._id;
+        portfo.fullName = user.fullName;
+        // save new moameleh
+        portfo.save(function (err, newPortfo) {
+            if (err) {
+                console.log(`this is error: ${err}`);
+                res.statusCode = 500;
+                res.send(err);
+            }
+
+            res.json(newPortfo);
+        });
+    });
+};
+
 
 get_safeKharid_byid = function (req, res) {
     context.Darkhast.findById(req.params.id, function (err, darkhast) {
@@ -244,6 +294,16 @@ update_darkhast_byid = function (req, res) {
     });
 };
 
+update_portfo_byid = function (req, res) {
+    context.Portfo.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, portfo) {
+        if (err) res.status(500).send(err);
+
+        if (!portfo) res.status(404).send();
+
+        res.json(portfo);
+    });
+};
+
 
 del_safeKharid_byid = function (req, res) {
     context.Darkhast.remove({ _id: req.params.id }, function (err, darkhast) {
@@ -272,6 +332,16 @@ del_moameleh_byid = function (req, res) {
         if (!moameleh) res.status(404).send();
 
         res.json({ message: 'معامله مورد نظر با موفقیت حذف شد' });
+    });
+};
+
+del_portfo_byid = function (req, res) {
+    context.Portfo.remove({ _id: req.params.id }, function (err, portfo) {
+        if (err) res.status(404).send(err);
+
+        if (!portfo) res.status(404).send();
+
+        res.json({ message: 'ردیف پورتفوی مورد نظر با موفقیت حذف شد' });
     });
 };
 

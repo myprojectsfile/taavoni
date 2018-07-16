@@ -13,7 +13,7 @@ export class RequestService {
 
   getListDarkhastUser() {
     const username = this.authService.getUsername();
-    return this.httpClient.get<DarkhastType[]>(this.apiUri + '/darkhast/' + username);
+    return this.httpClient.get<DarkhastType[]>(this.apiUri + '/darkhast/byUsername/' + username);
   }
 
   updateDarkhast(darkhast: DarkhastType, rowKey: string) {
