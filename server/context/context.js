@@ -17,7 +17,7 @@ var MoamelehSchema = new mongoose.Schema({
     fullnameSabtKonandeh: { type: String, required: false }
 });
 
-// Define Shcemas
+// Darkhast Shcemas
 var DarkhastSchema = new mongoose.Schema({
     username: { type: String, required: true },
     fullName: String,
@@ -32,6 +32,14 @@ var DarkhastSchema = new mongoose.Schema({
     moamelat: [MoamelehSchema]
 });
 
+// Portfo Schema
+var PortfoSchema=new mongoogse.Schema({
+    username:String,
+    fullName:String,
+    tedadSahm:Number,
+    arzeshSahm:Number,
+    
+});
 
 var UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
