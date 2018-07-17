@@ -387,8 +387,8 @@ post_register = function (req, res) {
         if (err) {
             res.status(400).send(err);
         }
+
         var userClaims = getUserClaims(user._id);
-        console.log(`claims is :${userClaims}`);
         var expirationDate = getExpirationDate();
         var payload = {
             iss: 'taavoni.bpmo.ir',
@@ -398,11 +398,25 @@ post_register = function (req, res) {
         };
 
         var token = jwt.encode(payload, getTokenSecret());
+        // درج ردیف پورتفوی خالی برای کاربر بهنگام ثبت نام
+        var newPortfo = new context.Portfo({
+            username: user.username,
+            userId: user.userId,
+            fullName: user.fullName,
+            tedadSahm: 0,
+            moamelat: []
+        });
 
-        res.status(200).send({ token });
+        newPortfo.save(function (err, portfo) {
+            if (err) {
+                res.status(400).send(err + ': خطا در ایجاد رکورد خالی پورتفوی کاربر بهنگام ثبت نام');
+            }
+
+            res.status(200).send({ token });
+        });
     });
-
 };
+
 
 function checkIsAuthenticated(req, res, next) {
     if (!req.header('Authorization'))

@@ -41,13 +41,20 @@ var PortfoSchema = new mongoose.Schema({
     moamelat: { type: [MoamelehSchema], required: false }
 });
 
+var ClaimSchema = new mongoose.Schema({
+    claim: String,
+    tozihat: { type: String, required: false }
+});
+
 var UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, required: true },
     name: { type: String, required: true },
     family: { type: String, required: true },
     mobile: { type: String, required: false },
-    codeMelli: { type: String, required: false }
+    codeMelli: { type: String, required: false },
+    enabled: { type: Boolean },
+    claims: { type: [ClaimSchema], required: false }
 });
 
 UserSchema.virtual('fullName').get(function () { return this.name + ' ' + this.family });
