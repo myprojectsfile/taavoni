@@ -7,6 +7,7 @@ import { DarkhastType } from '../shared/types/darkhast';
 import { DarkhastService } from '../darkhast/darkhast.service';
 import { Observable } from '../../../node_modules/rxjs';
 import { PortfoType } from '../shared/types/portfo';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-moamelelat',
@@ -16,7 +17,7 @@ import { PortfoType } from '../shared/types/portfo';
 export class MoamelatComponent implements OnInit, AfterViewInit {
 
 
-  constructor(private moamelehService: MoamelatService, private darkhastService: DarkhastService, private toastr: ToastrService) { }
+  constructor(private moamelehService: MoamelatService, private darkhastService: DarkhastService, private userService: UserService, private toastr: ToastrService) { }
 
   @ViewChild('safeKharid')
   safeKharidComponent: DarkhastComponent;
@@ -128,7 +129,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
   };
 
   private UpdatePortfoKharidar(avalinKharidar: DarkhastType, _tedadSahmMoameleh: number, moamelehNewRow: MoamelehType) {
-    this.moamelehService.getPortfohByUsername(avalinKharidar.username)
+    this.userService.getPortfohByUsername(avalinKharidar.username)
       .subscribe((portfo) => {
         portfo = portfo[0];
         // تعداد سهم جدید خریدار را محاسبه میکنیم
@@ -142,7 +143,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
         // افزودن معامله به لیست معاملات پورتفو خریدار
         portfoKharidarUpdateObj.moamelat.push(moamelehNewRow);
         // پورتفو را به روزرسانی میکنیم
-        this.moamelehService.updatePortfoById(portfoKharidarUpdateObj, portfo._id)
+        this.userService.updatePortfoById(portfoKharidarUpdateObj, portfo._id)
           .subscribe(() => {
             this.toastr.success('مشخصات جدول پورتفو خریدار با موفقیت به روزرسانی شد');
           }, (error) => {
@@ -156,7 +157,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
   }
 
   private UpdatePortfoForushandeh(avalinForushandeh: DarkhastType, _tedadSahmMoameleh: number, moamelehNewRow: MoamelehType) {
-    this.moamelehService.getPortfohByUsername(avalinForushandeh.username)
+    this.userService.getPortfohByUsername(avalinForushandeh.username)
       .subscribe((portfo) => {
         // تعداد سهم جدید فروشنده را محاسبه میکنیم
         portfo = portfo[0];
@@ -169,7 +170,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
         // افزودن معامله به لیست معاملات پورتفو فروشنده
         portfoForushandehUpdateObj.moamelat.push(moamelehNewRow);
         // پورتفو فروشنده را به روزرسانی میکنیم
-        this.moamelehService.updatePortfoById(portfoForushandehUpdateObj, portfo._id)
+        this.userService.updatePortfoById(portfoForushandehUpdateObj, portfo._id)
           .subscribe(() => {
             this.toastr.success('مشخصات جدول پورتفو فروشنده با موفقیت به روزرسانی شد');
           }, (error) => {

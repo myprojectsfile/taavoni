@@ -59,6 +59,15 @@ module.exports = function (app) {
     app.route('/api/portfo/:id')
         .put(checkIsAuthenticated, update_portfo_byid)
         .delete(checkIsAuthenticated, del_portfo_byid);
+
+    // user routes
+    app.route('/api/user/byUsername/:username')
+        .get(checkIsAuthenticated, getUserByUsername);
+
+    app.route('/api/user/:id')
+        .get(checkIsAuthenticated, get_user_byid)
+        .put(checkIsAuthenticated, update_user_byid)
+        .delete(checkIsAuthenticated, del_user_byid);
 };
 
 get_safeKharid = function (req, res) {
@@ -112,6 +121,28 @@ getPortfoByUsername = function (req, res) {
         }
         if (!portfo) res.status(404).send();
         res.json(portfo);
+    });
+};
+
+getUserByUsername = function (req, res) {
+    context.User.find({ 'username': req.params.username }, function (err, user) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+        if (!user) res.status(404).send();
+        res.json(user);
+    });
+};
+
+get_user_byid = function (req, res) {
+    context.User.findById(req.params.id, function (err, user) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+        if (!user) res.status(404).send();
+        res.json(user);
     });
 };
 
@@ -222,7 +253,6 @@ post_portfo = function (req, res) {
     });
 };
 
-
 get_safeKharid_byid = function (req, res) {
     context.Darkhast.findById(req.params.id, function (err, darkhast) {
         if (err) res.status(500).send(err);
@@ -304,6 +334,16 @@ update_portfo_byid = function (req, res) {
     });
 };
 
+update_user_byid = function (req, res) {
+    context.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, user) {
+        if (err) res.status(500).send(err);
+
+        if (!user) res.status(404).send();
+
+        res.json(user);
+    });
+};
+
 
 del_safeKharid_byid = function (req, res) {
     context.Darkhast.remove({ _id: req.params.id }, function (err, darkhast) {
@@ -342,6 +382,16 @@ del_portfo_byid = function (req, res) {
         if (!portfo) res.status(404).send();
 
         res.json({ message: 'ردیف پورتفوی مورد نظر با موفقیت حذف شد' });
+    });
+};
+
+del_user_byid = function (req, res) {
+    context.User.remove({ _id: req.params.id }, function (err, user) {
+        if (err) res.status(404).send(err);
+
+        if (!user) res.status(404).send();
+
+        res.json({ message: 'کاربر مورد نظر با موفقیت حذف شد' });
     });
 };
 

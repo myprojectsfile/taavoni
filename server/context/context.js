@@ -54,7 +54,7 @@ var UserSchema = new mongoose.Schema({
     mobile: { type: String, required: false },
     codeMelli: { type: String, required: false },
     enabled: { type: Boolean },
-    claims: { type: [ClaimSchema], required: false }
+    claims: [String]
 });
 
 UserSchema.virtual('fullName').get(function () { return this.name + ' ' + this.family });

@@ -26,6 +26,9 @@ import { DarkhastComponent } from './darkhast/darkhast.component';
 import { DarkhastService } from './darkhast/darkhast.service';
 import { MoamelatComponent } from './moamelat/moamelat.component';
 import { MoamelatService } from './moamelat/moamelat.service';
+import { ProfileComponent } from './user/profile/profile.component';
+import { UserService } from './user/user.service';
+import { PortfoComponent } from './user/portfo/portfo.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +41,9 @@ import { MoamelatService } from './moamelat/moamelat.service';
     ProjectsShowComponent,
     RequestAdminComponent,
     DarkhastComponent,
-    MoamelatComponent
+    MoamelatComponent,
+    ProfileComponent,
+    PortfoComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +63,7 @@ import { MoamelatService } from './moamelat/moamelat.service';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }, JwtHelper, AuthGuard, DarkhastService, MoamelatService],
+  }, JwtHelper, AuthGuard, DarkhastService, MoamelatService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

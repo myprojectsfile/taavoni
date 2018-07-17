@@ -30,17 +30,4 @@ export class MoamelatService {
     return this.httpClient.post(this.apiUri + '/moameleh', moameleh);
   }
 
-  getPortfohByUsername(username: string) {
-    return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);
-  }
-
-  updatePortfoById(portfo: PortfoType, id: string) {
-    return this.httpClient.put<PortfoType>(this.apiUri + '/portfo/' + id, portfo);
-  }
-
-  sabtPortfo(portfo: PortfoType) {
-    return this.httpClient.post(this.apiUri + '/portfo', portfo);
-  }
-
-
 }
