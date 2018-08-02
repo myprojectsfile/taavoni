@@ -22,7 +22,6 @@ import { RequestAdminComponent } from './request-admin/request-admin.component';
 import { DarkhastComponent } from './darkhast/darkhast.component';
 import { MoamelatComponent } from './moamelat/moamelat.component';
 import { ProfileComponent } from './user/profile/profile.component';
-import { UserService } from './user/user.service';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ApiService } from './shared/services/api.service';
 import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
@@ -61,7 +60,7 @@ import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.p
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }, JwtHelper, AuthGuard, UserService],
+  }, JwtHelper, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

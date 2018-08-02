@@ -73,6 +73,8 @@ var Portfo = mongoose.model('Portfo', PortfoSchema)
 // hash password before saving user
 UserSchema.pre('save', function (next) {
     var user = this;
+    console.log('changing pass');
+    console.log(user.isModified('password'));
 
     if (!user.isModified('password'))
         return next();

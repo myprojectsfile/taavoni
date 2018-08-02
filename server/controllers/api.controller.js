@@ -49,12 +49,11 @@ module.exports = function (app) {
         .delete(checkIsAuthenticated, del_moameleh_byid);
 
     // portfo routes
-
     app.route('/api/portfo')
         .post(checkIsAuthenticated, post_portfo);
 
     app.route('/api/portfo/byUsername/:username')
-        .get(getPortfoByUsername);
+        .get(checkIsAuthenticated, getPortfoByUsername);
 
     app.route('/api/portfo/:id')
         .put(checkIsAuthenticated, update_portfo_byid)
@@ -125,7 +124,7 @@ getPortfoByUsername = function (req, res) {
 };
 
 getUserByUsername = function (req, res) {
-    context.User.find({ 'username': req.params.username }, function (err, user) {
+    context.User.find({ 'username': req.params.username }, '-password', function (err, user) {
         if (err) {
             res.statusCode = 500;
             res.send(err);
@@ -136,7 +135,7 @@ getUserByUsername = function (req, res) {
 };
 
 get_user_byid = function (req, res) {
-    context.User.findById(req.params.id, function (err, user) {
+    context.User.findById(req.params.id, '-password', function (err, user) {
         if (err) {
             res.statusCode = 500;
             res.send(err);
@@ -335,13 +334,24 @@ update_portfo_byid = function (req, res) {
 };
 
 update_user_byid = function (req, res) {
-    context.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, user) {
-        if (err) res.status(500).send(err);
-
-        if (!user) res.status(404).send();
-
-        res.json(user);
+    var saltRounds = 10;
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.hash(req.body.password, salt)
+            .then(hash => {
+                req.body.password = hash;
+                context.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, user) {
+                    if (err) res.status(500).send(err);
+            
+                    if (!user) res.status(404).send();
+            
+                    res.json(user);
+                });
+            })
+            .catch(err => {
+                res.status(500).send(err);
+            });
     });
+    
 };
 
 

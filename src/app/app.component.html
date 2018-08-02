@@ -1,7 +1,7 @@
 <nav id="mainNav" class="navbar navbar-expand-sm  navbar-dark bg-dark justify-content-between">
-    <a routerLink="/">
-      <span class="fa fa-home text-white" style="font-size: 1.5rem;"></span>
-    </a>
+  <a routerLink="/">
+    <span class="fa fa-home text-white" style="font-size: 1.5rem;"></span>
+  </a>
   <div class="container">
     <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
       aria-expanded="false" aria-label="Toggle navigation">
@@ -9,7 +9,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ml-auto  text-right">
-        
+
         <li class="nav-item dropdown pull-right">
           <a class="nav-link dropdown-toggle pull-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
@@ -20,6 +20,16 @@
             <a class="dropdown-item" routerLink="/requests">مدیریت درخواست ها</a>
             <a class="dropdown-item" routerLink="/trades">ثبت معاملات</a>
             <a class="dropdown-item" routerLink="/portfo">مشاهده دارایی و سابقه معاملات</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown pull-right">
+          <a class="nav-link dropdown-toggle pull-right" href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            پروفایل
+          </a>
+          <div class="dropdown-menu text-right" style="left: -80%;direction: rtl;" aria-labelledby="profileDropdown">
+            <a class="dropdown-item" routerLink="/profile">مشاهده پروفایل</a>
+            <a class="dropdown-item" routerLink="/profile">تغییر کلمه عبور</a>
           </div>
         </li>
         <li class="nav-item">
@@ -37,7 +47,7 @@
           </a>
         </li>
         <li class="nav-item" *ngIf="!authService.isAuthenticated()">
-          <a class="nav-link"  routerLink="/login">
+          <a class="nav-link" routerLink="/login">
             <i class="fa fa-sign-in"></i> ورود
           </a>
         </li>

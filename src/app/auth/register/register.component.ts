@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class RegisterComponent {
 
   constructor(private authService: AuthService, private toastr: ToastrService, private location: Location) { }
+  
   errorMessage: string = null;
   username: string;
   password: string;
