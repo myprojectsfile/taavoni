@@ -1,6 +1,6 @@
 import { Component, OnInit, HostBinding, Input, Output, EventEmitter } from '@angular/core';
-import { DarkhastService } from './darkhast.service';
 import { DarkhastType } from '../shared/types/darkhast';
+import { ApiService } from '../shared/services/api.service';
 
 @Component({
   selector: 'app-darkhast',
@@ -9,7 +9,7 @@ import { DarkhastType } from '../shared/types/darkhast';
 })
 export class DarkhastComponent implements OnInit {
 
-  constructor(private darkhastServivce: DarkhastService) { }
+  constructor(private apiServivce: ApiService) { }
 
   @HostBinding('attr.noe-darkhast')
   @Input()
@@ -52,7 +52,7 @@ export class DarkhastComponent implements OnInit {
   }
 
   public loadDarkhastData() {
-    this.darkhastServivce.getListDarkhast(this.noeDarkhast).subscribe((data) => {
+    this.apiServivce.getListDarkhast(this.noeDarkhast).subscribe((data) => {
       this.listDarkhast = data;
       this.listChanged.emit(data);
       this.listDarkhastDataSource = {

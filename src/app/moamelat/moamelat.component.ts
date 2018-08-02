@@ -1,13 +1,12 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { DarkhastComponent } from '../darkhast/darkhast.component';
-import { MoamelatService } from './moamelat.service';
 import { MoamelehType } from '../shared/types/moameleh';
 import { ToastrService } from 'ngx-toastr';
 import { DarkhastType } from '../shared/types/darkhast';
-import { DarkhastService } from '../darkhast/darkhast.service';
 import { Observable } from '../../../node_modules/rxjs';
 import { PortfoType } from '../shared/types/portfo';
 import { UserService } from '../user/user.service';
+import { ApiService } from '../shared/services/api.service';
 
 @Component({
   selector: 'app-moamelelat',
@@ -17,7 +16,7 @@ import { UserService } from '../user/user.service';
 export class MoamelatComponent implements OnInit, AfterViewInit {
 
 
-  constructor(private moamelehService: MoamelatService, private darkhastService: DarkhastService, private userService: UserService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private userService: UserService, private toastr: ToastrService) { }
 
   @ViewChild('safeKharid')
   safeKharidComponent: DarkhastComponent;
@@ -98,7 +97,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
     darkhastForushUpdateObj.moamelat = moamelatDarkhastForush;
 
     // ثبت معامله  
-    this.moamelehService.sabtMoameleh(moamelehNewRow).subscribe((newMoameleh) => {
+    this.apiService.sabtMoameleh(moamelehNewRow).subscribe((newMoameleh) => {
       this.toastr.success('معامله جدید با موفقیت ثبت شد');
       this.updateDarkhastKharid(darkhastKharidUpdateObj, darkhastKharidId)
         .subscribe((data) => {
@@ -205,11 +204,11 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
   }
 
   private updateDarkhastForush(darkhastForushUpdateObj: DarkhastType, darkhastForushId: string): Observable<DarkhastType> {
-    return this.darkhastService.updateDarkhastById(darkhastForushUpdateObj, darkhastForushId);
+    return this.apiService.updateDarkhastById(darkhastForushUpdateObj, darkhastForushId);
   }
 
   private updateDarkhastKharid(darkhastKharidUpdateObj: DarkhastType, darkhastKharidId: string): Observable<DarkhastType> {
-    return this.darkhastService.updateDarkhastById(darkhastKharidUpdateObj, darkhastKharidId);
+    return this.apiService.updateDarkhastById(darkhastKharidUpdateObj, darkhastKharidId);
   }
 
   private PostNewMoameleh(avalinForushandeh: DarkhastType, avalinKharidar: DarkhastType, _tedadSahmMoameleh: number, _arzeshSahmMoameleh: number): MoamelehType {
@@ -231,7 +230,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
       kharidar_darkhastId: _kharidar_darkhastId
     };
 
-    this.moamelehService.sabtMoameleh(moameleh).subscribe((newMoameleh) => {
+    this.apiService.sabtMoameleh(moameleh).subscribe((newMoameleh) => {
       console.log(newMoameleh);
       this.toastr.success('معامله جدید با موفقیت ثبت شد');
     }, (error) => {

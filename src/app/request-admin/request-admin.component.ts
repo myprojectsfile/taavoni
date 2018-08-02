@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import 'rxjs/add/operator/catch';
-import { RequestService } from './request.service';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { ToastrService } from 'ngx-toastr';
 import { DarkhastType } from '../shared/types/darkhast';
+import { ApiService } from '../shared/services/api.service';
 
 declare var $: any;
 @Component({
@@ -21,11 +21,11 @@ export class RequestAdminComponent implements OnInit {
   editingMode: boolean;
   gridInstance: DxDataGridComponent["instance"];
 
-  constructor(private requestService: RequestService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.listDarkhastGrid.instance = this.listDarkhastGrid.instance;
-    this.requestService.getListDarkhastUser().subscribe((data) => {
+    this.apiService.getListDarkhastUser().subscribe((data) => {
       this.listDarkhast = data;
       this.listDarkhastDataSource = {
         store: {
@@ -42,7 +42,7 @@ export class RequestAdminComponent implements OnInit {
     let rowData: DarkhastType = d.data;
     let rowIndex = this.listDarkhastGrid.instance.getRowIndexByKey(d.data._id);
     rowData.vazeiat = 'لغو شده';
-    this.requestService.updateDarkhast(rowData, rowKey).subscribe(() => {
+    this.apiService.updateDarkhast(rowData, rowKey).subscribe(() => {
       this.listDarkhastGrid.instance.cellValue(rowIndex, 'vazeiat', 'لغو شده');
       this.toastr.success('درخواست با موفقیت لغو گردید');
       this.listDarkhastGrid.instance.cancelEditData();
@@ -69,7 +69,7 @@ export class RequestAdminComponent implements OnInit {
       console.log(e);
       let rowData = e.oldData;
       rowData.tedadSahm = newTedadSahm;
-      this.requestService.updateDarkhast(rowData, this.editingRowKey).subscribe(() => {
+      this.apiService.updateDarkhast(rowData, this.editingRowKey).subscribe(() => {
         this.toastr.success('تعداد با موفقیت کاهش یافت');
         this.editingMode = false;
         this.listDarkhastGrid.instance.cancelEditData();

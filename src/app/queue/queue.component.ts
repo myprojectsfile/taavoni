@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { QueueService, QueueType } from './queue.service';
 import 'rxjs/add/operator/catch';
+import { QueueType } from '../shared/types/queue';
+import { ApiService } from '../shared/services/api.service';
 
 @Component({
   selector: 'app-queue',
@@ -31,16 +32,16 @@ export class QueueComponent implements OnInit {
     this.getSafeForush();
   }
 
-  constructor(private queuService: QueueService) { }
+  constructor(private apiService: ApiService) { }
 
   getSafeKharid() {
-    this.queuService.getSafeKharid().subscribe((data) => {
+    this.apiService.getSafeKharid().subscribe((data) => {
       this.safeKharid = data;
     });
   }
 
   getSafeForush() {
-    this.queuService.getSafeForush().subscribe((data) => {
+    this.apiService.getSafeForush().subscribe((data) => {
       this.safeForush = data;
     });
   }
@@ -54,7 +55,7 @@ export class QueueComponent implements OnInit {
     let noeDarkhast = this.noeDarkhastSelect.nativeElement.selectedIndex;
     // kharid sahm
     if (noeDarkhast == 0) {
-      this.queuService.sabtDarkhastKharid(darkhast).subscribe((result) => {
+      this.apiService.sabtDarkhastKharid(darkhast).subscribe((result) => {
         this.getSafeKharid();
       }, (error) => {
         console.log(error);
@@ -62,7 +63,7 @@ export class QueueComponent implements OnInit {
     }
     //forush sahm
     else if (noeDarkhast == 1) {
-      this.queuService.sabtDarkhastForush(darkhast).subscribe((result) => {
+      this.apiService.sabtDarkhastForush(darkhast).subscribe((result) => {
         this.getSafeForush();
       }, (error) => {
         console.log(error);

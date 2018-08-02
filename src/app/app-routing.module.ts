@@ -6,9 +6,9 @@ import { QueueComponent } from './queue/queue.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AuthGuard } from './auth/auth.guard';
-import { QueueAdminComponent } from './queue/queue-admin.component';
 import { RequestAdminComponent } from './request-admin/request-admin.component';
 import { MoamelatComponent } from './moamelat/moamelat.component';
+import { PortfoComponent } from './user/portfo/portfo.component';
 
 const routes: Routes = [
   {
@@ -25,8 +25,8 @@ const routes: Routes = [
   },
   { path: 'queue', component: QueueComponent, canActivate: [AuthGuard] },
   { path: 'requests', component: RequestAdminComponent, canActivate: [AuthGuard] },
-  { path: 'queueAdmin', component: QueueAdminComponent, canActivate: [AuthGuard] },
   { path: 'trades', component: MoamelatComponent, canActivate: [AuthGuard] },
+  { path: 'portfo', component: PortfoComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
 

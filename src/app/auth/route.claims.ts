@@ -29,6 +29,11 @@ export default {
             "routeUrl": "/trades",
             "signInRequired": "true",
             "claims": ["shareholder"]
+        },
+        {
+            "routeUrl": "/portfo",
+            "signInRequired": "true",
+            "claims": ["shareholder"]
         }
     ]
 }

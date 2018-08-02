@@ -5,7 +5,6 @@ import { QueueComponent } from './queue/queue.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DxDataGridModule } from 'devextreme-angular';
-import { QueueService } from './queue/queue.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
@@ -16,19 +15,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from './auth/auth.guard';
-import { QueueAdminComponent } from './queue/queue-admin.component';
 import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
 import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
 import { ProjectsShowComponent } from './projects-show/projects-show.component';
 import { RequestAdminComponent } from './request-admin/request-admin.component';
-import { RequestService } from './request-admin/request.service';
 import { DarkhastComponent } from './darkhast/darkhast.component';
-import { DarkhastService } from './darkhast/darkhast.service';
 import { MoamelatComponent } from './moamelat/moamelat.component';
-import { MoamelatService } from './moamelat/moamelat.service';
 import { ProfileComponent } from './user/profile/profile.component';
 import { UserService } from './user/user.service';
 import { PortfoComponent } from './user/portfo/portfo.component';
+import { ApiService } from './shared/services/api.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +32,6 @@ import { PortfoComponent } from './user/portfo/portfo.component';
     HomePageComponent,
     LoginComponent,
     RegisterComponent,
-    QueueAdminComponent,
     PhotoGalleryComponent,
     ProjectsShowComponent,
     RequestAdminComponent,
@@ -59,11 +54,11 @@ import { PortfoComponent } from './user/portfo/portfo.component';
     FormsModule,
     Angular2ImageGalleryModule
   ],
-  providers: [QueueService, AuthService, RequestService, {
+  providers: [ApiService, AuthService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }, JwtHelper, AuthGuard, DarkhastService, MoamelatService, UserService],
+  }, JwtHelper, AuthGuard, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
