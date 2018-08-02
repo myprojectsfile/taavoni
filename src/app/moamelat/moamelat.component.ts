@@ -98,6 +98,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
 
     // ثبت معامله  
     this.apiService.sabtMoameleh(moamelehNewRow).subscribe((newMoameleh) => {
+      moamelehNewRow._id = newMoameleh._id;
       this.toastr.success('معامله جدید با موفقیت ثبت شد');
       this.updateDarkhastKharid(darkhastKharidUpdateObj, darkhastKharidId)
         .subscribe((data) => {
@@ -140,6 +141,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
         };
 
         // افزودن معامله به لیست معاملات پورتفو خریدار
+        moamelehNewRow.shenasehMoameleh = moamelehNewRow._id;
         portfoKharidarUpdateObj.moamelat.push(moamelehNewRow);
         // پورتفو را به روزرسانی میکنیم
         this.userService.updatePortfoById(portfoKharidarUpdateObj, portfo._id)
@@ -167,6 +169,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
           moamelat: moamelatPortfoForushandeh
         };
         // افزودن معامله به لیست معاملات پورتفو فروشنده
+        moamelehNewRow.shenasehMoameleh = moamelehNewRow._id;
         portfoForushandehUpdateObj.moamelat.push(moamelehNewRow);
         // پورتفو فروشنده را به روزرسانی میکنیم
         this.userService.updatePortfoById(portfoForushandehUpdateObj, portfo._id)

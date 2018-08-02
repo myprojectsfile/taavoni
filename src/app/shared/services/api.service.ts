@@ -5,6 +5,7 @@ import { QueueType } from '../types/queue';
 import { DarkhastType } from '../types/darkhast';
 import { MoamelehType } from '../types/moameleh';
 import { AuthService } from '../../auth/auth.service';
+import { PortfoType } from '../types/portfo';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class ApiService {
   updateDarkhastById(darkhast: DarkhastType, id: string) {
     return this.httpClient.put<DarkhastType>(this.apiUri + '/darkhast/' + id, darkhast);
   }
-  
+
   getMoameleh() {
     return this.httpClient.get<MoamelehType[]>(this.apiUri + '/moameleh');
   }
@@ -59,7 +60,7 @@ export class ApiService {
   }
 
   sabtMoameleh(moameleh: MoamelehType) {
-    return this.httpClient.post(this.apiUri + '/moameleh', moameleh);
+    return this.httpClient.post<MoamelehType>(this.apiUri + '/moameleh', moameleh);
   }
 
   getListDarkhastUser() {
@@ -69,5 +70,10 @@ export class ApiService {
 
   updateDarkhast(darkhast: DarkhastType, rowKey: string) {
     return this.httpClient.put(this.apiUri + '/darkhast/' + rowKey, darkhast);
+  }
+
+  getUserPortfo() {
+    const username = this.authService.getUsername();
+    return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);
   }
 }

@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt');
 
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
+    shenasehMoameleh: { type: String, required: false },
     tarikhMoameleh: { type: Date, default: Date.now },
     tedadSahmMoameleh: Number,
     arzeshSahmMoameleh: Number,

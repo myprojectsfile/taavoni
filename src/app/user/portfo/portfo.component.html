@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-sm m-3">
+    <dx-data-grid #moamelatGrid [showRowLines]="true" [showColumnLines]="true" [rowAlternationEnabled]="true" [paging]="{enabled:true,pageSize:10}"
+      [pager]="{showInfo:true,showNavigationButtons:true,showPageSizeSelector: true,allowedPageSizes: [5, 10, 20]}" [showBorders]="true"
+      [rtlEnabled]="true" [dataSource]="moamelat">
+      <dxi-column alignment="center" dataField="tarikhMoameleh" width="170" caption="تاریخ معامله"></dxi-column>
+      <dxi-column alignment="center" dataField="shenasehMoameleh" width="190" caption="شناسه معامله"></dxi-column>
+      <dxi-column alignment="center" dataField="tedadSahmMoameleh" width="100" caption="تعداد سهام"></dxi-column>
+      <dxi-column alignment="center" dataField="forushandeh_fullName" width="120" caption="نام فروشنده"></dxi-column>
+      <dxi-column alignment="center" dataField="kharidar_fullName" width="120" caption="نام خریدار"></dxi-column>
+    </dx-data-grid>
+  </div>
+</div>

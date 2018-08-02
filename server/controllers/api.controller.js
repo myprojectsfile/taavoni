@@ -54,7 +54,7 @@ module.exports = function (app) {
         .post(checkIsAuthenticated, post_portfo);
 
     app.route('/api/portfo/byUsername/:username')
-        .get(checkIsAuthenticated, getPortfoByUsername);
+        .get(getPortfoByUsername);
 
     app.route('/api/portfo/:id')
         .put(checkIsAuthenticated, update_portfo_byid)
