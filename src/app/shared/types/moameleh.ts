@@ -13,4 +13,5 @@ export interface MoamelehType {
     usernameSabtKonandeh?: string;
     fullnameSabtKonandeh?: string;
     shenasehMoameleh?: string;
+    tarikhMoamelehShamsi?: Date;
 }

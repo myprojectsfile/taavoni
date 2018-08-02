@@ -25,6 +25,7 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { UserService } from './user/user.service';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ApiService } from './shared/services/api.service';
+import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +39,9 @@ import { ApiService } from './shared/services/api.service';
     DarkhastComponent,
     MoamelatComponent,
     ProfileComponent,
-    PortfoComponent
+    PortfoComponent,
+    JalaliDatePipe,
+    JalaliDatetimePipe
   ],
   imports: [
     BrowserModule,

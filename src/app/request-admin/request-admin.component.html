@@ -11,10 +11,14 @@
       <dxi-column alignment="center" dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
       <dxi-column alignment="center" dataField="tedadBaghiMandeh" width="95" caption="تعداد باقیمانده"></dxi-column>
       <dxi-column alignment="center" dataField="arzeshSahm" width="110" caption="مبلغ"></dxi-column>
-      <dxi-column alignment="center" dataField="tarikhDarkhast" width="185" caption="تاریخ ثبت درخواست"></dxi-column>
+      <dxi-column alignment="center" dataField="tarikhDarkhast" cellTemplate="jalaliDatetime" width="185" caption="تاریخ ثبت درخواست"></dxi-column>
       <dxi-column alignment="center" dataField="tozihat" width="250" caption="توضیحات"></dxi-column>
       <dxi-column alignment="center" cellTemplate="cancelButtonTemplate" caption="لغو" width="50"></dxi-column>
       <dxi-column alignment="center" cellTemplate="editButtonTemplate" caption="ویرایش" width="100"></dxi-column>
+
+      <div *dxTemplate="let d of 'jalaliDatetime'">
+          {{d.data.tarikhDarkhast|jalaliDatetime}}
+      </div>
 
       <div *dxTemplate="let d of 'cancelButtonTemplate'">
         <button (click)="cancel(d)">لغو</button>
