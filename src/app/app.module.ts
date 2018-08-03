@@ -25,6 +25,7 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ApiService } from './shared/services/api.service';
 import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -40,6 +40,11 @@ export class ApiService {
     else return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeForush');
   }
 
+  getTedadKolSahamForushUser() {
+    let username=this.authService.getUsername();
+    return this.httpClient.get<number[]>(this.apiUri + '/safeForush/tedadKolSahamForushUser/' + username);
+  }
+
   updateDarkhastById(darkhast: DarkhastType, id: string) {
     return this.httpClient.put<DarkhastType>(this.apiUri + '/darkhast/' + id, darkhast);
   }
@@ -78,6 +83,11 @@ export class ApiService {
     return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);
   }
 
+  getUserPortfoDarayi() {
+    const username = this.authService.getUsername();
+    return this.httpClient.get<PortfoType[]>(this.apiUri + '/portfo/darayi/byUsername/' + username);
+  }
+
   // User methods
   getUserByUsername(username: string) {
     return this.httpClient.get<UserType>(this.apiUri + '/user/byUsername/' + username);
@@ -103,4 +113,5 @@ export class ApiService {
   sabtPortfo(portfo: PortfoType) {
     return this.httpClient.post(this.apiUri + '/portfo', portfo);
   }
+
 }

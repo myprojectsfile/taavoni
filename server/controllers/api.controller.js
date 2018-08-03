@@ -8,7 +8,7 @@ module.exports = function (app) {
     // SafeKharid routes
     app.route('/api/safeKharid')
         .get(checkIsAuthenticated, get_safeKharid)
-        .post(checkIsAuthenticated, checkIsAuthenticated, post_darkhastKharid);
+        .post(checkIsAuthenticated, post_darkhastKharid);
 
     app.route('/api/safeKharid/:id')
         .get(checkIsAuthenticated, get_safeKharid_byid)
@@ -19,6 +19,9 @@ module.exports = function (app) {
     app.route('/api/safeForush')
         .get(checkIsAuthenticated, get_safeForush)
         .post(checkIsAuthenticated, post_darkhastForush);
+
+    app.route('/api/safeForush/tedadKolSahamForushUser/:username')
+        .get(get_tedadKolSahamForushUser);
 
     app.route('/api/safeForush/:id')
         .get(checkIsAuthenticated, get_safeForush_byid)
@@ -54,6 +57,9 @@ module.exports = function (app) {
 
     app.route('/api/portfo/byUsername/:username')
         .get(checkIsAuthenticated, getPortfoByUsername);
+
+    app.route('/api/portfo/darayi/byUsername/:username')
+        .get(checkIsAuthenticated, getPortfoDarayiByUsername);
 
     app.route('/api/portfo/:id')
         .put(checkIsAuthenticated, update_portfo_byid)
@@ -91,6 +97,28 @@ get_safeForush = function (req, res) {
         .sort('tarikhDarkhast');
 };
 
+get_tedadKolSahamForushUser = function (req, res) {
+    context.Darkhast.find({ 'noeDarkhast': 'فروش', 'username': req.params.username }, 'tedadBaghiMandeh', function (err, result) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+
+        // محاسبه مجموع کل سهام کاربر
+        let i = 0;
+        let sum = 0;
+
+        for (i = 0; i < result.length; i++) {
+            sum = sum + result[i].tedadBaghiMandeh;
+        };
+
+        res.json({ 'tedadKolSahamForush': sum });
+
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+        .sort('tarikhDarkhast');
+};
+
+
 get_moameleh = function (req, res) {
     context.Moameleh.find({}, function (err, result) {
         if (err) {
@@ -114,6 +142,17 @@ getListDarkhastByUsername = function (req, res) {
 
 getPortfoByUsername = function (req, res) {
     context.Portfo.find({ 'username': req.params.username }, function (err, portfo) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+        if (!portfo) res.status(404).send();
+        res.json(portfo);
+    });
+};
+
+getPortfoDarayiByUsername = function (req, res) {
+    context.Portfo.find({ 'username': req.params.username }, 'tedadSahm', function (err, portfo) {
         if (err) {
             res.statusCode = 500;
             res.send(err);
@@ -341,9 +380,9 @@ update_user_byid = function (req, res) {
                 req.body.password = hash;
                 context.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, user) {
                     if (err) res.status(500).send(err);
-            
+
                     if (!user) res.status(404).send();
-            
+
                     res.json(user);
                 });
             })
@@ -351,7 +390,7 @@ update_user_byid = function (req, res) {
                 res.status(500).send(err);
             });
     });
-    
+
 };
 
 
