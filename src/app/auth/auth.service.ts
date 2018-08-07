@@ -66,8 +66,7 @@ export class AuthService {
     let token = this.getToken();
     if (token) {
       let tokenPayload: any = this.tokenPayload();
-      let userClaims: string[] = tokenPayload.claims;
-
+      let userClaims: string[] = tokenPayload.user.claims;
       if (userClaims.indexOf(claim) >= 0) return true;
     }
 
@@ -81,7 +80,13 @@ export class AuthService {
 
   getUsername() {
     let tokenPayload = this.jwt.decodeToken(this.getToken());
-    if (tokenPayload) return tokenPayload.username;
+    if (tokenPayload) return tokenPayload.user.username;
+    return null;
+  }
+  
+  getUserFullname() {
+    let tokenPayload = this.jwt.decodeToken(this.getToken());
+    if (tokenPayload) return tokenPayload.fullName;
     return null;
   }
 }

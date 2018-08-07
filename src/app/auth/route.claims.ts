@@ -21,14 +21,9 @@ export default {
             "claims": ["shareholder"]
         },
         {
-            "routeUrl": "/queueAdmin",
-            "signInRequired": "true",
-            "claims": ["shareholder"]
-        },
-        {
             "routeUrl": "/trades",
             "signInRequired": "true",
-            "claims": ["shareholder"]
+            "claims": ["tradeAdmin"]
         },
         {
             "routeUrl": "/portfo",

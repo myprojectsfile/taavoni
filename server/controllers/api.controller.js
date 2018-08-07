@@ -21,7 +21,7 @@ module.exports = function (app) {
         .post(checkIsAuthenticated, post_darkhastForush);
 
     app.route('/api/safeForush/tedadKolSahamForushUser/:username')
-        .get(get_tedadKolSahamForushUser);
+        .get(checkIsAuthenticated, get_tedadKolSahamForushUser);
 
     app.route('/api/safeForush/:id')
         .get(checkIsAuthenticated, get_safeForush_byid)
@@ -459,18 +459,22 @@ post_login = function (req, res) {
                 if (isMatch) {
 
                     var expirationDate = getExpirationDate();
-                    var userClaims = getUserClaims(user._id);
-                    console.log(`claims is :${JSON.stringify(userClaims)}`);
-                    var payload = {
-                        iss: 'taavoni.bpmo.ir',
-                        sub: user._id,
-                        exp: expirationDate,
-                        claims: userClaims,
-                        username: user.username
-                    };
-                    var token = jwt.encode(payload, getTokenSecret());
+                    // get user and add it to token payload
+                    context.User.findById(user._id, '-password', function (err, userData) {
+                        if (err) res.status(500).send(err);
 
-                    res.status(200).send({ token });
+                        var payload = {
+                            iss: 'taavoni.bpmo.ir',
+                            exp: expirationDate,
+                            user: userData,
+                            fullName:user.fullName
+                        };
+                        var token = jwt.encode(payload, getTokenSecret());
+
+                        res.status(200).send({ token });
+
+                    });
+
                 } else return res.status(401).send({ message: 'کلمه عبور اشتباه است' });
 
             });
@@ -487,13 +491,13 @@ post_register = function (req, res) {
             res.status(400).send(err);
         }
 
-        var userClaims = getUserClaims(user._id);
+        var userData = getUserData(user._id);
         var expirationDate = getExpirationDate();
         var payload = {
             iss: 'taavoni.bpmo.ir',
             sub: user._id,
             exp: expirationDate,
-            claims: userClaims
+            user: userData
         };
 
         var token = jwt.encode(payload, getTokenSecret());
@@ -529,19 +533,6 @@ function checkIsAuthenticated(req, res, next) {
     req.userId = payload.sub;
 
     next();
-}
-
-function getUserClaims(userId) {
-    // context.User.findById(userId, function (err, user) {
-    //     if (err) return err;
-    //     var userClaims = [];
-
-    //     if (user.username == 'admin') { userClaims = ['shareAdmin']; }
-    //     else { userClaim = ['shareholder']; }
-    //     console.log(userClaims);
-    //     return userClaims;
-    return ['shareholder'];
-    // });
 }
 
 function getTokenSecret() {
