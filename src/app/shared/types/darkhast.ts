@@ -8,7 +8,7 @@ export interface DarkhastType {
   tedadMoamelehShodeh?: number;
   tedadBaghiMandeh?: number;
   arzeshSahm?: number;
-  tarikhDarkhast?: Date;
+  tarikhDarkhast?: string;
   vazeiat?: string;
   tozihat?: string;
   noeDarkhst?: string;

@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var moment=require('moment-timezone');
 
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
     shenasehMoameleh: { type: String, required: false },
-    tarikhMoameleh: { type: Date, default: Date.now },
+    tarikhMoameleh: { type: String, default: moment.tz('Asia/Tehran').format()},
     tedadSahmMoameleh: Number,
     arzeshSahmMoameleh: Number,
     forushandeh_username: String,
@@ -29,7 +30,7 @@ var DarkhastSchema = new mongoose.Schema({
     arzeshSahm: Number,
     tedadMoamelehShodeh: { type: Number, required: false, default: 0 },
     tedadBaghiMandeh: { type: Number, required: false },
-    tarikhDarkhast: { type: Date, default: Date.now },
+    tarikhDarkhast: { type: String, default: moment.tz('Asia/Tehran').format() },
     vazeiat: { type: String, enum: ['در انتظار', 'لغو شده', 'انجام شده', 'در حال انجام'], required: true, default: 'در انتظار' },
     tozihat: { type: String, required: false },
     moamelat: [MoamelehSchema]

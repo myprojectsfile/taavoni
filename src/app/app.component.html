@@ -18,7 +18,7 @@
           <div class="dropdown-menu text-right" style="left: -180%;direction: rtl;" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" routerLink="/queue">ثبت درخواست خرید / فروش</a>
             <a class="dropdown-item" routerLink="/requests">مدیریت درخواست ها</a>
-            <a class="dropdown-item" routerLink="/trades">ثبت معاملات</a>
+            <a class="dropdown-item" *ngIf="userHasClaim('tradeAdmin')" routerLink="/trades">ثبت معاملات</a>
             <a class="dropdown-item" routerLink="/portfo">مشاهده دارایی و سابقه معاملات</a>
           </div>
         </li>

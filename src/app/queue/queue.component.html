@@ -32,11 +32,12 @@
           <dx-data-grid #safeKharidGrid [dataSource]="safeKharid">
             <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
             <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-            <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
+            <dxi-column dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
+            <dxi-column dataField="tedadBaghiMandeh" width="100" caption="تعداد باقی مانده"></dxi-column>
             <dxi-column dataField="tarikhDarkhast" cellTemplate="jalaliDatetime" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
 
             <div *dxTemplate="let d of 'jalaliDatetime'">
-                {{d.data.tarikhDarkhast|jalaliDatetime}}
+              {{d.data.tarikhDarkhast|jalaliDatetime}}
             </div>
 
           </dx-data-grid>
@@ -54,14 +55,15 @@
           <dx-data-grid #safeForushGrid [dataSource]="safeForush">
             <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
             <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-            <dxi-column dataField="arzeshSahm" width="120" caption="ارزش سهم (تومان)"></dxi-column>
+            <dxi-column dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
+            <dxi-column dataField="tedadBaghiMandeh" width="100" caption="تعداد باقی مانده"></dxi-column>
             <dxi-column dataField="tarikhDarkhast" cellTemplate="jalaliDatetime" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
 
             <div *dxTemplate="let d of 'jalaliDatetime'">
-                {{d.data.tarikhDarkhast|jalaliDatetime}}
+              {{d.data.tarikhDarkhast|jalaliDatetime}}
             </div>
           </dx-data-grid>
         </div>
       </div>
     </div>
-</div>
+  </div>

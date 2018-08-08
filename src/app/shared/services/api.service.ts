@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { QueueType } from '../types/queue';
 import { DarkhastType } from '../types/darkhast';
 import { MoamelehType } from '../types/moameleh';
 import { AuthService } from '../../auth/auth.service';
@@ -18,18 +17,18 @@ export class ApiService {
   }
 
   getSafeKharid() {
-    return this.httpClient.get<QueueType[]>(this.apiUri + '/safeKharid');
+    return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeKharid');
   }
 
   getSafeForush() {
-    return this.httpClient.get<QueueType[]>(this.apiUri + '/safeForush');
+    return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeForush');
   }
 
-  sabtDarkhastKharid(darkhast: QueueType) {
+  sabtDarkhastKharid(darkhast: DarkhastType) {
     return this.httpClient.post(this.apiUri + '/safeKharid', darkhast);
   }
 
-  sabtDarkhastForush(darkhast: QueueType) {
+  sabtDarkhastForush(darkhast: DarkhastType) {
     return this.httpClient.post(this.apiUri + '/safeForush', darkhast);
   }
 
@@ -41,7 +40,7 @@ export class ApiService {
   }
 
   getTedadKolSahamForushUser() {
-    let username=this.authService.getUsername();
+    let username = this.authService.getUsername();
     return this.httpClient.get<number[]>(this.apiUri + '/safeForush/tedadKolSahamForushUser/' + username);
   }
 
@@ -114,4 +113,8 @@ export class ApiService {
     return this.httpClient.post(this.apiUri + '/portfo', portfo);
   }
 
+  checkUserHasNoActiveCrossRequest(noeDarkhast: number) {
+    const username = this.authService.getUsername();
+    return this.httpClient.get(this.apiUri + `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUsername/${username}`);
+  }
 }

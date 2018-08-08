@@ -38,6 +38,9 @@ module.exports = function (app) {
     app.route('/api/darkhast/byUsername/:username')
         .get(checkIsAuthenticated, getListDarkhastByUsername);
 
+    app.route('/api/darkhast/hasNoActiveRequest/noeDarkhast/:noeDarkhast/byUsername/:username')
+        .get(checkIsAuthenticated, checkUserHasNoActiveCrossRequest);
+
     app.route('/api/darkhast/:id')
         .put(checkIsAuthenticated, update_darkhast_byid);
 
@@ -74,6 +77,24 @@ module.exports = function (app) {
         .put(checkIsAuthenticated, update_user_byid)
         .delete(checkIsAuthenticated, del_user_byid);
 };
+
+checkUserHasNoActiveCrossRequest = function (req, res) {
+    // بر اساس نوع درخواست  بصورت برعکس چک میکنیم
+    const noeDarkhast = req.params.noeDarkhast == 0 ? 'فروش' : 'خرید';
+    const username = req.params.username;
+
+    context.Darkhast.find({ 'username': username, 'noeDarkhast': noeDarkhast }, function (err, darkhastha) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+
+        if (darkhastha.length > 0) res.send(false);
+        else res.send(true);
+
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+        .sort('tarikhDarkhast');
+}
 
 get_safeKharid = function (req, res) {
     context.Darkhast.find({ 'noeDarkhast': 'خرید' }, function (err, result) {
@@ -195,6 +216,7 @@ post_darkhastKharid = function (req, res) {
         // create new darkhast
         var darkhastKharid = new context.Darkhast(req.body);
         // set username & noedarkhast
+        console.log(`user:${user}`);
         darkhastKharid.username = user.username;
         darkhastKharid.noeDarkhast = 'خرید';
         darkhastKharid.fullName = user.fullName;
@@ -467,7 +489,7 @@ post_login = function (req, res) {
                             iss: 'taavoni.bpmo.ir',
                             exp: expirationDate,
                             user: userData,
-                            fullName:user.fullName
+                            fullName: user.fullName
                         };
                         var token = jwt.encode(payload, getTokenSecret());
 
@@ -486,37 +508,45 @@ post_login = function (req, res) {
 post_register = function (req, res) {
     var newUser = new context.User(req.body);
 
+    newUser.claims.push("shareholder");
+
     newUser.save(function (err, user) {
         if (err) {
             res.status(400).send(err);
         }
 
-        var userData = getUserData(user._id);
-        var expirationDate = getExpirationDate();
-        var payload = {
-            iss: 'taavoni.bpmo.ir',
-            sub: user._id,
-            exp: expirationDate,
-            user: userData
-        };
+        // get user and add it to token payload
+        context.User.findById(user._id, '-password', function (err, userData) {
+            if (err) res.status(500).send(err);
 
-        var token = jwt.encode(payload, getTokenSecret());
-        // درج ردیف پورتفوی خالی برای کاربر بهنگام ثبت نام
-        var newPortfo = new context.Portfo({
-            username: user.username,
-            userId: user.userId,
-            fullName: user.fullName,
-            tedadSahm: 0,
-            moamelat: []
+            var expirationDate = getExpirationDate();
+            var payload = {
+                iss: 'taavoni.bpmo.ir',
+                exp: expirationDate,
+                user: userData,
+                fullName: user.fullName
+            };
+
+            var token = jwt.encode(payload, getTokenSecret());
+            // درج ردیف پورتفوی خالی برای کاربر بهنگام ثبت نام
+            var newPortfo = new context.Portfo({
+                username: user.username,
+                userId: user.userId,
+                fullName: user.fullName,
+                tedadSahm: 0,
+                moamelat: []
+            });
+
+            newPortfo.save(function (err, portfo) {
+                if (err) {
+                    res.status(400).send(err + ': خطا در ایجاد رکورد خالی پورتفوی کاربر بهنگام ثبت نام');
+                }
+
+                res.status(200).send({ token });
+            });
+
         });
 
-        newPortfo.save(function (err, portfo) {
-            if (err) {
-                res.status(400).send(err + ': خطا در ایجاد رکورد خالی پورتفوی کاربر بهنگام ثبت نام');
-            }
-
-            res.status(200).send({ token });
-        });
     });
 };
 
@@ -530,7 +560,7 @@ function checkIsAuthenticated(req, res, next) {
     var payload = jwt.decode(token, getTokenSecret());
     if (!payload) return res.status(401).send({ message: 'Authorizaion Header is Invalid' });
 
-    req.userId = payload.sub;
+    req.userId = payload.user._id;
 
     next();
 }

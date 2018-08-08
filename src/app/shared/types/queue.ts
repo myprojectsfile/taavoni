@@ -1,4 +1,4 @@
-export interface QueueType {
+export interface DarkhastType {
     username?: string;
     fullName?: string;
     tedadSahm: number;
