@@ -100,6 +100,10 @@ export class ApiService {
     return this.httpClient.put<UserType>(this.apiUri + '/user/' + id, user);
   }
 
+  updateUserPassById(user: UserType, id: string) {
+    return this.httpClient.put<UserType>(this.apiUri + '/user/updatePass/' + id, user);
+  }
+
   // Profile methods
   getPortfohByUsername(username: string) {
     return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);

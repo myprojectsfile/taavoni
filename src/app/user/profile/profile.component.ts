@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
         },
         (error) => {
           console.log(error);
-          this.toastr.error('خطا در بازیابی مشخصات کاربر.با پشتیبان سامانه تماس بگیرید.');
+          this.toastr.error('خطا در بازیابی مشخصات کاربر');
         }
       );
   }
@@ -39,20 +39,20 @@ export class ProfileComponent implements OnInit {
       },
         (error) => {
           console.log(error);
-          this.toastr.error('خطا در بازیابی مشخصات کاربر.با پشتیبان سامانه تماس بگیرید.');
+          this.toastr.error('خطا در ثبت تغییرات پروفایل کاربر');
         });
   }
 
   changePass() {
     let userUpdate: UserType = {};
     userUpdate.password = this.passwordObject.newPassword;
-    this.apiService.updateUserById(userUpdate, this.user._id)
+    this.apiService.updateUserPassById(userUpdate, this.user._id)
       .subscribe((data) => {
         this.toastr.success('کلمه عبور با موفقیت تغییر یافت');
       },
         (error) => {
           console.log(error);
-          this.toastr.error('خطا در تغییر کلمه عبور.با پشتیبان سامانه تماس بگیرید.');
+          this.toastr.error('خطا در تغییر کلمه عبور');
         });
   }
 }

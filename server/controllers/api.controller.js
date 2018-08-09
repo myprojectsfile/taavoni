@@ -76,6 +76,9 @@ module.exports = function (app) {
         .get(checkIsAuthenticated, get_user_byid)
         .put(checkIsAuthenticated, update_user_byid)
         .delete(checkIsAuthenticated, del_user_byid);
+
+    app.route('/api/user/updatePass/:id')
+        .put(checkIsAuthenticated, update_user_pass_byid)
 };
 
 checkUserHasNoActiveCrossRequest = function (req, res) {
@@ -395,6 +398,16 @@ update_portfo_byid = function (req, res) {
 };
 
 update_user_byid = function (req, res) {
+    context.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, user) {
+        if (err) res.status(500).send(err);
+
+        if (!user) res.status(404).send();
+
+        res.json(user);
+    });
+};
+
+update_user_pass_byid = function (req, res) {
     var saltRounds = 10;
     bcrypt.genSalt(saltRounds, function (err, salt) {
         bcrypt.hash(req.body.password, salt)
