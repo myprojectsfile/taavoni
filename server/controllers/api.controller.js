@@ -72,6 +72,9 @@ module.exports = function (app) {
     app.route('/api/user/byUsername/:username')
         .get(checkIsAuthenticated, getUserByUsername);
 
+    app.route('/api/user/byUsername/:username/byCodeMelli/:codeMelli')
+        .get(CheckUserExistByUsernameOrCodemelli);
+
     app.route('/api/user/:id')
         .get(checkIsAuthenticated, get_user_byid)
         .put(checkIsAuthenticated, update_user_byid)
@@ -194,6 +197,29 @@ getUserByUsername = function (req, res) {
         }
         if (!user) res.status(404).send();
         res.json(user);
+    });
+};
+
+CheckUserExistByUsernameOrCodemelli = function (req, res) {
+    var userExist = false;
+
+    context.User.findOne({ 'username': req.params.username }, function (err, user) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+
+        if (user) userExist = true;
+        context.User.findOne({ 'codeMelli': req.params.codeMelli }, function (err, user) {
+            if (err) {
+                res.statusCode = 500;
+                res.send(err);
+            }
+
+            if (user) userExist = true;
+
+            res.send(userExist);
+        });
     });
 };
 

@@ -13,7 +13,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from './auth/auth.guard';
 import { PhotoGalleryComponent } from './photo-gallery/photo-gallery.component';
 import { Angular2ImageGalleryModule } from 'angular2-image-gallery';
@@ -25,6 +25,10 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ApiService } from './shared/services/api.service';
 import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -55,13 +59,19 @@ import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.p
     DxDataGridModule,
     HttpClientModule,
     FormsModule,
-    Angular2ImageGalleryModule
+    Angular2ImageGalleryModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:4200']
+      }
+    })
   ],
   providers: [ApiService, AuthService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }, JwtHelper, AuthGuard],
+  }, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

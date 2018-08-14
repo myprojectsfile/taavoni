@@ -96,6 +96,10 @@ export class ApiService {
     return this.httpClient.get<UserType>(this.apiUri + '/user/' + id);
   }
 
+  CheckUserExistByUsernameOrCodemelli(username, codeMelli) {
+    return this.httpClient.get<UserType>(this.apiUri + `/user/byUsername/${username}/byCodeMelli/${codeMelli}`);
+  }
+
   updateUserById(user: UserType, id: string) {
     return this.httpClient.put<UserType>(this.apiUri + '/user/' + id, user);
   }

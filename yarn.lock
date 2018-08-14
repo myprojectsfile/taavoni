@@ -177,6 +177,12 @@
   dependencies:
     tslib "^1.9.0"
 
+"@auth0/angular-jwt@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@auth0/angular-jwt/-/angular-jwt-2.0.0.tgz#c0b2861824a24fb62d9d2e1fdb03a326e8a1e203"
+  dependencies:
+    url "^0.11.0"
+
 "@ngtools/webpack@6.1.1":
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-6.1.1.tgz#dcfea287c0c1358f3e123621c65b0e3ccaab5b70"
@@ -493,10 +499,6 @@ angular2-image-gallery@^6.0.2:
   resolved "https://registry.yarnpkg.com/angular2-image-gallery/-/angular2-image-gallery-6.0.2.tgz#92f7de7c0f1612d708243e8e8821c19b0e7a1abf"
   dependencies:
     tslib "^1.9.0"
-
-angular2-jwt@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/angular2-jwt/-/angular2-jwt-0.2.3.tgz#54efdda3ceedba85f6a37b165f22ac22b8adf021"
 
 ansi-html@0.0.7:
   version "0.0.7"

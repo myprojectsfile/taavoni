@@ -3,14 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
 import { Router, RouterLinkWithHref } from '@angular/router';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
+
 export class AuthService {
 
-  constructor(private httpClient: HttpClient, private router: Router, private jwt: JwtHelper) { }
-
+  constructor(private httpClient: HttpClient, private router: Router,private jwt:JwtHelperService) { }
+  
   apiUri = environment.apiUri;
+  
 
   login(username, password) {
     let body = {

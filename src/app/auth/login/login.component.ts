@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
   password: string;
   errorMessage: string = null;
 
-  constructor(private authService: AuthService, private location: Location, private toastr: ToastrService, private jwt: JwtHelper) {
+  constructor(private authService: AuthService, private location: Location, private toastr: ToastrService,private jwt: JwtHelperService) {
 
   }
 
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
         this.location.back();
       }
       , errRes => {
-        this.errorMessage = errRes.error.message;
+        this.errorMessage = errRes;
       }
     );
   }
