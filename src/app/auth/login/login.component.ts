@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   password: string;
   errorMessage: string = null;
 
-  constructor(private authService: AuthService, private location: Location, private toastr: ToastrService,private jwt: JwtHelperService) {
+  constructor(private authService: AuthService, private location: Location, private toastr: ToastrService, private jwt: JwtHelperService) {
 
   }
 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.username, this.password).subscribe(
       res => {
         this.authService.saveToken(res.token);
-        this.authService.isAuthenticated();
+        const isAuthenticted = this.authService.isAuthenticated();
         let tokenPayload: any = this.authService.tokenPayload();
         this.toastr.success('به سامانه تعاونی کارکنان بندر بوشهر خوش آمدید');
         this.location.back();

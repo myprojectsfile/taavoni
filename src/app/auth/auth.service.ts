@@ -9,10 +9,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 export class AuthService {
 
-  constructor(private httpClient: HttpClient, private router: Router,private jwt:JwtHelperService) { }
-  
+  constructor(private httpClient: HttpClient, private router: Router, private jwt: JwtHelperService) { }
+
   apiUri = environment.apiUri;
-  
+
 
   login(username, password) {
     let body = {
@@ -21,7 +21,6 @@ export class AuthService {
     }
 
     return this.httpClient.post<any>(this.apiUri + '/login', body);
-
   }
 
   register(username, password, name, family, codeMelli, mobile) {
@@ -56,7 +55,9 @@ export class AuthService {
     let token = this.getToken();
 
     if (token) {
-      if (this.jwt.isTokenExpired(token))
+      let tokenDecoded = this.jwt.decodeToken(token);
+      let isExpired = this.jwt.isTokenExpired(token);
+      if (isExpired)
         return false;
       else return true;
     }
@@ -85,7 +86,7 @@ export class AuthService {
     if (tokenPayload) return tokenPayload.user.username;
     return null;
   }
-  
+
   getUserFullname() {
     let tokenPayload = this.jwt.decodeToken(this.getToken());
     if (tokenPayload) return tokenPayload.fullName;

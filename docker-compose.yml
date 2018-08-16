@@ -1,4 +1,4 @@
-version: "1"
+version: "2"
 services:
   taavoni:
     container_name: taavoni_app

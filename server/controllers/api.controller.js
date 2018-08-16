@@ -612,4 +612,5 @@ function getExpirationDate() {
     var now = new Date();
     var validationHours = 4;
     var expirationDate = now.setMinutes(now.getMinutes() + (validationHours * 60));
+    return expirationDate;
 }

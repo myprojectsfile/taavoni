@@ -68,9 +68,9 @@ app.set('port', port);
 
 // mongoose.connect('mongodb://localhost/PersianDevsDb');
 // for localhost
-var mongoConnectPromise = mongoose.connect('mongodb://localhost/TaavoniDb', {});
+// var mongoConnectPromise = mongoose.connect('mongodb://localhost/TaavoniDb', {});
 // for docker container
-// var mongoConnectPromise = mongoose.connect('mongodb://taavoni_mongodb/TaavoniDb', {});
+var mongoConnectPromise = mongoose.connect('mongodb://taavoni_mongodb:27017/TaavoniDb', {});
 
 mongoConnectPromise.then(function (db) {
     console.log('1- Connected to mongodb Successfully');
