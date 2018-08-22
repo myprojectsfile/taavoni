@@ -54,21 +54,26 @@
           <form autocomplete="false" style="direction: rtl;" novalidate #passwordForm="ngForm" (ngSubmit)="changePass()">
             <div class="form-group">
               <label for="oldPassword" class="pull-right">کلمه عبور قبلی</label>
-              <input autocomplete="new-password" type="password" class="form-control form-control-sm" [(ngModel)]="passwordObject.oldPassword"
+              <input autocomplete="new-password" required type="password" class="form-control form-control-sm" #oldPassword="ngModel" [(ngModel)]="passwordObject.oldPassword"
                 name="oldPassword" id="oldPassword" required placeholder="کلمه عبور قبلی">
+              <small class="validation" [hidden]="oldPassword.valid || (oldPassword.pristine && !passwordForm.submitted)">
+                درج کلمه عبور قبلی الزامی می باشد
+              </small>
             </div>
             <div class="form-group">
               <label for="newPassword" class="pull-right">کلمه عبور جدید</label>
               <input autocomplete="new-password" type="password" class="form-control form-control-sm" [(ngModel)]="passwordObject.newPassword"
-                #newPassword="ngModel" name="newPassword" id="newPassword" validateEqual="confirmPassword" reverse="true" required placeholder="کلمه عبور جدید">
+                #newPassword="ngModel" name="newPassword" id="newPassword" validateEqual="confirmPassword" reverse="true" required
+                placeholder="کلمه عبور جدید">
               <small class="validation" [hidden]="newPassword.valid || (newPassword.pristine && !passwordForm.submitted)">
                 درج کلمه عبور الزامی می باشد
               </small>
             </div>
             <div class="form-group">
               <label for="confirmPassword" class="pull-right">تکرار کلمه عبور</label>
-              <input autocomplete="new-password" type="password" class="form-control form-control-sm" [(ngModel)]="passwordObject.confirmPassword" #confirmPassword="ngModel"
-                name="confirmPassword" id="confirmPassword" required validateEqual="newPassword" placeholder="تکرار کلمه عبور">
+              <input autocomplete="new-password" type="password" class="form-control form-control-sm" [(ngModel)]="passwordObject.confirmPassword"
+                #confirmPassword="ngModel" name="confirmPassword" id="confirmPassword" required validateEqual="newPassword"
+                placeholder="تکرار کلمه عبور">
             </div>
             <small class="validation" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)">
               کلمه عبور و تکرار آن یکسان نیستند
