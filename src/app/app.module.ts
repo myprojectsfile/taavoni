@@ -25,6 +25,7 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ApiService } from './shared/services/api.service';
 import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
+import { EqualValidator } from './shared/validators/equal-validator.directive';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -45,7 +46,8 @@ export function tokenGetter() {
     ProfileComponent,
     PortfoComponent,
     JalaliDatePipe,
-    JalaliDatetimePipe
+    JalaliDatetimePipe,
+    EqualValidator
   ],
   imports: [
     BrowserModule,

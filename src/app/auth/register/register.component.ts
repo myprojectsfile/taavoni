@@ -16,7 +16,7 @@ export class RegisterComponent {
   errorMessage: string = null;
   username: string;
   password: string;
-  passwordRepeat: string;
+  confirmPassword: string;
   name: string;
   family: string;
   codeMelli: string;
