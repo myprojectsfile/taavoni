@@ -9,7 +9,10 @@
         <form #f="ngForm" novalidate style="direction: rtl;" (ngSubmit)="register()">
           <div class="form-group">
             <label for="username" class="sr-only">نام کاربری</label>
-            <input type="text" class="form-control form-control-sm" name="username" id="username" [(ngModel)]="username" placeholder="نام کاربری (کد سهامداری)">
+            <input type="text" required class="form-control form-control-sm" name="username" id="username" #usernameModel="ngModel" [(ngModel)]="username" placeholder="نام کاربری (کد سهامداری)">
+            <small class="validation" [hidden]="usernameModel.valid || (usernameModel.pristine && !f.submitted)">
+              درج نام کاربری الزامی می باشد
+            </small>
           </div>
           <div class="form-group">
             <label for="password" class="sr-only">کلمه عبور</label>

@@ -6,6 +6,7 @@ import { MoamelehType } from '../types/moameleh';
 import { AuthService } from '../../auth/auth.service';
 import { PortfoType } from '../types/portfo';
 import { UserType } from '../types/user';
+import { GheymatType } from '../types/gheymat';
 
 @Injectable({
   providedIn: 'root'
@@ -125,4 +126,16 @@ export class ApiService {
     const username = this.authService.getUsername();
     return this.httpClient.get(this.apiUri + `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUsername/${username}`);
   }
+  
+  // gheymatRoozSahm
+
+  getAkharinGheymatSahm() {
+    return this.httpClient.get<GheymatType>(this.apiUri + '/gheymatRoozSahm/akharinGheymat');
+  }
+
+  sabtGheymatSahm(gheymat: GheymatType) {
+    return this.httpClient.post(this.apiUri + '/gheymatRoozSahm', gheymat);
+  }
+  
+
 }

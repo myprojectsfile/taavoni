@@ -81,8 +81,43 @@ module.exports = function (app) {
         .delete(checkIsAuthenticated, del_user_byid);
 
     app.route('/api/user/updatePass/:id')
-        .put(checkIsAuthenticated, update_user_pass_byid)
+        .put(checkIsAuthenticated, update_user_pass_byid);
+
+    // GheymatRoozSahm routes
+    app.route('/api/gheymatRoozSahm/akharinGheymat')
+        .get(checkIsAuthenticated, get_akharinGhehmatSahm)
+
+    app.route('/api/gheymatRoozSahm')
+        .post(checkIsAuthenticated, post_gheymatSahm);
+
+    // app.route('/api/gheymatRoozSahm/:id')
+    //     .get(checkIsAuthenticated, get_gheymatRoozSahm_byid)
+    //     .put(checkIsAuthenticated, update_gheymatRoozSahm_byid)
+    //     .delete(checkIsAuthenticated, del_gheymatRoozSahm_byid);
+
 };
+
+
+get_akharinGhehmatSahm = function (req, res) {
+    context.GheymatRoozSahm.findOne({}, function (err, gheymat) {
+        if (err) res.status(500).send(err);
+        else {
+            if (!gheymat) res.status(404).send();
+            else res.send(gheymat);
+        }
+    }).sort('-tarikh');
+}
+
+post_gheymatSahm = function (req, res) {
+    // create new ghyematRooz
+    var gheymatRooz = new context.GheymatRoozSahm(req.body);
+    gheymatRooz.save(function (err, gheymatRow) {
+
+        if (err) res.status(500).send(err);
+        else res.json(gheymatRow);
+    });
+};
+
 
 checkUserHasNoActiveCrossRequest = function (req, res) {
     // بر اساس نوع درخواست  بصورت برعکس چک میکنیم

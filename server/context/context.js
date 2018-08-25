@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
-var moment=require('moment-timezone');
+var moment = require('moment-timezone');
 
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
     shenasehMoameleh: { type: String, required: false },
-    tarikhMoameleh: { type: String, default: moment.tz('Asia/Tehran').format()},
+    tarikhMoameleh: { type: String, default: moment.tz('Asia/Tehran').format() },
     tedadSahmMoameleh: Number,
     arzeshSahmMoameleh: Number,
     forushandeh_username: String,
@@ -18,7 +18,6 @@ var MoamelehSchema = new mongoose.Schema({
     usernameSabtKonandeh: { type: String, required: false },
     fullnameSabtKonandeh: { type: String, required: false }
 });
-
 
 
 // Darkhast Shcemas
@@ -35,6 +34,10 @@ var DarkhastSchema = new mongoose.Schema({
     tozihat: { type: String, required: false },
     moamelat: [MoamelehSchema]
 });
+
+getCurrentTime = function () {
+    return moment.tz('Asia/Tehran').format();
+}
 
 // Portfo Schema
 var PortfoSchema = new mongoose.Schema({
@@ -63,19 +66,23 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.virtual('fullName').get(function () { return this.name + ' ' + this.family });
 
+// Gheymat Rooz
+var GheymatRoozSahmSchema = new mongoose.Schema({
+    tarikh: { type: String, default: moment.tz('Asia/Tehran').format() },
+    gheymatRooz: Number
+});
 
 // Define Models
 var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
 var User = mongoose.model('User', UserSchema);
 var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
 var Portfo = mongoose.model('Portfo', PortfoSchema)
+var GheymatRoozSahm = mongoose.model('GheymatRoozSahm', GheymatRoozSahmSchema);
 
 
 // hash password before saving user
 UserSchema.pre('save', function (next) {
     var user = this;
-    console.log('changing pass');
-    console.log(user.isModified('password'));
 
     if (!user.isModified('password'))
         return next();
@@ -94,9 +101,11 @@ UserSchema.pre('save', function (next) {
     });
 })
 
+
 module.exports = {
     Darkhast: Darkhast,
     User: User,
     Moameleh: Moameleh,
-    Portfo: Portfo
+    Portfo: Portfo,
+    GheymatRoozSahm: GheymatRoozSahm
 }

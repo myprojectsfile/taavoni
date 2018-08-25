@@ -21,6 +21,7 @@ export class QueueComponent implements OnInit {
 
   tedadSahm: number;
   arzeshSahm: number;
+  noeDarkhast: number;
 
   ngOnInit(): void {
     this.gridSafeKharid.rtlEnabled = true;
@@ -131,5 +132,29 @@ export class QueueComponent implements OnInit {
 
   async getTedadDarkhastSaf() {
 
+  }
+
+  mohasebehTedad(arzeshSahm: number) {
+
+    this.apiService.getAkharinGheymatSahm()
+      .subscribe(
+        (res) => {
+          let arzeshSahm = this.arzeshSahm;
+          let gheymatRooz = res.gheymatRooz || 0;
+          if (arzeshSahm > 0 && gheymatRooz > 0) {
+            let tedadSahm = Math.floor(arzeshSahm / gheymatRooz);
+            this.tedadSahm = tedadSahm;
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.toastr.error('خطا در بازیابی قیمت روز سهم.با پشتیبان سیستم تماس بگیرید.');
+        }
+      );
+  }
+
+  noeDarkhastChanged(event) {
+    let selectedIndex = event.target.selectedIndex;
+    if (selectedIndex == 1) this.arzeshSahm = null;
   }
 }
