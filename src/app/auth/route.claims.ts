@@ -29,6 +29,11 @@ export default {
             "routeUrl": "/portfo",
             "signInRequired": "true",
             "claims": ["shareholder"]
+        },
+        {
+            "routeUrl": "/useradmin",
+            "signInRequired": "true",
+            "claims": ["useradmin"]
         }
     ]
 }

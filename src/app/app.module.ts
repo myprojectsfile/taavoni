@@ -26,6 +26,7 @@ import { PortfoComponent } from './user/portfo/portfo.component';
 import { ApiService } from './shared/services/api.service';
 import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
 import { EqualValidator } from './shared/validators/equal-validator.directive';
+import { UserAdminComponent } from './user-admin/user-admin.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -47,7 +48,8 @@ export function tokenGetter() {
     PortfoComponent,
     JalaliDatePipe,
     JalaliDatetimePipe,
-    EqualValidator
+    EqualValidator,
+    UserAdminComponent
   ],
   imports: [
     BrowserModule,

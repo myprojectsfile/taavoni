@@ -10,6 +10,7 @@ import { RequestAdminComponent } from './request-admin/request-admin.component';
 import { MoamelatComponent } from './moamelat/moamelat.component';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ProfileComponent } from './user/profile/profile.component';
+import { UserAdminComponent } from './user-admin/user-admin.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'trades', component: MoamelatComponent, canActivate: [AuthGuard] },
   { path: 'portfo', component: PortfoComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'useradmin', component: UserAdminComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
 
