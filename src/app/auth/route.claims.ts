@@ -33,7 +33,7 @@ export default {
         {
             "routeUrl": "/useradmin",
             "signInRequired": "true",
-            "claims": ["useradmin"]
+            "claims": ["userAdmin"]
         }
     ]
 }
