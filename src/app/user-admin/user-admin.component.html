@@ -1,23 +1,24 @@
 <form class="form-inline mt-3">
   <div class="form-group">
     <label class="col-form-label-sm" for="codeMelli">کد ملی</label>
-    <input type="text" class="form-control form-control-sm" (focus)="codeMelliChange()" [(ngModel)]="codeMelli" name="codeMelli" id="codeMelli">
+    <input type="text" class="form-control form-control-sm" (focus)="codeMelliChange()" [(ngModel)]="codeMelli" name="codeMelli"
+      id="codeMelli">
   </div>
   <div class="form-group">
     <label class="col-form-label-sm" for="username">نام کاربری (کد سهامداری)</label>
-    <input type="text" class="form-control form-control-sm" (focus)="usernameChange()" [(ngModel)]="username" name="username" id="username">
+    <input type="text" class="form-control form-control-sm" (focus)="usernameChange()" [(ngModel)]="username" name="username"
+      id="username">
   </div>
   <!-- <div class="form-group">
     <label class="col-form-label-sm" for="family">نام خانوادگی</label>
     <input type="text" class="form-control  form-control-sm" name="family" id="family">
   </div> -->
-  <button class="btn btn-sm btn-primary mr-2" (click)="findUser()">جستجو &nbsp;<i class="fa fa-search"
-      aria-hidden="true"></i></button>
+  <button class="btn btn-sm btn-primary mr-2" (click)="findUser()">جستجو &nbsp;<i class="fa fa-search" aria-hidden="true"></i></button>
 </form>
 <hr>
 <div class="row">
-  <div class="col-sm-3 m-1">
-    <div class="d-flex justify-content-center mx-auto">
+  <div class="col-sm-3 mt-1 mr-1">
+    <div class="d-flex justify-content-center">
       <div class="card">
         <div class="d-flex justify-content-center p-2">
           <img class="card-img-top" src="assets/pics/register.png" style="max-width: 128px;" alt="">
@@ -60,8 +61,8 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-3 m-1">
-    <div class="d-flex justify-content-center mx-auto">
+  <div class="col-sm-3 mt-1">
+    <div class="d-flex justify-content-center">
       <div class="card" style="min-height: 672px;">
         <div class="d-flex justify-content-center p-2">
           <img class="card-img-top" src="assets/pics/login.png" style="max-width: 128px;" alt="">
@@ -107,15 +108,19 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-5 m-1">
-    <div class="d-flex justify-content-center mx-auto">
-      <div class="card">
+  <div class="col-sm-5 mt-1">
+    <div class="d-flex justify-content-center">
+      <div class="card w-100" style="width: 100%;;min-height: 672px;">
         <div class="d-flex justify-content-center p-2">
           <img class="card-img-top" src="assets/pics/claims.png" style="max-width: 128px;" alt="">
         </div>
         <div class="card-body text-center">
           <h5 class="card-title">ویرایش سطوح دسترسی کاربر</h5>
-          
+          <ul>
+            <li *ngFor="let claim of user.claims">
+              {{ claim }}
+            </li>
+          </ul>
         </div>
         <div class="card-footer">
           <div *ngIf="errorMessage" class="text-right alert alert-danger" role="alert">
