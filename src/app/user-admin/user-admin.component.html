@@ -1,22 +1,23 @@
 <form class="form-inline mt-3">
   <div class="form-group">
-    <label class="col-form-label-sm" for="codemelli">کد ملی</label>
-    <input type="text" class="form-control form-control-sm" name="codemelli" id="codemelli">
+    <label class="col-form-label-sm" for="codeMelli">کد ملی</label>
+    <input type="text" class="form-control form-control-sm" (focus)="codeMelliChange()" [(ngModel)]="codeMelli" name="codeMelli" id="codeMelli">
   </div>
   <div class="form-group">
-    <label class="col-form-label-sm" for="usernam">نام کاربری (کد سهامداری)</label>
-    <input type="text" class="form-control  form-control-sm" name="usernam" id="usernam">
+    <label class="col-form-label-sm" for="username">نام کاربری (کد سهامداری)</label>
+    <input type="text" class="form-control form-control-sm" (focus)="usernameChange()" [(ngModel)]="username" name="username" id="username">
   </div>
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label class="col-form-label-sm" for="family">نام خانوادگی</label>
     <input type="text" class="form-control  form-control-sm" name="family" id="family">
-  </div>
-  <button class="btn btn-sm btn-primary mr-2">جستجو &nbsp;<i class="fa fa-search" aria-hidden="true"></i></button>
+  </div> -->
+  <button class="btn btn-sm btn-primary mr-2" (click)="findUser()">جستجو &nbsp;<i class="fa fa-search"
+      aria-hidden="true"></i></button>
 </form>
 <hr>
 <div class="row">
-  <div class="col-sm-3 m-2">
-    <div class="d-flex justify-content-center mx-auto m-3">
+  <div class="col-sm-3 m-1">
+    <div class="d-flex justify-content-center mx-auto">
       <div class="card">
         <div class="d-flex justify-content-center p-2">
           <img class="card-img-top" src="assets/pics/register.png" style="max-width: 128px;" alt="">
@@ -25,8 +26,8 @@
           <h5 class="card-title">ویرایش مشخصات کاربر</h5>
           <form style="direction: rtl;" #profileForm="ngForm" (ngSubmit)="saveChanges()">
             <div class="form-group">
-              <label class="col-form-label-sm" for="username" class="pull-right">کد سهامداری</label>
-              <input type="text" class="form-control form-control-sm" [(ngModel)]="user.username" name="username" id="username" required
+              <label class="col-form-label-sm" for="usernameId" class="pull-right">کد سهامداری</label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="user.username" name="username" id="usernameId" required
                 placeholder="نام کاربری (کد سهامداری)">
             </div>
             <div class="form-group">
@@ -38,8 +39,8 @@
               <input type="text" class="form-control form-control-sm" [(ngModel)]="user.family" name="family" id="family" required placeholder="نام خانوادگی">
             </div>
             <div class="form-group">
-              <label class="col-form-label-sm" for="codeMelli" class="pull-right">کد ملی</label>
-              <input type="text" class="form-control form-control-sm" [(ngModel)]="user.codeMelli" name="codeMelli" id="codeMelli" required
+              <label class="col-form-label-sm" for="codeMelliId" class="pull-right">کد ملی</label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="user.codeMelli" name="codeMelli" id="codeMelliId" required
                 placeholder="کد ملی">
             </div>
             <div class="form-group">
@@ -59,9 +60,9 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-3 m-2">
-    <div class="d-flex justify-content-center mx-auto m-3">
-      <div class="card" style="min-height: 677px;">
+  <div class="col-sm-3 m-1">
+    <div class="d-flex justify-content-center mx-auto">
+      <div class="card" style="min-height: 672px;">
         <div class="d-flex justify-content-center p-2">
           <img class="card-img-top" src="assets/pics/login.png" style="max-width: 128px;" alt="">
         </div>
@@ -97,6 +98,24 @@
             <button type="submit" class="btn btn-sm btn-primary" [disabled]="!passwordForm.dirty || !passwordForm.valid">تغییر
               کلمه عبور</button>
           </form>
+        </div>
+        <div class="card-footer">
+          <div *ngIf="errorMessage" class="text-right alert alert-danger" role="alert">
+            {{errorMessage}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-5 m-1">
+    <div class="d-flex justify-content-center mx-auto">
+      <div class="card">
+        <div class="d-flex justify-content-center p-2">
+          <img class="card-img-top" src="assets/pics/claims.png" style="max-width: 128px;" alt="">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="card-title">ویرایش سطوح دسترسی کاربر</h5>
+          
         </div>
         <div class="card-footer">
           <div *ngIf="errorMessage" class="text-right alert alert-danger" role="alert">

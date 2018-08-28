@@ -72,6 +72,9 @@ module.exports = function (app) {
     app.route('/api/user/byUsername/:username')
         .get(checkIsAuthenticated, getUserByUsername);
 
+    app.route('/api/user/byCodeMelli/:codeMelli')
+        .get(checkIsAuthenticated, getUserByCodeMelli);
+
     app.route('/api/user/byUsername/:username/byCodeMelli/:codeMelli')
         .get(CheckUserExistByUsernameOrCodemelli);
 
@@ -226,6 +229,17 @@ getPortfoDarayiByUsername = function (req, res) {
 
 getUserByUsername = function (req, res) {
     context.User.find({ 'username': req.params.username }, '-password', function (err, user) {
+        if (err) {
+            res.statusCode = 500;
+            res.send(err);
+        }
+        if (!user) res.status(404).send();
+        res.json(user);
+    });
+};
+
+getUserByCodeMelli = function (req, res) {
+    context.User.find({ 'codeMelli': req.params.codeMelli }, '-password', function (err, user) {
         if (err) {
             res.statusCode = 500;
             res.send(err);

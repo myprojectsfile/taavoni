@@ -14,10 +14,15 @@ export class UserAdminComponent implements OnInit {
   constructor(private toastr: ToastrService, private apiService: ApiService) { }
 
   user: UserType = {};
+  response: [];
   passwordObject: PasswordType = {};
   errorMessage: string = null;
 
+  username: string;
+  codeMelli: string;
+
   ngOnInit() {
+
   }
 
   saveChanges() {
@@ -44,4 +49,49 @@ export class UserAdminComponent implements OnInit {
         });
   }
 
+  findUser() {
+    if (this.username) {
+      this.apiService.getUserByUsername(this.username)
+        .subscribe(
+          (user) => {
+            if (user.length > 0)
+              this.user = user[0];
+            else {
+              this.user = {};
+              this.toastr.info('کاربری با این مشخصات پیدا نشد');
+            }
+          },
+          (error) => {
+            console.log(error);
+            this.user = {};
+            this.toastr.error('خطا در بازیابی کاربر');
+          }
+        );
+    } else if (this.codeMelli) {
+      this.apiService.getUserByCodeMelli(this.codeMelli)
+        .subscribe(
+          (user) => {
+            if (user.length > 0)
+              this.user = user[0];
+            else {
+              this.user = {};
+              this.toastr.info('کاربری با این مشخصات پیدا نشد');
+            }
+          },
+          (error) => {
+            console.log(error);
+            this.user = {};
+            this.toastr.error('خطا در بازیابی کاربر');
+          }
+        );
+    }
+  }
+
+  usernameChange() {
+    this.codeMelli = '';
+  }
+  
+  codeMelliChange() {
+    this.username = '';
+  }
 }

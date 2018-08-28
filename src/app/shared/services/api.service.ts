@@ -90,7 +90,11 @@ export class ApiService {
 
   // User methods
   getUserByUsername(username: string) {
-    return this.httpClient.get<UserType>(this.apiUri + '/user/byUsername/' + username);
+    return this.httpClient.get<UserType[]>(this.apiUri + '/user/byUsername/' + username);
+  }
+
+  getUserByCodeMelli(codeMelli: string) {
+    return this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli);
   }
 
   getUserById(id: string) {
@@ -126,7 +130,7 @@ export class ApiService {
     const username = this.authService.getUsername();
     return this.httpClient.get(this.apiUri + `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUsername/${username}`);
   }
-  
+
   // gheymatRoozSahm
 
   getAkharinGheymatSahm() {
@@ -136,6 +140,8 @@ export class ApiService {
   sabtGheymatSahm(gheymat: GheymatType) {
     return this.httpClient.post(this.apiUri + '/gheymatRoozSahm', gheymat);
   }
-  
 
+  findUser(username: string, codeMelli: string) {
+
+  }
 }
