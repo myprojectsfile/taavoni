@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
 import { Router, RouterLinkWithHref } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ClaimType } from '../shared/types/claim';
 
 @Injectable()
 
@@ -69,8 +70,9 @@ export class AuthService {
     let token = this.getToken();
     if (token) {
       let tokenPayload: any = this.tokenPayload();
-      let userClaims: string[] = tokenPayload.user.claims;
-      if (userClaims.indexOf(claim) >= 0) return true;
+      let userClaims: ClaimType[] = tokenPayload.user.claims;
+      let claimItem = userClaims.find((claimObject) => { return claimObject.claim === claim; });
+      if (claimItem) return true;
     }
 
     return false;

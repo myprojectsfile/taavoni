@@ -86,6 +86,16 @@ module.exports = function (app) {
     app.route('/api/user/updatePass/:id')
         .put(checkIsAuthenticated, update_user_pass_byid);
 
+    // claim routes
+    app.route('/api/claim')
+        .get(checkIsAuthenticated, get_claim_list)
+        .post(post_claim);
+
+    app.route('/api/claim/:id')
+        .get(checkIsAuthenticated, get_claim_byid)
+        .put(checkIsAuthenticated, update_claim_byid)
+        .delete(checkIsAuthenticated, del_claim_byid);
+
     // GheymatRoozSahm routes
     app.route('/api/gheymatRoozSahm/akharinGheymat')
         .get(checkIsAuthenticated, get_akharinGhehmatSahm)
@@ -110,6 +120,36 @@ get_akharinGhehmatSahm = function (req, res) {
         }
     }).sort('-tarikh');
 }
+
+get_claim_list = function (req, res) {
+    context.Claim.find({}, function (err, claims) {
+        if (err) res.status(500).send(err);
+        else {
+            if (!claims) res.status(404).send();
+            else res.send(claims);
+        }
+    });
+}
+
+get_claim_byid = function (req, res) {
+    context.Claim.findById(req.params.id, function (err, claim) {
+        if (err) res.status(500).send(err);
+        else {
+            if (!claim) res.status(404).send();
+            else res.send(claim);
+        }
+    });
+}
+
+post_claim = function (req, res) {
+    // create new claim
+    var newClaim = new context.Claim(req.body);
+    newClaim.save(function (err, claim) {
+
+        if (err) res.status(500).send(err);
+        else res.json(claim);
+    });
+};
 
 post_gheymatSahm = function (req, res) {
     // create new ghyematRooz
@@ -482,6 +522,16 @@ update_user_byid = function (req, res) {
     });
 };
 
+update_claim_byid = function (req, res) {
+    context.Claim.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, claim) {
+        if (err) res.status(500).send(err);
+        else {
+            if (!claim) res.status(404).send();
+            else res.json(claim);
+        }
+    });
+};
+
 update_user_pass_byid = function (req, res) {
     var saltRounds = 10;
     bcrypt.genSalt(saltRounds, function (err, salt) {
@@ -554,6 +604,16 @@ del_user_byid = function (req, res) {
     });
 };
 
+del_claim_byid = function (req, res) {
+    context.Claim.remove({ _id: req.params.id }, function (err, claim) {
+        if (err) res.status(404).send(err);
+        else {
+            if (!claim) res.status(404).send();
+            else res.json({ message: 'کاربر مورد نظر با موفقیت حذف شد' });
+        }
+    });
+};
+
 post_login = function (req, res) {
     var userData = req.body;
     context.User.findOne({ 'username': userData.username }, function (err, user) {
@@ -594,48 +654,53 @@ post_login = function (req, res) {
 
 
 post_register = function (req, res) {
-    var newUser = new context.User(req.body);
+    // find shareholder claim
+    context.Claim.findOne({ 'claim': 'shareholder' }, (err, shareholderClaim) => {
+        if (err) res.status(500).send(err);
+        else {
+            var newUser = new context.User(req.body);
+            // add shareholder claim to user claims
+            newUser.claims.push(shareholderClaim);
+            newUser.save(function (err, user) {
+                if (err) res.status(500).send(err);
+                else {
+                    // get user and add it to token payload
+                    context.User.findById(user._id, '-password', function (err, userData) {
+                        if (err) res.status(500).send(err);
 
-    newUser.claims.push("shareholder");
+                        var expirationDate = getExpirationDate();
+                        var payload = {
+                            iss: 'taavoni.bpmo.ir',
+                            exp: expirationDate,
+                            user: userData,
+                            fullName: user.fullName
+                        };
 
-    newUser.save(function (err, user) {
-        if (err) {
-            res.status(400).send(err);
-        }
+                        // create token to send back to user register method
+                        var token = jwt.encode(payload, getTokenSecret());
 
-        // get user and add it to token payload
-        context.User.findById(user._id, '-password', function (err, userData) {
-            if (err) res.status(500).send(err);
+                        // create user portfo record
+                        var newPortfo = new context.Portfo({
+                            username: user.username,
+                            userId: user.userId,
+                            fullName: user.fullName,
+                            tedadSahm: 0,
+                            moamelat: []
+                        });
 
-            var expirationDate = getExpirationDate();
-            var payload = {
-                iss: 'taavoni.bpmo.ir',
-                exp: expirationDate,
-                user: userData,
-                fullName: user.fullName
-            };
+                        // save newPortfo record
+                        newPortfo.save(function (err, portfo) {
+                            if (err) res.status(500).send(err + ': خطا در ایجاد رکورد خالی پورتفوی کاربر بهنگام ثبت نام');
+                            else res.status(200).send({ token });
+                        });
 
-            var token = jwt.encode(payload, getTokenSecret());
-            // درج ردیف پورتفوی خالی برای کاربر بهنگام ثبت نام
-            var newPortfo = new context.Portfo({
-                username: user.username,
-                userId: user.userId,
-                fullName: user.fullName,
-                tedadSahm: 0,
-                moamelat: []
-            });
-
-            newPortfo.save(function (err, portfo) {
-                if (err) {
-                    res.status(400).send(err + ': خطا در ایجاد رکورد خالی پورتفوی کاربر بهنگام ثبت نام');
+                    });
                 }
-
-                res.status(200).send({ token });
             });
-
-        });
-
+        }
     });
+
+
 };
 
 

@@ -116,11 +116,47 @@
         </div>
         <div class="card-body text-center">
           <h5 class="card-title">ویرایش سطوح دسترسی کاربر</h5>
-          <ul>
-            <li *ngFor="let claim of user.claims">
-              {{ claim }}
-            </li>
-          </ul>
+          <div class="row">
+            <div class="col-sm text-right">
+              <table class="w-100" border="1">
+                <tr class="text-center">
+                  <th>لیست دسترسی ها</th>
+                </tr>
+                <tr (click)="addClaimToUser(claimItem._id)" *ngFor="let claimItem of claimList">
+                  <td class="addTo">
+                    <div class="row">
+                      <div class="col-sm text-left">
+                        {{ claimItem.tozihat }}
+                      </div>
+                      <div class="col-sm text-right">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-sm text-left">
+              <table class="w-100" border="1" *ngIf="user.claims">
+                <tr class="text-center">
+                  <th>لیست دسترسی های کاربر</th>
+                </tr>
+                <tr (click)="removeClaimFromUser(userClaim._id)" *ngFor="let userClaim of user.claims">
+                  <td class="removeFrom">
+                    <div class="row">
+                      <div class="col-sm text-left">
+                        <i class="fa fa-arrow-right btn-icon" aria-hidden="true"></i>
+                      </div>
+                      <div class="col-sm text-right">
+                        {{ userClaim.tozihat }}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
         </div>
         <div class="card-footer">
           <div *ngIf="errorMessage" class="text-right alert alert-danger" role="alert">

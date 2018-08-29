@@ -1,3 +1,5 @@
+import { ClaimType } from "./claim";
+
 export interface UserType {
     _id?: string;
     username?: string;
@@ -8,5 +10,5 @@ export interface UserType {
     codeMelli?: string;
     mobile?: string;
     enabled?: boolean
-    claims?: string[]
+    claims?: ClaimType[]
 }

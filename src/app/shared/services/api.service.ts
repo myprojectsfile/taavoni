@@ -7,6 +7,7 @@ import { AuthService } from '../../auth/auth.service';
 import { PortfoType } from '../types/portfo';
 import { UserType } from '../types/user';
 import { GheymatType } from '../types/gheymat';
+import { ClaimType } from '../types/claim';
 
 @Injectable({
   providedIn: 'root'
@@ -131,6 +132,10 @@ export class ApiService {
     return this.httpClient.get(this.apiUri + `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUsername/${username}`);
   }
 
+  // claim methods
+  getClaimList() {
+    return this.httpClient.get<ClaimType[]>(this.apiUri + '/claim');
+  }
   // gheymatRoozSahm
 
   getAkharinGheymatSahm() {

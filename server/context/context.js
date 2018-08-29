@@ -61,7 +61,7 @@ var UserSchema = new mongoose.Schema({
     mobile: { type: String, required: false },
     codeMelli: { type: String, required: false },
     enabled: { type: Boolean },
-    claims: [String]
+    claims: [ClaimSchema]
 });
 
 UserSchema.virtual('fullName').get(function () { return this.name + ' ' + this.family });
@@ -74,6 +74,7 @@ var GheymatRoozSahmSchema = new mongoose.Schema({
 
 // Define Models
 var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
+var Claim = mongoose.model('Claim', ClaimSchema);
 var User = mongoose.model('User', UserSchema);
 var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
 var Portfo = mongoose.model('Portfo', PortfoSchema)
@@ -104,6 +105,7 @@ UserSchema.pre('save', function (next) {
 
 module.exports = {
     Darkhast: Darkhast,
+    Claim: Claim,
     User: User,
     Moameleh: Moameleh,
     Portfo: Portfo,

@@ -24,6 +24,7 @@
     "@angular/router": "^6.1.0",
     "@auth0/angular-jwt": "^2.0.0",
     "@types/jquery": "^3.3.4",
+    "@types/underscore": "^1.8.9",
     "angular-lightgallery": "^1.0.8",
     "angular2-image-gallery": "^6.0.2",
     "bcrypt": "^2.0.1",
@@ -54,6 +55,7 @@
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.2.2",
     "serve-favicon": "^2.5.0",
+    "underscore": "^1.9.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
