@@ -23,16 +23,7 @@ export class UserAdminComponent implements OnInit {
   claimList: ClaimType[];
 
   ngOnInit() {
-    this.apiService.getClaimList()
-      .subscribe(
-        (data) => {
-          this.claimList = data;
-        },
-        (error) => {
-          console.log(error);
-          this.toastr.error('خطا در بازیابی لیست دسترسی های کاربر');
-        }
-      );
+    this.getClaimList();
   }
 
   saveChanges() {
@@ -59,43 +50,85 @@ export class UserAdminComponent implements OnInit {
         });
   }
 
-  findUser() {
+  async findUser() {
+
     if (this.username) {
-      this.apiService.getUserByUsername(this.username)
-        .subscribe(
-          (user) => {
-            if (user.length > 0)
-              this.user = user[0];
-            else {
-              this.user = {};
-              this.toastr.info('کاربری با این مشخصات پیدا نشد');
-            }
-          },
-          (error) => {
-            console.log(error);
-            this.user = {};
-            this.toastr.error('خطا در بازیابی کاربر');
-          }
-        );
+      let user = await this.apiService.getUserByUsernameAsync(this.username);
+      if (user.length > 0) {
+        this.user = user[0];
+        this.claimList = await this.getClaimListAsync();
+        // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
+        this.filterClaimList();
+      }
+      else {
+        this.user = {};
+        this.toastr.info('کاربری با این مشخصات پیدا نشد');
+        this.claimList = await this.getClaimListAsync();
+      }
+
     } else if (this.codeMelli) {
-      this.apiService.getUserByCodeMelli(this.codeMelli)
-        .subscribe(
-          (user) => {
-            if (user.length > 0)
-              this.user = user[0];
-            else {
-              this.user = {};
-              this.toastr.info('کاربری با این مشخصات پیدا نشد');
-            }
-          },
-          (error) => {
-            console.log(error);
-            this.user = {};
-            this.toastr.error('خطا در بازیابی کاربر');
-          }
-        );
+      let user = await this.apiService.getUserByCodeMelliAsync(this.codeMelli);
+      if (user.length > 0) {
+        this.user = user[0];
+        this.claimList = await this.getClaimListAsync();
+        // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
+        this.filterClaimList();
+      }
+      else {
+        this.user = {};
+        this.toastr.info('کاربری با این مشخصات پیدا نشد');
+        this.claimList = await this.getClaimListAsync();
+      }
     }
   }
+
+  // findUser() {
+  //   if (this.username) {
+  //     this.apiService.getUserByUsername(this.username)
+  //       .subscribe(
+  //         (user) => {
+  //           if (user.length > 0) {
+  //             this.user = user[0];
+  //             this.getClaimListAsync();
+  //             // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
+  //             this.filterClaimList();
+  //           }
+  //           else {
+  //             this.user = {};
+  //             this.toastr.info('کاربری با این مشخصات پیدا نشد');
+  //             this.getClaimList();
+  //           }
+  //         },
+  //         (error) => {
+  //           console.log(error);
+  //           this.user = {};
+  //           this.toastr.error('خطا در بازیابی کاربر');
+  //         }
+  //       );
+  //   } else if (this.codeMelli) {
+  //     this.apiService.getUserByCodeMelli(this.codeMelli)
+  //       .subscribe(
+  //         (user) => {
+  //           if (user.length > 0) {
+  //             this.getClaimListAsync();
+  //             this.user = user[0];
+  //             // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
+  //             this.filterClaimList();
+  //           }
+  //           else {
+  //             this.user = {};
+  //             this.toastr.info('کاربری با این مشخصات پیدا نشد');
+  //             this.getClaimList();
+  //           }
+  //         },
+  //         (error) => {
+  //           console.log(error);
+  //           this.user = {};
+  //           this.toastr.error('خطا در بازیابی کاربر');
+  //         }
+  //       );
+  //   }
+  // }
 
   usernameChange() {
     this.codeMelli = '';
@@ -106,13 +139,24 @@ export class UserAdminComponent implements OnInit {
   }
 
   addClaimToUser(id) {
-    // add to user claims
+    // push claim to userclaims
     let claimItem = this.claimList.find((claimObject) => { return claimObject._id === id; });
     this.user.claims.push(claimItem);
-    // remove from claimList
+    // slice claim from claimList
     this.claimList = this.claimList.filter(function (claimItem) {
       return claimItem._id !== id;
     });
+    // update user record on database
+    this.apiService.updateUserById(this.user, this.user._id)
+      .subscribe(
+        (newUser) => {
+
+        },
+        (error) => {
+          console.log(error);
+          this.toastr.error('خطا در ثبت تغییرات دسترسی کاربر در پایگاه داده');
+        }
+      );
   }
 
   removeClaimFromUser(id) {
@@ -123,5 +167,47 @@ export class UserAdminComponent implements OnInit {
     this.user.claims = this.user.claims.filter(function (claimItem) {
       return claimItem._id !== id;
     });
+
+    // update user record on database
+    this.apiService.updateUserById(this.user, this.user._id)
+      .subscribe(
+        (newUser) => {
+
+        },
+        (error) => {
+          console.log(error);
+          this.toastr.error('خطا در ثبت تغییرات دسترسی کاربر در پایگاه داده');
+        }
+      );
+  }
+
+
+  filterClaimList() {
+    this.claimList = this.claimList.filter((claim) => {
+      if (this.user) {
+        let userClaim = this.user.claims.find((claimObject) => { return claimObject._id === claim._id; });
+        if (userClaim) return false;
+        else return true;
+      }
+      else return true;
+    });
+  }
+
+  getClaimList() {
+    this.apiService.getClaimList()
+      .subscribe(
+        (data) => {
+          this.claimList = data;
+        },
+        (error) => {
+          console.log(error);
+          this.toastr.error('خطا در بازیابی لیست دسترسی های کاربر');
+        }
+      );
+  }
+
+  async getClaimListAsync() {
+    let asyncResult = await this.apiService.getClaimList().toPromise();
+    return asyncResult;
   }
 }

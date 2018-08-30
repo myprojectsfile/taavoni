@@ -1,4 +1,4 @@
-<form class="form-inline mt-3">
+<form class="form-inline mt-3 mr-4">
   <div class="form-group">
     <label class="col-form-label-sm" for="codeMelli">کد ملی</label>
     <input type="text" class="form-control form-control-sm" (focus)="codeMelliChange()" [(ngModel)]="codeMelli" name="codeMelli"
@@ -28,7 +28,7 @@
           <form style="direction: rtl;" #profileForm="ngForm" (ngSubmit)="saveChanges()">
             <div class="form-group">
               <label class="col-form-label-sm" for="usernameId" class="pull-right">کد سهامداری</label>
-              <input type="text" class="form-control form-control-sm" [(ngModel)]="user.username" name="username" id="usernameId" required
+              <input type="text" readonly class="form-control form-control-sm" [(ngModel)]="user.username" name="username" id="usernameId" required
                 placeholder="نام کاربری (کد سهامداری)">
             </div>
             <div class="form-group">
@@ -120,7 +120,7 @@
             <div class="col-sm text-right">
               <table class="w-100" border="1">
                 <tr class="text-center">
-                  <th>لیست دسترسی ها</th>
+                  <th>لیست دسترسی ها &nbsp; <i class="fa fa-shield"></i></th>
                 </tr>
                 <tr (click)="addClaimToUser(claimItem._id)" *ngFor="let claimItem of claimList">
                   <td class="addTo">
@@ -129,7 +129,7 @@
                         {{ claimItem.tozihat }}
                       </div>
                       <div class="col-sm text-right">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
                       </div>
                     </div>
                   </td>
@@ -139,13 +139,13 @@
             <div class="col-sm text-left">
               <table class="w-100" border="1" *ngIf="user.claims">
                 <tr class="text-center">
-                  <th>لیست دسترسی های کاربر</th>
+                  <th>لیست دسترسی های کاربر &nbsp; <i class="fa fa-user"></i></th>
                 </tr>
                 <tr (click)="removeClaimFromUser(userClaim._id)" *ngFor="let userClaim of user.claims">
                   <td class="removeFrom">
                     <div class="row">
                       <div class="col-sm text-left">
-                        <i class="fa fa-arrow-right btn-icon" aria-hidden="true"></i>
+                        <i class="fa fa-chevron-right btn-icon" aria-hidden="true"></i>
                       </div>
                       <div class="col-sm text-right">
                         {{ userClaim.tozihat }}

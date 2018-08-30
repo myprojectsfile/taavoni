@@ -94,8 +94,18 @@ export class ApiService {
     return this.httpClient.get<UserType[]>(this.apiUri + '/user/byUsername/' + username);
   }
 
+  async getUserByUsernameAsync(username: string) {
+    let result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byUsername/' + username).toPromise();
+    return result;
+  }
+
   getUserByCodeMelli(codeMelli: string) {
     return this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli);
+  }
+  
+  async getUserByCodeMelliAsync(codeMelli: string) {
+    let result=await this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli).toPromise();
+    return result;
   }
 
   getUserById(id: string) {
