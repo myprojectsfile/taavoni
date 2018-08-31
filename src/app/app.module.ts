@@ -27,6 +27,7 @@ import { ApiService } from './shared/services/api.service';
 import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
 import { EqualValidator } from './shared/validators/equal-validator.directive';
 import { UserAdminComponent } from './user-admin/user-admin.component';
+import { FileManagerComponent } from './shared/components/file-manager/file-manager.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -49,7 +50,8 @@ export function tokenGetter() {
     JalaliDatePipe,
     JalaliDatetimePipe,
     EqualValidator,
-    UserAdminComponent
+    UserAdminComponent,
+    FileManagerComponent
   ],
   imports: [
     BrowserModule,

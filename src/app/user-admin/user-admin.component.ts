@@ -51,7 +51,6 @@ export class UserAdminComponent implements OnInit {
   }
 
   async findUser() {
-
     if (this.username) {
       let user = await this.apiService.getUserByUsernameAsync(this.username);
       if (user.length > 0) {
@@ -82,56 +81,8 @@ export class UserAdminComponent implements OnInit {
     }
   }
 
-  // findUser() {
-  //   if (this.username) {
-  //     this.apiService.getUserByUsername(this.username)
-  //       .subscribe(
-  //         (user) => {
-  //           if (user.length > 0) {
-  //             this.user = user[0];
-  //             this.getClaimListAsync();
-  //             // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
-  //             this.filterClaimList();
-  //           }
-  //           else {
-  //             this.user = {};
-  //             this.toastr.info('کاربری با این مشخصات پیدا نشد');
-  //             this.getClaimList();
-  //           }
-  //         },
-  //         (error) => {
-  //           console.log(error);
-  //           this.user = {};
-  //           this.toastr.error('خطا در بازیابی کاربر');
-  //         }
-  //       );
-  //   } else if (this.codeMelli) {
-  //     this.apiService.getUserByCodeMelli(this.codeMelli)
-  //       .subscribe(
-  //         (user) => {
-  //           if (user.length > 0) {
-  //             this.getClaimListAsync();
-  //             this.user = user[0];
-  //             // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
-  //             this.filterClaimList();
-  //           }
-  //           else {
-  //             this.user = {};
-  //             this.toastr.info('کاربری با این مشخصات پیدا نشد');
-  //             this.getClaimList();
-  //           }
-  //         },
-  //         (error) => {
-  //           console.log(error);
-  //           this.user = {};
-  //           this.toastr.error('خطا در بازیابی کاربر');
-  //         }
-  //       );
-  //   }
-  // }
-
-  usernameChange() {
-    this.codeMelli = '';
+   usernameChange() {
+    this.codeMelli = '';    
   }
 
   codeMelliChange() {
