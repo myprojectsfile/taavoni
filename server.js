@@ -9,6 +9,11 @@ var cors = require('cors');
 var path = require('path');
 var apiController = require('./server/controllers/api.controller');
 var app = express();
+const methodOverride = require('method-override');
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const crypto = require('crypto');
+const multer = require('multer');
 
 app.set('views', path.join(__dirname, '/server/views'));
 app.set('view engine', 'jade');
@@ -20,13 +25,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// app.use('/api', api);
+app.use(methodOverride('_method'));
+
+// api routes
 apiController(app);
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
-
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -66,17 +68,65 @@ app.use(function (err, req, res, next) {
 const port = process.env.PORT || '3000';
 app.set('port', port);
 
-// mongoose.connect('mongodb://localhost/PersianDevsDb');
-// for localhost
-var mongoConnectPromise = mongoose.connect('mongodb://localhost/TaavoniDb', {});
-// for docker container
-// var mongoConnectPromise = mongoose.connect('mongodb://taavoni_mongodb:27017/TaavoniDb', {});
+// -------- mongodb config -----------
 
-mongoConnectPromise.then(function (db) {
+// for local mongo
+const mongoUri = 'mongodb://localhost:27017/TaavoniDb';
+// for docker mongo 
+// const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb;
+
+const mongoConnectPromise = mongoose.createConnection(mongoUri, { useNewUrlParser: true });
+
+// Init gridfs
+let gfs;
+
+mongoConnectPromise.once('open', () => {
+    // init stream
+    gfs = Grid(mongoConnectPromise.db, mongoose.mongo);
+    gfs.collection('uploads');
     console.log('1- Connected to mongodb Successfully');
     const server = http.createServer(app);
     server.listen(port, () => console.log(`2- Taavoni app running on localhost:${port}`));
 });
+
+// Create Storage engine 
+const storage = new GridFsStorage({
+    url: mongoUri,
+    file: (req, file) => {
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(16, (err, buf) => {
+                if (err) {
+                    return reject(err);
+                }
+                const filename = buf.toString('hex') + path.extname(file.originalname);
+                const fileInfo = {
+                    filename: filename,
+                    bucketName: 'uploads'
+                };
+                resolve(fileInfo);
+            });
+        });
+    }
+});
+
+const upload = multer({ storage });
+
+// file upload route
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.json({ file: req.file });
+});
+
+// index route
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
+
+
+// mongoConnectPromise.then(function (db) {
+//     console.log('1- Connected to mongodb Successfully');
+//     const server = http.createServer(app);
+//     server.listen(port, () => console.log(`2- Taavoni app running on localhost:${port}`));
+// });
 
 
 

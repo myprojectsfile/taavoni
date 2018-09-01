@@ -159,4 +159,7 @@ export class ApiService {
   findUser(username: string, codeMelli: string) {
 
   }
+
+  // file upload methods
+  
 }
