@@ -6,7 +6,6 @@ var bcrypt = require('bcrypt');
 
 
 module.exports = function (app) {
-
     // SafeKharid routes
     app.route('/api/safeKharid')
         .get(checkIsAuthenticated, get_safeKharid)

@@ -8,12 +8,10 @@ mongoose.Promise = bluebird;
 var cors = require('cors');
 var path = require('path');
 var apiController = require('./server/controllers/api.controller');
+var uploadController = require('./server/controllers/upload.controller');
 var app = express();
 const methodOverride = require('method-override');
-const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
-const crypto = require('crypto');
-const multer = require('multer');
 
 app.set('views', path.join(__dirname, '/server/views'));
 app.set('view engine', 'jade');
@@ -29,6 +27,9 @@ app.use(methodOverride('_method'));
 
 // api routes
 apiController(app);
+
+// upload routes 
+uploadController(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -89,37 +90,16 @@ mongoConnectPromise.once('open', () => {
     server.listen(port, () => console.log(`2- Taavoni app running on localhost:${port}`));
 });
 
-// Create Storage engine 
-const storage = new GridFsStorage({
-    url: mongoUri,
-    file: (req, file) => {
-        return new Promise((resolve, reject) => {
-            crypto.randomBytes(16, (err, buf) => {
-                if (err) {
-                    return reject(err);
-                }
-                const filename = buf.toString('hex') + path.extname(file.originalname);
-                const fileInfo = {
-                    filename: filename,
-                    bucketName: 'uploads'
-                };
-                resolve(fileInfo);
-            });
-        });
-    }
-});
 
-const upload = multer({ storage });
 
-// file upload route
-app.post('/upload', upload.single('file'), (req, res) => {
-    res.json({ file: req.file });
-});
 
 // index route
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
+
+
+
 
 
 // mongoConnectPromise.then(function (db) {
