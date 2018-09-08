@@ -1,4 +1,5 @@
 import { ClaimType } from "./claim";
+import { UserFileType } from "./userFile";
 
 export interface UserType {
     _id?: string;
@@ -9,6 +10,7 @@ export interface UserType {
     fullName?: string;
     codeMelli?: string;
     mobile?: string;
-    enabled?: boolean
-    claims?: ClaimType[]
+    enabled?: boolean;
+    claims?: ClaimType[];
+    userFiles?: UserFileType[];
 }

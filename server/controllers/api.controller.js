@@ -113,7 +113,10 @@ module.exports = function (app) {
     //     .get(checkIsAuthenticated, get_gheymatRoozSahm_byid)
     //     .put(checkIsAuthenticated, update_gheymatRoozSahm_byid)
     //     .delete(checkIsAuthenticated, del_gheymatRoozSahm_byid);
-
+    // NoeFile routes
+    app.route('/api/noeFile')
+        .get(get_noeFile)
+        .post(post_noeFile);
 };
 
 
@@ -125,6 +128,16 @@ get_akharinGhehmatSahm = function (req, res) {
             else res.send(gheymat);
         }
     }).sort('-tarikh');
+}
+
+get_noeFile = function (req, res) {
+    context.NoeFile.find({}, function (err, noeFile) {
+        if (err) res.status(500).send(err);
+        else {
+            if (!noeFile) res.status(404).send();
+            else res.send(noeFile);
+        }
+    });
 }
 
 get_claim_list = function (req, res) {
@@ -154,6 +167,16 @@ post_claim = function (req, res) {
 
         if (err) res.status(500).send(err);
         else res.json(claim);
+    });
+};
+
+post_noeFile = function (req, res) {
+    // create new noeFile
+    var noeFile = new context.NoeFile(req.body);
+    noeFile.save(function (err, noeFile) {
+
+        if (err) res.status(500).send(err);
+        else res.json(noeFile);
     });
 };
 

@@ -22,6 +22,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   uploadFile() {
+    
     this.fimeMangerService.uploadFile(this.selectedFile)
       .subscribe(
         event => {

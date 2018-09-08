@@ -53,6 +53,21 @@ var ClaimSchema = new mongoose.Schema({
     tozihat: { type: String, required: false }
 });
 
+// Noe File
+var NoeFileSchema = new mongoose.Schema({
+    noeFile: { type: String }
+});
+
+// FileInfo
+var UserFileSchema = new mongoose.Schema({
+    fileName: { type: String },
+    mimetype: { type: String },
+    noeFile: { type: String },
+    noeFileId: { type: String },
+    uploadDate: { type: String }
+});
+
+// User Schema
 var UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, required: true },
@@ -61,7 +76,8 @@ var UserSchema = new mongoose.Schema({
     mobile: { type: String, required: false },
     codeMelli: { type: String, required: false },
     enabled: { type: Boolean },
-    claims: [ClaimSchema]
+    claims: [ClaimSchema],
+    userFiles: [UserFileSchema]
 });
 
 UserSchema.virtual('fullName').get(function () { return this.name + ' ' + this.family });
@@ -72,9 +88,11 @@ var GheymatRoozSahmSchema = new mongoose.Schema({
     gheymatRooz: Number
 });
 
+
 // Define Models
 var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
 var Claim = mongoose.model('Claim', ClaimSchema);
+var NoeFile = mongoose.model('NoeFileSchema', NoeFileSchema);
 var User = mongoose.model('User', UserSchema);
 var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
 var Portfo = mongoose.model('Portfo', PortfoSchema)
@@ -106,6 +124,7 @@ UserSchema.pre('save', function (next) {
 module.exports = {
     Darkhast: Darkhast,
     Claim: Claim,
+    NoeFile: NoeFile,
     User: User,
     Moameleh: Moameleh,
     Portfo: Portfo,
