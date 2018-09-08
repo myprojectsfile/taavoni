@@ -6,6 +6,7 @@ var bcrypt = require('bcrypt');
 
 
 module.exports = function (app) {
+
     // SafeKharid routes
     app.route('/api/safeKharid')
         .get(checkIsAuthenticated, get_safeKharid)
@@ -31,7 +32,11 @@ module.exports = function (app) {
 
     // define auth routes
     app.route('/api/login')
+        .get((req, res) => {
+            res.json('login api work fine')
+        })
         .post(post_login);
+
     app.route('/api/register')
         .post(post_register);
 

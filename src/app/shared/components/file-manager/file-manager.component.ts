@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpEventType,HttpResponse } from '@angular/common/http';
+import { FileManagerService } from './file-manager.service';
 
 @Component({
   selector: 'file-manager',
@@ -7,9 +9,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FileManagerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private fimeMangerService: FileManagerService) { }
+
+  selectedFile: File;
 
   ngOnInit() {
+
   }
 
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
+  }
+
+  uploadFile() {
+    this.fimeMangerService.uploadFile(this.selectedFile)
+      .subscribe(
+        event => {
+          if (event.type == HttpEventType.UploadProgress) {
+            const percentDone = Math.round(100 * event.loaded / event.total);
+            console.log(`File is ${percentDone}% loaded.`);
+          } else if (event instanceof HttpResponse) {
+            console.log('File is completely loaded!');
+          }
+        },
+        (err) => {
+          console.log("Upload Error:", err);
+        }, () => {
+          console.log("Upload done");
+        }
+      );
+  }
 }

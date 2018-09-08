@@ -4351,6 +4351,10 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
+ng2-file-upload@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ng2-file-upload/-/ng2-file-upload-1.3.0.tgz#d90f8f568f62383462175f8bdfa0096b131f277a"
+
 ngx-toastr@^8.5.1:
   version "8.10.0"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-8.10.0.tgz#3b5b5c0e766e8f17540e9d6d08d086cb3acaa35a"
