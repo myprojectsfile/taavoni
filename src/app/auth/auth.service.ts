@@ -71,10 +71,14 @@ export class AuthService {
     if (token) {
       let tokenPayload: any = this.tokenPayload();
       let userClaims: ClaimType[] = tokenPayload.user.claims;
-      let claimItem = userClaims.find((claimObject) => { return claimObject.claim === claim; });
-      if (claimItem) return true;
+      if (!userClaims) return false;
+      else {
+        let claimItem = userClaims.find((claimObject) => {
+          return claimObject.claim === claim;
+        });
+        if (claimItem) return true;
+      }
     }
-
     return false;
   }
 

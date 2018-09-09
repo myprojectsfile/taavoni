@@ -688,8 +688,11 @@ post_register = function (req, res) {
         if (err) res.status(500).send(err);
         else {
             var newUser = new context.User(req.body);
+            
             // add shareholder claim to user claims
-            newUser.claims.push(shareholderClaim);
+            if(shareholderClaim)
+                newUser.claims.push(shareholderClaim);
+
             newUser.save(function (err, user) {
                 if (err) res.status(500).send(err);
                 else {
