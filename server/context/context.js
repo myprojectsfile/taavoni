@@ -92,7 +92,7 @@ var GheymatRoozSahmSchema = new mongoose.Schema({
 // Define Models
 var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
 var Claim = mongoose.model('Claim', ClaimSchema);
-var NoeFile = mongoose.model('NoeFileSchema', NoeFileSchema);
+var NoeFile = mongoose.model('NoeFile', NoeFileSchema);
 var User = mongoose.model('User', UserSchema);
 var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
 var Portfo = mongoose.model('Portfo', PortfoSchema)

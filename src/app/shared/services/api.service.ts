@@ -8,6 +8,7 @@ import { PortfoType } from '../types/portfo';
 import { UserType } from '../types/user';
 import { GheymatType } from '../types/gheymat';
 import { ClaimType } from '../types/claim';
+import { NoeFileType } from '../types/noeFile';
 
 @Injectable({
   providedIn: 'root'
@@ -102,9 +103,9 @@ export class ApiService {
   getUserByCodeMelli(codeMelli: string) {
     return this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli);
   }
-  
+
   async getUserByCodeMelliAsync(codeMelli: string) {
-    let result=await this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli).toPromise();
+    let result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli).toPromise();
     return result;
   }
 
@@ -160,6 +161,13 @@ export class ApiService {
 
   }
 
-  // file upload methods
-  
+  // noeFile routes
+  getListNoeFile() {
+    return this.httpClient.get<NoeFileType[]>(this.apiUri + '/noeFile');
+  }
+
+  sabtNoeFile(noeFile: NoeFileType) {
+    return this.httpClient.post(this.apiUri + '/noeFile', noeFile);
+  }
+
 }

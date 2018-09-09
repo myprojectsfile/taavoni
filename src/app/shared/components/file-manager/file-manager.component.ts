@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpEventType,HttpResponse } from '@angular/common/http';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FileManagerService } from './file-manager.service';
+import { NoeFileType } from '../../types/noeFile';
+import { ApiService } from '../../services/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'file-manager',
@@ -9,12 +12,24 @@ import { FileManagerService } from './file-manager.service';
 })
 export class FileManagerComponent implements OnInit {
 
-  constructor(private fimeMangerService: FileManagerService) { }
+  constructor(private fimeMangerService: FileManagerService, private apiService: ApiService, private toastr: ToastrService) { }
 
-  selectedFile: File;
+  selectedFile?: File;
+  listNoeFile: NoeFileType[] = [];
 
   ngOnInit() {
-
+    this.apiService.getListNoeFile()
+      .subscribe(
+        (listNoeFileResponse) => {
+          this.listNoeFile = listNoeFileResponse;
+          console.log(this.listNoeFile);
+          
+        },
+        (error) => {
+          console.log(error);
+          this.toastr.error('خطا در بازیابی لیست نوع فایل');
+        }
+      );
   }
 
   onFileChanged(event) {
@@ -22,7 +37,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   uploadFile() {
-    
+
     this.fimeMangerService.uploadFile(this.selectedFile)
       .subscribe(
         event => {

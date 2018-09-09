@@ -3,7 +3,7 @@
     <div class="input-group">
       <div class="custom-file custom-file-sm">
         <input type="file" (change)="onFileChanged($event)" class="custom-file-input custom-file-input-sm" id="inputGroupFile03">
-        <label class="col-form-label-sm custom-file-label" for="inputGroupFile03">{{selectedFile.name}}</label>
+        <label class="col-form-label-sm custom-file-label" for="inputGroupFile03">{{selectedFile?.name}}</label>
       </div>
       <div class="input-group-append">
         <button id="btn-upload" (click)="uploadFile()" class="btn btn-sm btn-outline-primary" type="submit">بارگزاری &nbsp;
