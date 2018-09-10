@@ -1,4 +1,12 @@
 <div class="row">
+  <div class="col-sm-4">
+    <select class="form-control form-control-sm" required name="noeFile" [(ngModel)]="noeFile" id="noeFile" #noeFileSelect style="max-width: 120px;">
+      <option *ngFor="let noeFileItem of listNoeFile" [ngValue]="noeFileItem.noeFile">{{noeFileItem.noeFile}}</option>
+    </select>
+  </div>
+  {{noeFile}}
+</div>
+<div class="row">
   <div class="col-md-12">
     <div class="input-group">
       <div class="custom-file custom-file-sm">

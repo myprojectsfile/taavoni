@@ -16,6 +16,7 @@ export class FileManagerComponent implements OnInit {
 
   selectedFile?: File;
   listNoeFile: NoeFileType[] = [];
+  noeFile: string = '';
 
   ngOnInit() {
     this.apiService.getListNoeFile()
@@ -23,7 +24,7 @@ export class FileManagerComponent implements OnInit {
         (listNoeFileResponse) => {
           this.listNoeFile = listNoeFileResponse;
           console.log(this.listNoeFile);
-          
+
         },
         (error) => {
           console.log(error);
