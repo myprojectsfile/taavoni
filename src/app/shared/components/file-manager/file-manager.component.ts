@@ -17,6 +17,8 @@ export class FileManagerComponent implements OnInit {
   selectedFile?: File;
   listNoeFile: NoeFileType[] = [];
   noeFile: string = '';
+  progress: number = 0;
+  userFiles: File[] = [];
 
   ngOnInit() {
     this.apiService.getListNoeFile()
@@ -43,16 +45,17 @@ export class FileManagerComponent implements OnInit {
       .subscribe(
         event => {
           if (event.type == HttpEventType.UploadProgress) {
-            const percentDone = Math.round(100 * event.loaded / event.total);
-            console.log(`File is ${percentDone}% loaded.`);
+            this.progress = Math.round(100 * event.loaded / event.total);
+            console.log(`File is ${this.progress}% loaded.`);
           } else if (event instanceof HttpResponse) {
-            console.log('File is completely loaded!');
+            this.toastr.success('تصویر مورد نظر با موفقیت بارگذاری شد')
           }
         },
         (err) => {
+          this.toastr.error('خطا در بارگذاری تصویر')
           console.log("Upload Error:", err);
         }, () => {
-          console.log("Upload done");
+          // console.log("Upload done");
         }
       );
   }

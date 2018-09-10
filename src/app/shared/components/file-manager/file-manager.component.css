@@ -5,3 +5,8 @@
 button#btn-upload{
     border: 1px solid #ced4da;
 }
+
+table {
+    font-size: 10pt;
+    border: 1px solid rgb(218, 211, 211);
+}
