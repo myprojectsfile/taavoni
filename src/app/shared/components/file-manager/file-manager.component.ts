@@ -53,7 +53,7 @@ export class FileManagerComponent implements OnInit {
             this.noeFile = '';
             setTimeout(() => {
               this.progress = 0;
-            }, 3000);
+            }, 2000);
           }
         },
         (err) => {
