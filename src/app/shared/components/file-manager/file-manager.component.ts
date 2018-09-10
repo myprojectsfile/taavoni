@@ -48,12 +48,21 @@ export class FileManagerComponent implements OnInit {
             this.progress = Math.round(100 * event.loaded / event.total);
             console.log(`File is ${this.progress}% loaded.`);
           } else if (event instanceof HttpResponse) {
-            this.toastr.success('تصویر مورد نظر با موفقیت بارگذاری شد')
+            this.toastr.success('تصویر مورد نظر با موفقیت بارگذاری شد');
+            this.selectedFile = null;
+            this.noeFile = '';
+            setTimeout(() => {
+              this.progress = 0;
+            }, 3000);
           }
         },
         (err) => {
           this.toastr.error('خطا در بارگذاری تصویر')
           console.log("Upload Error:", err);
+          this.selectedFile = null;
+          this.noeFile = '';
+          this.progress = 0;
+
         }, () => {
           // console.log("Upload done");
         }

@@ -76,10 +76,10 @@
                 #confirmPassword="ngModel" name="confirmPassword" id="confirmPassword" required validateEqual="newPassword"
                 placeholder="تکرار کلمه عبور">
             </div>
-            <small class="validation" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !passwordForm.submitted)">
+            <small class="validation clearfix" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !passwordForm.submitted)">
               کلمه عبور و تکرار آن یکسان نیستند
-            </small>
-            <button type="submit" class="btn btn-sm btn-primary" [disabled]="!passwordForm.dirty || !passwordForm.valid">تغییر
+            </small> 
+            <button type="submit" class="btn btn-sm btn-primary mt-2" [disabled]="!passwordForm.dirty || !passwordForm.valid">تغییر
               کلمه عبور</button>
           </form>
         </div>
