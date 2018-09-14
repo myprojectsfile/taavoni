@@ -55,4 +55,10 @@ export class ProfileComponent implements OnInit {
           this.toastr.error('خطا در تغییر کلمه عبور');
         });
   }
+
+  userChanged(newUser: UserType) {
+    this.user = newUser;
+    console.log(newUser);
+    
+  }
 }

@@ -9,6 +9,7 @@ import { UserType } from '../types/user';
 import { GheymatType } from '../types/gheymat';
 import { ClaimType } from '../types/claim';
 import { NoeFileType } from '../types/noeFile';
+import { UserFileType } from '../types/userFile';
 
 @Injectable({
   providedIn: 'root'
@@ -125,6 +126,10 @@ export class ApiService {
     return this.httpClient.put<UserType>(this.apiUri + '/user/updatePass/' + id, user);
   }
 
+  addFileToUser(userId: string, userFile: UserFileType) {
+    return this.httpClient.put<UserType>(this.apiUri + '/user/updateUserFiles/' + userId, userFile);
+  }
+  
   // Profile methods
   getPortfohByUsername(username: string) {
     return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);

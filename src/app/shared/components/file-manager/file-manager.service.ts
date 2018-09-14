@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FileManagerService {
+
   apiUri = environment.apiUri;
   fileUploadUri = this.apiUri + '/file/upload';
 
@@ -28,4 +29,5 @@ export class FileManagerService {
     const req = new HttpRequest('POST', this.fileUploadUri, formData, options);
     return this.httpClient.request(req);
   }
+  
 }

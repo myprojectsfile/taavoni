@@ -1,6 +1,6 @@
-<div class="row">
-  <div class="col-sm-3 mr-1 my-2">
-    <div class="d-flex justify-content-center mx-auto m-3">
+<div class="container-fluid">
+  <div class="row mt-4">
+    <div class="col-md-3">
       <div class="card">
         <div class="d-flex justify-content-center p-2">
           <img class="card-img-top" src="assets/pics/register.png" style="max-width: 128px;" alt="">
@@ -43,9 +43,7 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-sm-3 my-2">
-    <div class="d-flex justify-content-center mx-auto m-3">
+    <div class="col-md-3">
       <div class="card" style="min-height: 677px;">
         <div class="d-flex justify-content-center p-2">
           <img class="card-img-top" src="assets/pics/login.png" style="max-width: 128px;" alt="">
@@ -78,7 +76,7 @@
             </div>
             <small class="validation clearfix" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !passwordForm.submitted)">
               کلمه عبور و تکرار آن یکسان نیستند
-            </small> 
+            </small>
             <button type="submit" class="btn btn-sm btn-primary mt-2" [disabled]="!passwordForm.dirty || !passwordForm.valid">تغییر
               کلمه عبور</button>
           </form>
@@ -90,8 +88,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-sm-5 w-100">
-    <file-manager></file-manager>
+    <div class="col-md-6">
+      <file-manager [username]="user.username" (userChanged)="userChanged($event)"></file-manager>
+    </div>
   </div>
 </div>

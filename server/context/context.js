@@ -60,11 +60,14 @@ var NoeFileSchema = new mongoose.Schema({
 
 // FileInfo
 var UserFileSchema = new mongoose.Schema({
-    fileName: { type: String },
+    filename: { type: String },
+    encoding: { type: String },
+    md5: { type: String },
     mimetype: { type: String },
-    noeFile: { type: String },
-    noeFileId: { type: String },
-    uploadDate: { type: String }
+    originalname: { type: String },
+    size: { type: Number },
+    uploadDate: { type: String },
+    noeFile: { type: String }
 });
 
 // User Schema

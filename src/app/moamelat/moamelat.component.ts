@@ -19,6 +19,7 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
 
   @ViewChild('safeKharid')
   safeKharidComponent: DarkhastComponent;
+  
   @ViewChild('safeForush')
   safeForushComponent: DarkhastComponent;
 

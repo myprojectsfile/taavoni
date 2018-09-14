@@ -1,8 +1,11 @@
 export interface UserFileType {
     _id?: string;
-    fileName: string;
-    mimetype: string;
-    noeFile: string;
-    noeFileId: string;
-    uploadDate: string;
+    mimetype?: string;
+    noeFile?: string;
+    uploadDate?: string;
+    filename?: string;
+    encoding?: string;
+    md5?: string;
+    originalname?: string;
+    size?: number;
 }

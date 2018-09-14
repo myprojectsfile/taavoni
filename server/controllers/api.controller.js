@@ -92,6 +92,9 @@ module.exports = function (app) {
     app.route('/api/user/updatePass/:id')
         .put(checkIsAuthenticated, update_user_pass_byid);
 
+    app.route('/api/user/updateUserFiles/:id')
+        .put(checkIsAuthenticated, update_user_files_byid);
+
     // claim routes
     app.route('/api/claim')
         .get(checkIsAuthenticated, get_claim_list)
@@ -582,6 +585,20 @@ update_user_pass_byid = function (req, res) {
 
 };
 
+update_user_files_byid = function (req, res) {
+    context.User.findOne({ username: req.params.id }, (err, user) => {
+        if (err) res.status(500).send(err);
+
+        if (!user) res.status(404).send();
+        user.userFiles.push(req.body);
+        user.save((err) => {
+            if (err) res.json(err);
+
+            res.json(user);
+        })
+    });
+};
+
 
 del_safeKharid_byid = function (req, res) {
     context.Darkhast.remove({ _id: req.params.id }, function (err, darkhast) {
@@ -688,9 +705,9 @@ post_register = function (req, res) {
         if (err) res.status(500).send(err);
         else {
             var newUser = new context.User(req.body);
-            
+
             // add shareholder claim to user claims
-            if(shareholderClaim)
+            if (shareholderClaim)
                 newUser.claims.push(shareholderClaim);
 
             newUser.save(function (err, user) {

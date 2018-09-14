@@ -1,6 +1,6 @@
 <div class="row d-flex text-center">
   <div class="col-sm-12 mt-3 mb-2">
-    <i class="fa fa-picture-o" aria-hidden="true"></i> &nbsp; بارگذاری تصویر مدارک
+    <i class="fa fa-picture-o" aria-hidden="true" style="font-size:25px;"></i> &nbsp; بارگذاری تصویر مدارک
   </div>
 </div>
 <div class="row">
@@ -37,12 +37,30 @@
   <div class="col-sm-12 my-2">
     <table class="w-100" border="1">
       <tr class="text-center">
-        <th class="py-1">لیست مدارک بارگذاری شده</th>
+        <th class="py-1">نام فایل</th>
+        <th class="py-1">نوع سند</th>
+        <th class="py-1">نوع فایل</th>
+        <th class="py-1">مدیریت فایل</th>
       </tr>
       <tr *ngFor="let file of userFiles">
         <td>
           <div class="col-sm text-center">
-            شناسنامه
+            {{file.filename}}
+          </div>
+        </td>
+        <td>
+          <div class="col-sm text-center">
+            {{file.noeFile}}
+          </div>
+        </td>
+        <td>
+          <div class="col-sm text-center">
+            {{file.mimetype}}
+          </div>
+        </td>
+        <td>
+          <div class="col-sm text-center" style="direction: rtl;">
+              <i class="fa fa-search" style="font-size:18px;color: green;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-download" style="font-size:18px;color: blue;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-trash-o" style="font-size:18px;color: red;"></i>
           </div>
         </td>
       </tr>
