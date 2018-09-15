@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../shared/services/api.service';
 import { UserType } from '../../shared/types/user';
 import { AuthService } from '../../auth/auth.service';
 import { PasswordType } from '../../shared/types/password';
+import { FileManagerComponent } from '../../shared/components/file-manager/file-manager.component';
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +18,7 @@ export class ProfileComponent implements OnInit {
   user: UserType = {};
   passwordObject: PasswordType = {};
   errorMessage: string = null;
+  @ViewChild('filemanager') fileManagerComponent: FileManagerComponent;
 
   ngOnInit() {
     let username = this.authService.getUsername();
@@ -24,6 +26,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         (userData) => {
           this.user = userData[0];
+          this.fileManagerComponent.getUserFile(this.user.username);
         },
         (error) => {
           console.log(error);
@@ -58,7 +61,5 @@ export class ProfileComponent implements OnInit {
 
   userChanged(newUser: UserType) {
     this.user = newUser;
-    console.log(newUser);
-    
   }
 }

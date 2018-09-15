@@ -89,7 +89,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <file-manager [username]="user.username" (userChanged)="userChanged($event)"></file-manager>
+      <file-manager [user]="user" #filemanager (userChanged)="userChanged($event)"></file-manager>
     </div>
   </div>
 </div>

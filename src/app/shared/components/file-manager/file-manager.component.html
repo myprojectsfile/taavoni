@@ -60,7 +60,7 @@
         </td>
         <td>
           <div class="col-sm text-center" style="direction: rtl;">
-              <i class="fa fa-search" style="font-size:18px;color: green;cursor: pointer;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-download" style="font-size:18px;color: blue;cursor: pointer;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-trash-o" style="font-size:18px;color: red;cursor: pointer;"></i>
+              <i class="fa fa-search" (click)="previewFile(file.filename)" style="font-size:18px;color: green;cursor: pointer;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-download" (click)="downloadFile(file.filename)" style="font-size:18px;color: blue;cursor: pointer;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-trash-o" (click)="deleteFile(file.filename)" style="font-size:18px;color: red;cursor: pointer;"></i>
           </div>
         </td>
       </tr>

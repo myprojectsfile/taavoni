@@ -114,6 +114,10 @@ export class ApiService {
     return this.httpClient.get<UserType>(this.apiUri + '/user/' + id);
   }
 
+  getUserFilesByUsername(username: string) {
+    return this.httpClient.get<UserFileType[]>(this.apiUri + '/user/getUserFiles/' + username);
+  }
+
   CheckUserExistByUsernameOrCodemelli(username, codeMelli) {
     return this.httpClient.get<UserType>(this.apiUri + `/user/byUsername/${username}/byCodeMelli/${codeMelli}`);
   }
@@ -126,8 +130,8 @@ export class ApiService {
     return this.httpClient.put<UserType>(this.apiUri + '/user/updatePass/' + id, user);
   }
 
-  addFileToUser(userId: string, userFile: UserFileType) {
-    return this.httpClient.put<UserType>(this.apiUri + '/user/updateUserFiles/' + userId, userFile);
+  addFileToUser(username: string, userFile: UserFileType) {
+    return this.httpClient.put<UserType>(this.apiUri + '/user/updateUserFiles/' + username, userFile);
   }
   
   // Profile methods

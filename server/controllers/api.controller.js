@@ -92,8 +92,11 @@ module.exports = function (app) {
     app.route('/api/user/updatePass/:id')
         .put(checkIsAuthenticated, update_user_pass_byid);
 
-    app.route('/api/user/updateUserFiles/:id')
-        .put(checkIsAuthenticated, update_user_files_byid);
+    app.route('/api/user/updateUserFiles/:username')
+        .put(checkIsAuthenticated, update_user_files_by_username);
+
+    app.route('/api/user/getUserFiles/:username')
+        .get(checkIsAuthenticated, get_user_files_by_username);
 
     // claim routes
     app.route('/api/claim')
@@ -149,6 +152,20 @@ get_claim_list = function (req, res) {
         else {
             if (!claims) res.status(404).send();
             else res.send(claims);
+        }
+    });
+}
+
+get_user_files_by_username = function (req, res) {
+    context.User.findOne({ 'username': req.params.username }, function (err, user) {
+
+        if (err) res.status(500).send(err);
+        else {
+            if (!user) res.status(404).send();
+            else {
+                console.log(user.userFiles);
+                res.json(user.userFiles); ``
+            }
         }
     });
 }
@@ -585,8 +602,8 @@ update_user_pass_byid = function (req, res) {
 
 };
 
-update_user_files_byid = function (req, res) {
-    context.User.findOne({ username: req.params.id }, (err, user) => {
+update_user_files_by_username = function (req, res) {
+    context.User.findOne({ username: req.params.username }, (err, user) => {
         if (err) res.status(500).send(err);
 
         if (!user) res.status(404).send();

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, Output, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FileManagerService } from './file-manager.service';
 import { ToastrService } from 'ngx-toastr';
@@ -12,14 +12,16 @@ import { UserType } from '../../types/user';
   templateUrl: './file-manager.component.html',
   styleUrls: ['./file-manager.component.css']
 })
+
 export class FileManagerComponent implements OnInit {
+
 
   constructor(private fimeMangerService: FileManagerService, private apiService: ApiService, private toastr: ToastrService) { }
 
-  @HostBinding('attr.username')
+  @HostBinding('attr.user')
   @Input()
-  username: string;
-
+  user: UserType;
+  
   @Output() userChanged = new EventEmitter<UserType>();
 
 
@@ -31,16 +33,27 @@ export class FileManagerComponent implements OnInit {
   uploadedFile: UserFileType = {} as UserFileType;
 
   ngOnInit() {
+    this.getListNoeFile();
+  }
+
+  private getListNoeFile() {
     this.apiService.getListNoeFile()
-      .subscribe(
-        (listNoeFileResponse) => {
-          this.listNoeFile = listNoeFileResponse;
-        },
-        (error) => {
-          console.log(error);
-          this.toastr.error('خطا در بازیابی لیست نوع فایل');
-        }
-      );
+      .subscribe((listNoeFileResponse) => {
+        this.listNoeFile = listNoeFileResponse;
+      }, (error) => {
+        console.log(error);
+        this.toastr.error('خطا در بازیابی لیست نوع فایل');
+      });
+  }
+
+  public getUserFile(username:string) {
+    this.apiService.getUserFilesByUsername(username)
+      .subscribe((userFiles) => {
+        this.userFiles = userFiles;
+      }, (error) => {
+        console.log(error);
+        this.toastr.error('خطا در بازیابی لیست فایل های کاربر');
+      });
   }
 
   onFileChanged(event) {
@@ -69,7 +82,7 @@ export class FileManagerComponent implements OnInit {
             this.uploadedFile.size = file.size;
 
 
-            this.apiService.addFileToUser(this.username, this.uploadedFile)
+            this.apiService.addFileToUser(this.user.username, this.uploadedFile)
               .subscribe(
                 (updatedUser) => {
                   this.userFiles = updatedUser.userFiles;
@@ -98,5 +111,9 @@ export class FileManagerComponent implements OnInit {
           // console.log("Upload done");
         }
       );
+  }
+
+  previewFile(filename: string) {
+    console.log(filename);
   }
 }
