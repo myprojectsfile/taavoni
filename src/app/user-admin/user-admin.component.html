@@ -20,13 +20,13 @@
 <hr>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
         <div class="card">
           <div class="d-flex justify-content-center p-2">
             <img class="card-img-top" src="assets/pics/register.png" style="max-width: 128px;" alt="">
           </div>
           <div class="card-body text-center">
-            <h5 class="card-title">ویرایش مشخصات کاربر</h5>
+            <p class="card-title">ویرایش مشخصات کاربر</p>
             <form style="direction: rtl;" #profileForm="ngForm" (ngSubmit)="saveChanges()">
               <div class="form-group">
                 <label class="col-form-label-sm" for="usernameId" class="pull-right">کد سهامداری</label>
@@ -62,13 +62,13 @@
           </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card" style="min-height: 672px;">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+        <div class="card" style="min-height: 659px;">
           <div class="d-flex justify-content-center p-2">
             <img class="card-img-top" src="assets/pics/login.png" style="max-width: 128px;" alt="">
           </div>
           <div class="card-body text-center">
-            <h5 class="card-title">تغییر کلمه عبور</h5>
+            <p class="card-title">تغییر کلمه عبور</p>
             <form autocomplete="false" style="direction: rtl;" novalidate #passwordForm="ngForm" (ngSubmit)="changePass()">
               <div class="form-group">
                 <label class="col-form-label-sm" for="oldPassword" class="pull-right">کلمه عبور قبلی</label>
@@ -107,14 +107,14 @@
           </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
       <div class="d-flex justify-content-center">
-        <div class="card w-100" style="width: 100%;;min-height: 672px;">
+        <div class="card w-100" style="width: 100%;;min-height: 659px;">
           <div class="d-flex justify-content-center p-2">
             <img class="card-img-top" src="assets/pics/claims.png" style="max-width: 128px;" alt="">
           </div>
           <div class="card-body text-center">
-            <h5 class="card-title">ویرایش سطوح دسترسی کاربر</h5>
+            <p class="card-title">ویرایش سطوح دسترسی کاربر</p>
             <div class="row">
               <div class="col-sm text-right">
                 <table class="w-100" border="1">

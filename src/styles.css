@@ -63,3 +63,7 @@ label {
 .validation{
     color: red;
 }
+
+label{
+    font-size: 14px;
+}

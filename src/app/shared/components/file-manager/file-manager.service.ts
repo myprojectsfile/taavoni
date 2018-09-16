@@ -11,15 +11,16 @@ export class FileManagerService {
 
   apiUri = environment.apiUri;
   fileUploadUri = this.apiUri + '/file/upload';
+  fileDownloadUri = this.apiUri + '/file/';
 
   constructor(private httpClient: HttpClient) { }
 
   uploadFile(file: File): Observable<HttpEvent<any>> {
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file, file.name);
 
-    let params = new HttpParams();
+    const params = new HttpParams();
 
     const options = {
       params: params,
@@ -29,5 +30,9 @@ export class FileManagerService {
     const req = new HttpRequest('POST', this.fileUploadUri, formData, options);
     return this.httpClient.request(req);
   }
-  
+
+  downloadFile(filename: string): Observable<any> {
+    return this.httpClient.get(this.fileDownloadUri + filename, { responseType: 'arraybuffer' });
+  }
+
 }

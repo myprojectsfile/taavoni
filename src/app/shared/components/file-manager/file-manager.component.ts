@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Input, Output, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, Output, EventEmitter, AfterViewInit, HostListener, ViewChild } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FileManagerService } from './file-manager.service';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +8,7 @@ import { UserFileType } from '../../types/userFile';
 import { UserType } from '../../types/user';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'file-manager',
   templateUrl: './file-manager.component.html',
   styleUrls: ['./file-manager.component.css']
@@ -21,16 +22,18 @@ export class FileManagerComponent implements OnInit {
   @HostBinding('attr.user')
   @Input()
   user: UserType;
-  
+
   @Output() userChanged = new EventEmitter<UserType>();
 
+  @ViewChild('myModal') myModal;
 
   selectedFile?: File;
   listNoeFile: NoeFileType[] = [];
-  noeFile: string = '';
-  progress: number = 0;
+  noeFile = '';
+  progress = 0;
   userFiles: UserFileType[] = [] as UserFileType[];
   uploadedFile: UserFileType = {} as UserFileType;
+  imageUrl = '#';
 
   ngOnInit() {
     this.getListNoeFile();
@@ -46,7 +49,7 @@ export class FileManagerComponent implements OnInit {
       });
   }
 
-  public getUserFile(username:string) {
+  public getUserFile(username: string) {
     this.apiService.getUserFilesByUsername(username)
       .subscribe((userFiles) => {
         this.userFiles = userFiles;
@@ -57,7 +60,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   onFileChanged(event) {
-    this.selectedFile = event.target.files[0]
+    this.selectedFile = event.target.files[0];
   }
 
   uploadFile() {
@@ -65,12 +68,12 @@ export class FileManagerComponent implements OnInit {
     this.fimeMangerService.uploadFile(this.selectedFile)
       .subscribe(
         event => {
-          if (event.type == HttpEventType.UploadProgress) {
+          if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round(100 * event.loaded / event.total);
           } else if (event instanceof HttpResponse) {
             // ثبت مشخصات فایل بارگذاری شده در پروفایل کاربر
 
-            let file: any = event.body.file;
+            const file: any = event.body.file;
 
             this.uploadedFile.filename = file.filename;
             this.uploadedFile.mimetype = file.mimetype;
@@ -101,8 +104,8 @@ export class FileManagerComponent implements OnInit {
           }
         },
         (err) => {
-          this.toastr.error('خطا در بارگذاری تصویر')
-          console.log("Upload Error:", err);
+          this.toastr.error('خطا در بارگذاری تصویر');
+          console.log('Upload Error:', err);
           this.selectedFile = null;
           this.noeFile = '';
           this.progress = 0;
@@ -114,6 +117,51 @@ export class FileManagerComponent implements OnInit {
   }
 
   previewFile(filename: string) {
-    console.log(filename);
+    this.fimeMangerService.downloadFile(filename)
+      .subscribe(
+        (data) => {
+          const blob = new Blob([data], { type: 'image/png' });
+          const url = window.URL.createObjectURL(blob);
+          const image = new Image();
+          image.src = url;
+          const imageContainer = document.getElementById('imageContainer').setAttribute('src', url);
+          // console.log(imageContainer);
+          // document.body.appendChild(image);
+          // const pwa = window.open(url);
+          this.openModal();
+        },
+        (error) => { }
+      );
   }
+
+  downloadFile(filename: string) {
+    this.fimeMangerService.downloadFile(filename)
+      .subscribe(
+        (data) => {
+          const blob = new Blob([data], { type: 'image/png;' });
+          const dwldLink = document.createElement('a');
+          const url = URL.createObjectURL(blob);
+          const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+          if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+            dwldLink.setAttribute('target', '_blank');
+          }
+          dwldLink.setAttribute('href', url);
+          dwldLink.setAttribute('download', 'preview.png');
+          dwldLink.style.visibility = 'hidden';
+          document.body.appendChild(dwldLink);
+          dwldLink.click();
+          document.body.removeChild(dwldLink);
+        },
+        (error) => { }
+      );
+  }
+
+
+  openModal() {
+    document.getElementById('previewModal').click();
+  }
+
+  // closeModel() {
+  //    this.myModal.nativeElement.className = 'modal hide';
+  // }
 }

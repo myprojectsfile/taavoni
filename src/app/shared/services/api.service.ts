@@ -37,14 +37,13 @@ export class ApiService {
   }
 
   getListDarkhast(noeDarkhast: string) {
-    if (noeDarkhast == 'kharid') {
+    if (noeDarkhast === 'kharid') {
       return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeKharid');
-    }
-    else return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeForush');
+    } else { return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeForush'); }
   }
 
   getTedadKolSahamForushUser() {
-    let username = this.authService.getUsername();
+    const username = this.authService.getUsername();
     return this.httpClient.get<number[]>(this.apiUri + '/safeForush/tedadKolSahamForushUser/' + username);
   }
 
@@ -97,7 +96,7 @@ export class ApiService {
   }
 
   async getUserByUsernameAsync(username: string) {
-    let result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byUsername/' + username).toPromise();
+    const result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byUsername/' + username).toPromise();
     return result;
   }
 
@@ -106,7 +105,7 @@ export class ApiService {
   }
 
   async getUserByCodeMelliAsync(codeMelli: string) {
-    let result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli).toPromise();
+    const result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli).toPromise();
     return result;
   }
 
@@ -133,7 +132,7 @@ export class ApiService {
   addFileToUser(username: string, userFile: UserFileType) {
     return this.httpClient.put<UserType>(this.apiUri + '/user/updateUserFiles/' + username, userFile);
   }
-  
+
   // Profile methods
   getPortfohByUsername(username: string) {
     return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);
