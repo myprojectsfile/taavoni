@@ -1,10 +1,13 @@
-<div class="container-fluid">
-  <div class="row mt-3" dir="rtl">
+<div class="container-fluid mt-5">
+    <div class="row"></div>
+  </div>
+<div class="container-fluid mt-5">
+  <div class="row" dir="rtl">
     <form class="form-inline col-sm-12" novalidate #f="ngForm" (ngSubmit)="sabtDarkhast()">
       <div class="form-group">
         <label for="noeDarkhast">نوع درخواست</label>
-        <select class="form-control form-control-sm" (change)="noeDarkhastChanged($event)" required name="noeDarkhast" [(ngModel)]="noeDarkhast" id="noeDarkhast" #noeDarkhastSelect
-          style="max-width: 120px;">
+        <select class="form-control form-control-sm" (change)="noeDarkhastChanged($event)" required name="noeDarkhast"
+          [(ngModel)]="noeDarkhast" id="noeDarkhast" #noeDarkhastSelect style="max-width: 120px;">
           <option id="kharid" [ngValue]="0">خرید سهم</option>
           <option id="forush" [ngValue]="1">فروش سهم</option>
         </select>
@@ -15,14 +18,17 @@
       </div>
       <div class="form-group">
         <label for="arzeshSahm">میزان سرمایه گذاری(ریال)</label>
-        <input type="text" [disabled]="noeDarkhast==1" [(ngModel)]="arzeshSahm" class="form-control form-control-sm" name="arzeshSahm"
-          id="arzeshSahm">
+        <input type="text" [disabled]="noeDarkhast==1" [(ngModel)]="arzeshSahm" class="form-control form-control-sm"
+          name="arzeshSahm" id="arzeshSahm">
       </div>
-      <button type="button" [disabled]="noeDarkhast==1" class="btn btn-sm btn-secondary ml-3 mr-3" (click)="mohasebehTedad()">محاسبه تعداد</button>
+      <button type="button" [disabled]="noeDarkhast==1" class="btn btn-sm btn-secondary ml-3 mr-3" (click)="mohasebehTedad()">محاسبه
+        تعداد</button>
       <button type="button" class="btn btn-sm btn-primary" [disabled]="!f.valid" (click)="sabtDarkhast()">ثبت درخواست</button>
     </form>
   </div>
-  <hr>
+</div>
+<hr>
+<div class="container-fluid">
   <div class="row">
     <div class="col-sm-6">
       <div class="row">
@@ -70,3 +76,4 @@
       </div>
     </div>
   </div>
+</div>

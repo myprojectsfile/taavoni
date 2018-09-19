@@ -1,8 +1,8 @@
-<nav id="mainNav" class="navbar navbar-expand-sm  navbar-dark bg-dark justify-content-between">
+<nav id="mainNav" class="navbar navbar-expand-sm  navbar-dark bg-dark justify-content-between fixed-top">
   <a routerLink="/">
     <span class="fa fa-home text-white" style="font-size: 1.5rem;"></span>
   </a>
-  <div class="container">
+  <div class="container-fluid">
     <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -11,8 +11,8 @@
       <ul class="navbar-nav ml-auto  text-right">
 
         <li class="nav-item dropdown pull-right">
-          <a class="nav-link dropdown-toggle pull-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
+          <a class="nav-link dropdown-toggle pull-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             سهام
           </a>
           <div class="dropdown-menu text-right" style="left: -180%;direction: rtl;" aria-labelledby="navbarDropdownMenuLink">
@@ -23,8 +23,8 @@
           </div>
         </li>
         <li class="nav-item dropdown pull-right">
-          <a class="nav-link dropdown-toggle pull-right" href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
+          <a class="nav-link dropdown-toggle pull-right" href="#" id="profileDropdown" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             پروفایل
           </a>
           <div class="dropdown-menu text-right" style="left: -80%;direction: rtl;" aria-labelledby="profileDropdown">
@@ -33,8 +33,8 @@
           </div>
         </li>
         <li *ngIf="userHasClaim('admin')" class="nav-item dropdown pull-right">
-          <a class="nav-link dropdown-toggle pull-right" href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
+          <a class="nav-link dropdown-toggle pull-right" href="#" id="profileDropdown" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             مدیریت
           </a>
           <div class="dropdown-menu text-right" style="left: -80%;direction: rtl;" aria-labelledby="profileDropdown">
@@ -68,7 +68,7 @@
         </li>
         <li class="nav-item" *ngIf="authService.isAuthenticated()">
           <a class="nav-link">
-              خوش آمدید {{authService.getUserFullname()}}
+            خوش آمدید {{authService.getUserFullname()}}
           </a>
         </li>
 
@@ -76,6 +76,7 @@
     </div>
   </div>
 </nav>
+
 <router-outlet></router-outlet>
 
 <!-- footer section -->
