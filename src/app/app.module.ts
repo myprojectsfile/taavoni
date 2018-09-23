@@ -28,7 +28,6 @@ import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.p
 import { EqualValidator } from './shared/validators/equal-validator.directive';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { FileManagerComponent } from './shared/components/file-manager/file-manager.component';
-import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { FileManagerService } from './shared/components/file-manager/file-manager.service';
 
 export function tokenGetter() {
@@ -53,9 +52,7 @@ export function tokenGetter() {
     JalaliDatetimePipe,
     EqualValidator,
     UserAdminComponent,
-    FileManagerComponent,
-    FileSelectDirective,
-    FileDropDirective
+    FileManagerComponent
   ],
   imports: [
     BrowserModule,
