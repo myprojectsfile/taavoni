@@ -1,8 +1,6 @@
 const GridFsStorage = require('multer-gridfs-storage');
 const crypto = require('crypto');
-// const methodOverride = require('method-override');
 const multer = require('multer');
-const mongoUri = 'mongodb://localhost:27017/TaavoniDb';
 const path = require('path');
 const Grid = require('gridfs-stream');
 var bluebird = require('bluebird');
@@ -14,7 +12,7 @@ module.exports = function (app) {
   // for local mongo
   const mongoUri = 'mongodb://localhost:27017/TaavoniDb';
   // for docker mongo 
-  // const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb;
+  // const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb';
 
   mongoose.connect(mongoUri, {
     useNewUrlParser: true

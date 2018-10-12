@@ -134,7 +134,7 @@ export class QueueComponent implements OnInit {
 
   }
 
-  mohasebehTedad(arzeshSahm: number) {
+  mohasebehTedad() {
 
     this.apiService.getAkharinGheymatSahm()
       .subscribe(
