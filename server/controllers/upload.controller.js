@@ -76,36 +76,36 @@ module.exports = function (app) {
       });
     });
 
-//   app.route('/api/file/download/:filename')
-//     .get((req, res) => {
+  //   app.route('/api/file/download/:filename')
+  //     .get((req, res) => {
 
-//       gfs.collection('uploads');
+  //       gfs.collection('uploads');
 
-//       gfs.files.find({
-//         filename: req.params.filename,
-//         root: "uploads"
-//       }, function (err, file) {
-//         if (err) {
-//           return res.status(400).send(err);
-//         } else if (!file) {
-//           return res.status(404).send('فایل مورد نظر پیدا نشد');
-//         }
+  //       gfs.files.find({
+  //         filename: req.params.filename,
+  //         root: "uploads"
+  //       }, function (err, file) {
+  //         if (err) {
+  //           return res.status(400).send(err);
+  //         } else if (!file) {
+  //           return res.status(404).send('فایل مورد نظر پیدا نشد');
+  //         }
 
-//         res.json(file.filename);
-//         // res.set('Content-Type', file.contentType);
-//         // res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
+  //         res.json(file.filename);
+  //         // res.set('Content-Type', file.contentType);
+  //         // res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
 
-//         // var readstream = gfs.createReadStream({
-//         //   filename: req.params.filename
-//         // });
+  //         // var readstream = gfs.createReadStream({
+  //         //   filename: req.params.filename
+  //         // });
 
-//         // readstream.on("error", function (err) {
-//         //   res.end();
-//         // });
+  //         // readstream.on("error", function (err) {
+  //         //   res.end();
+  //         // });
 
-//         // readstream.pipe(res);
-//       });
-//     });
+  //         // readstream.pipe(res);
+  //       });
+  //     });
 
   app.route('/api/file/:filename')
     .get((req, res) => {
@@ -134,6 +134,52 @@ module.exports = function (app) {
         return readstream.pipe(res);
       });
     });
+
+    app.route('/api/file/:filename')
+    .delete((req, res) => {
+      //set collection name to lookup into
+      gfs.collection('uploads');
+
+      // First check if file exists
+      gfs.files.find({
+        filename: req.params.filename
+      }).toArray(function (err, files) {
+        if (!files || files.length === 0) {
+          return res.status(404).json({
+            responseCode: 1,
+            responseMessage: "error"
+          });
+        }
+        res.status(200).send();
+        // // create read stream
+        // var readstream = gfs.createReadStream({
+        //   filename: files[0].filename,
+        //   root: "uploads"
+        // });
+        // // set the proper content type 
+        // res.set('Content-Type', files[0].contentType);
+        // // res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
+        // // Return response
+        // return readstream.pipe(res);
+      });
+    });
+
+  // app.route('/api/file/:filename')
+  //   .delete((req, res) => {
+  //     //set collection name to lookup into
+  //     gfs.collection('uploads');
+
+  //     gfs.files.find({
+  //       filename: req.params.filename
+  //     }, (err, file) => {
+  //       console.log(file);
+  //       console.log(err);
+         
+  //       if (!file) res.status(404).send();
+  //       if (err) res.status(400).json(err);
+  //       else res.status(200).send();
+  //     });
+  //   });
 
   // Route for getting all the files
   app.route('/api/files')
