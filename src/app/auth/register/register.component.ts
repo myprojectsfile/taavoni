@@ -11,6 +11,7 @@ import { ApiService } from '../../shared/services/api.service';
 })
 export class RegisterComponent {
 
+  // tslint:disable-next-line:max-line-length
   constructor(private authService: AuthService, private apiService: ApiService, private toastr: ToastrService, private location: Location) { }
 
   errorMessage: string = null;
@@ -27,8 +28,7 @@ export class RegisterComponent {
     // چک میکنیم کاربری با نام کاربری یا کد ملی مشابه وجود نداشته باشد
     this.apiService.CheckUserExistByUsernameOrCodemelli(this.username, this.codeMelli).subscribe(
       (result) => {
-        if (result) this.toastr.error('قبلا یک کاربر با کد سهامداری یا کد ملی مشابه ثبت شده است');
-        else {
+        if (result) { this.toastr.error('قبلا یک کاربر با کد سهامداری یا کد ملی مشابه ثبت شده است'); } else {
           this.authService.register(this.username, this.password, this.name, this.family, this.codeMelli, this.mobile)
             .subscribe(
               res => {
@@ -44,8 +44,7 @@ export class RegisterComponent {
       },
       (error) => {
         console.log(error);
-        this.errorMessage = error.message;
-        this.toastr.error('خطا در فرآیند ثبت نام');
+        this.errorMessage = error.error.message;
       }
     );
   }

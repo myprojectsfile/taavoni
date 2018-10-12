@@ -26,12 +26,13 @@ export class LoginComponent implements OnInit {
       res => {
         this.authService.saveToken(res.token);
         const isAuthenticted = this.authService.isAuthenticated();
-        let tokenPayload: any = this.authService.tokenPayload();
+        const tokenPayload: any = this.authService.tokenPayload();
         this.toastr.success('به سامانه تعاونی کارکنان بندر بوشهر خوش آمدید');
         this.location.back();
       }
       , errRes => {
-        this.errorMessage = errRes;
+        console.log(errRes);
+        this.errorMessage = errRes.error.message;
       }
     );
   }
