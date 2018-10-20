@@ -12,14 +12,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class QueueComponent implements OnInit {
 
-  @ViewChild("safeKharidGrid") gridSafeKharid: DxDataGridComponent
-  @ViewChild("safeForushGrid") gridSafeForush: DxDataGridComponent
-  @ViewChild("noeDarkhastSelect") noeDarkhastSelect: any
+  @ViewChild('safeKharidGrid') gridSafeKharid: DxDataGridComponent;
+  @ViewChild('safeForushGrid') gridSafeForush: DxDataGridComponent;
+  @ViewChild('noeDarkhastSelect') noeDarkhastSelect: any;
 
   safeKharid: DarkhastType[];
   safeForush: DarkhastType[];
 
   tedadSahm: number;
+  gheymatSahm: number;
   arzeshSahm: number;
   noeDarkhast: number;
 
@@ -50,12 +51,13 @@ export class QueueComponent implements OnInit {
 
   sabtDarkhast() {
 
-    let darkhast: DarkhastType = {
+    const darkhast: DarkhastType = {
       tedadSahm: this.tedadSahm,
+      gheymatSahm: this.gheymatSahm,
       arzeshSahm: this.arzeshSahm
-    }
+    };
 
-    let noeDarkhast = this.noeDarkhastSelect.nativeElement.selectedIndex;
+    const noeDarkhast = this.noeDarkhastSelect.nativeElement.selectedIndex;
 
     // بررسی میکنیم که کاربر درخواست متقابلی در صف نداشته باشد
     this.apiService.checkUserHasNoActiveCrossRequest(noeDarkhast).subscribe(
@@ -66,30 +68,28 @@ export class QueueComponent implements OnInit {
 
           // ثبت درخواست
           // kharid sahm
-          if (noeDarkhast == 0) {
+          if (noeDarkhast === 0) {
             this.apiService.sabtDarkhastKharid(darkhast).subscribe((result) => {
               this.getSafeKharid();
-              this.toastr.success('درخواست خرید شما با موفقیت به صف خرید افزوده شد')
+              this.toastr.success('درخواست خرید شما با موفقیت به صف خرید افزوده شد');
             }, (error) => {
               console.log(error);
               this.toastr.error('خطا در افزودن درخواست به صف خرید');
-            })
-          }
-          //forush sahm
-          else if (noeDarkhast == 1) {
+            });
+          } else if (noeDarkhast === 1) {
             // کنترل می کنیم تعداد درخواست فروش بیشتر از تعداد دارایی سهام نباشد
             // تعداد سهام درخواست جدید
-            let tedadDarkhast: number = darkhast.tedadSahm || 0;
+            const tedadDarkhast: number = darkhast.tedadSahm || 0;
             // تعداد دارایی سهام
             this.apiService.getUserPortfoDarayi().subscribe(
               (data) => {
-                let tedadDarayi: number = data[0].tedadSahm || 0;
+                const tedadDarayi: number = data[0].tedadSahm || 0;
                 // محاسبه مجموع سهام تمامی درخواست های فروش فعلی کاربر
                 this.apiService.getTedadKolSahamForushUser().subscribe(
                   (data: any) => {
-                    let tedadKolSahamForushUser: number = data.tedadKolSahamForush || 0;
+                    const tedadKolSahamForushUser: number = data.tedadKolSahamForush || 0;
                     // محاسبه مجموع سهام تمامی درخواست های فروش فعلی کاربر
-                    let tedadMojoud = tedadDarayi - tedadKolSahamForushUser;
+                    const tedadMojoud = tedadDarayi - tedadKolSahamForushUser;
                     console.log(`tedadDarkhast:${tedadDarkhast}`);
                     console.log(`tedadDarayi:${tedadDarayi}`);
                     console.log(`tedadKolSahamForushUser:${tedadKolSahamForushUser}`);
@@ -102,7 +102,7 @@ export class QueueComponent implements OnInit {
                     // در صورتی که تعداد سهام جهت فروش بیشتر از دارایی نباشد درخواست را ثبت میکنیم
                     this.apiService.sabtDarkhastForush(darkhast).subscribe((result) => {
                       this.getSafeForush();
-                      this.toastr.success('درخواست فروش شما با موفقیت به صف فروش افزوده شد')
+                      this.toastr.success('درخواست فروش شما با موفقیت به صف فروش افزوده شد');
                     }, (error) => {
                       console.log(error);
                       this.toastr.error('خطا در افزودن درخواست به صف فروش');
@@ -139,10 +139,10 @@ export class QueueComponent implements OnInit {
     this.apiService.getAkharinGheymatSahm()
       .subscribe(
         (res) => {
-          let arzeshSahm = this.arzeshSahm;
-          let gheymatRooz = res.gheymatRooz || 0;
+          const arzeshSahm = this.arzeshSahm;
+          const gheymatRooz = res.gheymatRooz || 0;
           if (arzeshSahm > 0 && gheymatRooz > 0) {
-            let tedadSahm = Math.floor(arzeshSahm / gheymatRooz);
+            const tedadSahm = Math.floor(arzeshSahm / gheymatRooz);
             this.tedadSahm = tedadSahm;
           }
         },
@@ -154,7 +154,7 @@ export class QueueComponent implements OnInit {
   }
 
   noeDarkhastChanged(event) {
-    let selectedIndex = event.target.selectedIndex;
-    if (selectedIndex == 1) this.arzeshSahm = null;
+    const selectedIndex = event.target.selectedIndex;
+    if (selectedIndex === 1) { this.arzeshSahm = null; }
   }
 }

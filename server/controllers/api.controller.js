@@ -237,20 +237,29 @@ checkUserHasNoActiveCrossRequest = function (req, res) {
 
 get_safeKharid = function (req, res) {
   context.Darkhast.find({
-      'noeDarkhast': 'خرید'
-    }, function (err, result) {
-      if (err) {
-        res.statusCode = 500;
-        res.send(err);
-      }
-      res.json(result);
-    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
-    .sort('tarikhDarkhast');
+    'noeDarkhast': 'خرید'
+  }, null, {
+    sort: {
+      'gheymatSahm': 'desc',
+      'tarikhDarkhast': 'asc'
+    }
+  }, function (err, result) {
+    if (err) {
+      res.statusCode = 500;
+      res.send(err);
+    }
+    res.json(result);
+  }).where('vazeiat').in(['در انتظار', 'در حال انجام']);
 };
 
 get_safeForush = function (req, res) {
   context.Darkhast.find({
       'noeDarkhast': 'فروش'
+    }, null, {
+      sort: {
+        'gheymatSahm': 'asc',
+        'tarikhDarkhast': 'asc'
+      }
     }, function (err, result) {
       if (err) {
         res.statusCode = 500;

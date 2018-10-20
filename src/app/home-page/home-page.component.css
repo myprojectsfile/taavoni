@@ -9,37 +9,37 @@
 } 
 
 .carousel-slide-1 {
-    background: url('assets/carousel/slide_01.jpg');
+    background: url('/src/assets/carousel/slide_01.jpg');
     background-size: cover;
     background-position:center center;
 }
 
 .carousel-slide-2 {
-    background: url('assets/carousel/slide_02.jpg');
+    background: url('/src/assets/carousel/slide_02.jpg');
     background-size: cover;
     background-position:center center;
 }
 
 .carousel-slide-3 {
-    background: url('assets/carousel/slide_03.jpg');
+    background: url('/src/assets/carousel/slide_03.jpg');
     background-size: cover;
     background-position:center center;
 }
 
 .carousel-slide-4 {
-    background: url('assets/carousel/slide_04.jpg');
+    background: url('/src/assets/carousel/slide_04.jpg');
     background-size: cover;
     background-position:center center;
 }
 
 .carousel-slide-5 {
-    background: url('assets/carousel/slide_05.jpg');
+    background: url('/src/assets/carousel/slide_05.jpg');
     background-size: cover;
     background-position:center center;
 }
 
 .carousel-slide-6 {
-    background: url('assets/carousel/slide_06.jpg');
+    background: url('/src/assets/carousel/slide_06.jpg');
     background-size: cover;
     background-position:center center;
 }

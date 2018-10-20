@@ -26,6 +26,7 @@ var DarkhastSchema = new mongoose.Schema({
     fullName: String,
     noeDarkhast: { type: String, enum: ['خرید', 'فروش'], required: true },
     tedadSahm: Number,
+    gheymatSahm:Number,
     arzeshSahm: Number,
     tedadMoamelehShodeh: { type: Number, required: false, default: 0 },
     tedadBaghiMandeh: { type: Number, required: false },
