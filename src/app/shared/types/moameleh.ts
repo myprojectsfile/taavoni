@@ -2,7 +2,8 @@ export interface MoamelehType {
     _id?: string;
     tarikhMoameleh?: string;
     tedadSahmMoameleh: number;
-    arzeshSahmMoameleh: number;
+    gheymatMoameleh?: number;
+    arzeshSahmMoameleh?: number;
     forushandeh_username: string;
     forushandeh_fullName: string;
     forushandeh_darkhastId: string;

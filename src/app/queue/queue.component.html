@@ -43,12 +43,12 @@
       <div class="row">
         <div class="col-sm-12">
           <dx-data-grid #safeKharidGrid [dataSource]="safeKharid">
-            <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-            <dxi-column dataField="gheymatSahm" width="75" caption="قیمت سهم"></dxi-column>
-            <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-            <dxi-column dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
-            <dxi-column dataField="tedadBaghiMandeh" width="100" caption="تعداد باقی مانده"></dxi-column>
-            <dxi-column dataField="tarikhDarkhast" cellTemplate="jalaliDatetime" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="gheymatSahm" width="75" caption="قیمت سهم"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tedadBaghiMandeh" width="100" caption="تعداد باقی مانده"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tarikhDarkhast" cellTemplate="jalaliDatetime" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
 
             <div *dxTemplate="let d of 'jalaliDatetime'">
               {{d.data.tarikhDarkhast|jalaliDatetime}}
@@ -67,12 +67,12 @@
       <div class="row">
         <div class="col-sm-12">
           <dx-data-grid #safeForushGrid [dataSource]="safeForush">
-            <dxi-column dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-            <dxi-column dataField="gheymatSahm" width="75" caption="قیمت سهم"></dxi-column>
-            <dxi-column dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-            <dxi-column dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
-            <dxi-column dataField="tedadBaghiMandeh" width="100" caption="تعداد باقی مانده"></dxi-column>
-            <dxi-column dataField="tarikhDarkhast" cellTemplate="jalaliDatetime" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="gheymatSahm" width="75" caption="قیمت سهم"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tedadBaghiMandeh" width="100" caption="تعداد باقی مانده"></dxi-column>
+            <dxi-column [allowSorting]="false"  dataField="tarikhDarkhast" cellTemplate="jalaliDatetime" width="190" caption="تاریخ ثبت درخواست"></dxi-column>
 
             <div *dxTemplate="let d of 'jalaliDatetime'">
               {{d.data.tarikhDarkhast|jalaliDatetime}}

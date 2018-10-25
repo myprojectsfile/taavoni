@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DarkhastComponent } from '../darkhast/darkhast.component';
 import { MoamelehType } from '../shared/types/moameleh';
 import { ToastrService } from 'ngx-toastr';
@@ -12,77 +12,81 @@ import { ApiService } from '../shared/services/api.service';
   templateUrl: './moamelat.component.html',
   styleUrls: ['./moamelat.component.css']
 })
-export class MoamelatComponent implements OnInit, AfterViewInit {
+export class MoamelatComponent {
 
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   @ViewChild('safeKharid')
   safeKharidComponent: DarkhastComponent;
-  
+
   @ViewChild('safeForush')
   safeForushComponent: DarkhastComponent;
 
-  tradeButtonEnabled: boolean = true;
-
-  ngOnInit() {
-
-  }
-
-  ngAfterViewInit(): void {
-  }
-
+  tradeButtonEnabled = true;
+  avalinForushandeh: DarkhastType;
+  avalinKharidar: DarkhastType;
+  gheymatSahmForushandeh;
+  gheymatSahmKharidar;
 
   doTrade() {
-    let avalinForushandeh: DarkhastType = this.safeForushComponent.getAvalinDarkhast();
-    let avalinKharidar: DarkhastType = this.safeKharidComponent.getAvalinDarkhast();
-    let tedadSahmForushandeh = avalinForushandeh.tedadBaghiMandeh;
-    let tedadSahmKharidar = avalinKharidar.tedadBaghiMandeh;
+    this.avalinForushandeh = this.safeForushComponent.getAvalinDarkhast();
+    this.avalinKharidar = this.safeKharidComponent.getAvalinDarkhast();
+    const tedadSahmForushandeh = this.avalinForushandeh.tedadBaghiMandeh;
+    const tedadSahmKharidar = this.avalinKharidar.tedadBaghiMandeh;
+    this.gheymatSahmForushandeh = this.avalinForushandeh.gheymatSahm;
+    this.gheymatSahmKharidar = this.avalinKharidar.gheymatSahm;
     let _tedadSahmMoameleh = 0;
-    let _arzeshSahmMoameleh = 0;
     // مشخصات درخواست های خرید و فروش
-    let _tedadBaghimandehKharidar = avalinKharidar.tedadBaghiMandeh;
-    let _tedadMoamelehShodehKharidar = avalinKharidar.tedadMoamelehShodeh;
-    let _tedadBaghimandehForushandeh = avalinForushandeh.tedadBaghiMandeh;
-    let _tedadMoamelehShodehForushandeh = avalinForushandeh.tedadMoamelehShodeh;
+    let _tedadBaghimandehKharidar = this.avalinKharidar.tedadBaghiMandeh;
+    let _tedadMoamelehShodehKharidar = this.avalinKharidar.tedadMoamelehShodeh;
+    let _tedadBaghimandehForushandeh = this.avalinForushandeh.tedadBaghiMandeh;
+    let _tedadMoamelehShodehForushandeh = this.avalinForushandeh.tedadMoamelehShodeh;
 
     // مشخص میکنیم تعداد درخواست خرید ها بیشتر است یا فروش ها
     // در صورتی که تعداد فروشنده بیشتر یا مساوی خریدار باشد
     if (tedadSahmForushandeh >= tedadSahmKharidar) {
       _tedadSahmMoameleh = tedadSahmKharidar;
-      //در صورتی که تعداد فروشنده کمتر از خریدار باشد
+      // در صورتی که تعداد فروشنده کمتر از خریدار باشد
     } else {
       _tedadSahmMoameleh = tedadSahmForushandeh;
     }
 
     // محاسبه تعداد معامله شده و تعداد باقیمانده خریدار و فروشنده
     _tedadMoamelehShodehKharidar = _tedadMoamelehShodehKharidar + _tedadSahmMoameleh;
-    _tedadBaghimandehKharidar = avalinKharidar.tedadSahm - _tedadMoamelehShodehKharidar;
-    _tedadMoamelehShodehForushandeh = _tedadMoamelehShodehForushandeh + _tedadSahmMoameleh;;
-    _tedadBaghimandehForushandeh = avalinForushandeh.tedadSahm - _tedadMoamelehShodehForushandeh;
+    _tedadBaghimandehKharidar = this.avalinKharidar.tedadSahm - _tedadMoamelehShodehKharidar;
+    _tedadMoamelehShodehForushandeh = _tedadMoamelehShodehForushandeh + _tedadSahmMoameleh;
+    _tedadBaghimandehForushandeh = this.avalinForushandeh.tedadSahm - _tedadMoamelehShodehForushandeh;
 
     // وضعیت درخواست خرید و فروش را محاسبه می کنیم
     let vazeiatDarkhastKharid, vazeiatDarkhastForush: string;
 
-    if (_tedadBaghimandehKharidar == 0)
+    if (_tedadBaghimandehKharidar === 0) {
       vazeiatDarkhastKharid = 'انجام شده';
-    else
+    } else {
       vazeiatDarkhastKharid = 'در حال انجام';
+    }
 
-    if (_tedadBaghimandehForushandeh == 0)
+    if (_tedadBaghimandehForushandeh === 0) {
       vazeiatDarkhastForush = 'انجام شده';
-    else
+    } else {
       vazeiatDarkhastForush = 'در حال انجام';
-
+    }
+    // قیمت معامله را محاسبه میکنیم
+    const _gheymatMoameleh = this.gheymatSahmKharidar;
     // ردیف معامله را آماده میکنیم
-    let moamelehNewRow = this.prepareNewMoamelehRow(avalinForushandeh, avalinKharidar, _tedadSahmMoameleh, _arzeshSahmMoameleh);
+    const moamelehNewRow = this.prepareNewMoamelehRow(
+      this.avalinForushandeh,
+      this.avalinKharidar,
+      _tedadSahmMoameleh,
+      _gheymatMoameleh);
     // آبجکت به روز رسانی درخواست خرید و فروش را ایجاد می کنیم
-    let moamelatDarkhastKharid = avalinKharidar.moamelat || [];
-    let moamelatDarkhastForush = avalinForushandeh.moamelat || [];
-    let darkhastKharidUpdateObj: DarkhastType = {};
-    let darkhastForushUpdateObj: DarkhastType = {};
-    let darkhastKharidId: string = avalinKharidar._id;
-    let darkhastForushId: string = avalinForushandeh._id;
+    const moamelatDarkhastKharid = this.avalinKharidar.moamelat || [];
+    const moamelatDarkhastForush = this.avalinForushandeh.moamelat || [];
+    const darkhastKharidUpdateObj: DarkhastType = {};
+    const darkhastForushUpdateObj: DarkhastType = {};
+    const darkhastKharidId: string = this.avalinKharidar._id;
+    const darkhastForushId: string = this.avalinForushandeh._id;
 
     darkhastKharidUpdateObj.tedadMoamelehShodeh = _tedadMoamelehShodehKharidar;
     darkhastKharidUpdateObj.tedadBaghiMandeh = _tedadBaghimandehKharidar;
@@ -96,25 +100,24 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
     moamelatDarkhastForush.push(moamelehNewRow);
     darkhastForushUpdateObj.moamelat = moamelatDarkhastForush;
 
-    // ثبت معامله  
+    // ثبت معامله
     this.apiService.sabtMoameleh(moamelehNewRow).subscribe((newMoameleh) => {
       moamelehNewRow._id = newMoameleh._id;
       this.toastr.success('معامله جدید با موفقیت ثبت شد');
       this.updateDarkhastKharid(darkhastKharidUpdateObj, darkhastKharidId)
         .subscribe((data) => {
-          // برای ردیف درخواست خرید ، یک ردیف معامله ثبت میکنیم          
+          // برای ردیف درخواست خرید ، یک ردیف معامله ثبت میکنیم
           this.toastr.success('مشخصات درخواست خرید با موفقیت به روزرسانی شد');
           this.updateDarkhastForush(darkhastForushUpdateObj, darkhastForushId)
-            .subscribe((data) => {
+            .subscribe(() => {
               // برای ردیف درخواست فروش ، یک ردیف معامله ثبت میکنیم
               this.toastr.success('مشخصات درخواست فروش با موفقیت به روزرسانی شد');
               // نمای گریدهای خرید و فروش را به روز رسانی میکنیم
               this.safeKharidComponent.loadDarkhastData();
               this.safeForushComponent.loadDarkhastData();
               // جدول دارایی سهام - پورتفو - خریدار و فروشنده را به روز رسانی میکنیم
-              this.UpdatePortfoKharidar(avalinKharidar, _tedadSahmMoameleh, moamelehNewRow);
-              this.UpdatePortfoForushandeh(avalinForushandeh, _tedadSahmMoameleh, moamelehNewRow);
-
+              this.UpdatePortfoKharidar(this.avalinKharidar, _tedadSahmMoameleh, moamelehNewRow);
+              this.UpdatePortfoForushandeh(this.avalinForushandeh, _tedadSahmMoameleh, moamelehNewRow);
             }, (error) => {
               console.log(error);
               this.toastr.error('خطا در به روز رسانی مشخصات درخواست فروش.با پشتیبان سامانه تماس بگیرید');
@@ -126,16 +129,16 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
     }, (error) => {
       console.log(error);
     });
-  };
+  }
 
   private UpdatePortfoKharidar(avalinKharidar: DarkhastType, _tedadSahmMoameleh: number, moamelehNewRow: MoamelehType) {
     this.apiService.getPortfohByUsername(avalinKharidar.username)
       .subscribe((portfo) => {
         portfo = portfo[0];
         // تعداد سهم جدید خریدار را محاسبه میکنیم
-        let tedadSahmJadid = portfo.tedadSahm + _tedadSahmMoameleh;
-        let moamelatPortfoKharidar = portfo.moamelat || [];
-        let portfoKharidarUpdateObj: PortfoType = {
+        const tedadSahmJadid = portfo.tedadSahm + _tedadSahmMoameleh;
+        const moamelatPortfoKharidar = portfo.moamelat || [];
+        const portfoKharidarUpdateObj: PortfoType = {
           tedadSahm: tedadSahmJadid,
           moamelat: moamelatPortfoKharidar
         };
@@ -162,9 +165,9 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
       .subscribe((portfo) => {
         // تعداد سهم جدید فروشنده را محاسبه میکنیم
         portfo = portfo[0];
-        let tedadSahmJadid = portfo.tedadSahm - _tedadSahmMoameleh;
-        let moamelatPortfoForushandeh = portfo.moamelat || [];
-        let portfoForushandehUpdateObj: PortfoType = {
+        const tedadSahmJadid = portfo.tedadSahm - _tedadSahmMoameleh;
+        const moamelatPortfoForushandeh = portfo.moamelat || [];
+        const portfoForushandehUpdateObj: PortfoType = {
           tedadSahm: tedadSahmJadid,
           moamelat: moamelatPortfoForushandeh
         };
@@ -185,16 +188,21 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
       });
   }
 
-  private prepareNewMoamelehRow(avalinForushandeh: DarkhastType, avalinKharidar: DarkhastType, _tedadSahmMoameleh: number, _arzeshSahmMoameleh: number): MoamelehType {
-    let _forushandeh_username = avalinForushandeh.username;
-    let _forushandeh_fullName = avalinForushandeh.fullName;
-    let _forushandeh_darkhastId = avalinForushandeh._id;
-    let _kharidar_username = avalinKharidar.username;
-    let _kharidar_fullName = avalinKharidar.fullName;
-    let _kharidar_darkhastId = avalinKharidar._id;
-    let moameleh: MoamelehType = {
+  private prepareNewMoamelehRow(
+    avalinForushandeh: DarkhastType,
+    avalinKharidar: DarkhastType,
+    _tedadSahmMoameleh: number,
+    _gheymatMoameleh: number): MoamelehType {
+    const _forushandeh_username = avalinForushandeh.username;
+    const _forushandeh_fullName = avalinForushandeh.fullName;
+    const _forushandeh_darkhastId = avalinForushandeh._id;
+    const _kharidar_username = avalinKharidar.username;
+    const _kharidar_fullName = avalinKharidar.fullName;
+    const _kharidar_darkhastId = avalinKharidar._id;
+    const moameleh: MoamelehType = {
       tedadSahmMoameleh: _tedadSahmMoameleh,
-      arzeshSahmMoameleh: _arzeshSahmMoameleh,
+      gheymatMoameleh: _gheymatMoameleh,
+      arzeshSahmMoameleh: (_tedadSahmMoameleh * _gheymatMoameleh),
       forushandeh_username: _forushandeh_username,
       forushandeh_fullName: _forushandeh_fullName,
       forushandeh_darkhastId: _forushandeh_darkhastId,
@@ -214,42 +222,53 @@ export class MoamelatComponent implements OnInit, AfterViewInit {
     return this.apiService.updateDarkhastById(darkhastKharidUpdateObj, darkhastKharidId);
   }
 
-  private PostNewMoameleh(avalinForushandeh: DarkhastType, avalinKharidar: DarkhastType, _tedadSahmMoameleh: number, _arzeshSahmMoameleh: number): MoamelehType {
-    let _forushandeh_username = avalinForushandeh.username;
-    let _forushandeh_fullName = avalinForushandeh.fullName;
-    let _forushandeh_darkhastId = avalinForushandeh._id;
-    let _kharidar_username = avalinKharidar.username;
-    let _kharidar_fullName = avalinKharidar.fullName;
-    let _kharidar_darkhastId = avalinKharidar._id;
+  // private PostNewMoameleh(avalinForushandeh: DarkhastType,
+  //   avalinKharidar: DarkhastType,
+  //   _tedadSahmMoameleh: number,
+  //   _arzeshSahmMoameleh: number): MoamelehType {
+  //   const _forushandeh_username = avalinForushandeh.username;
+  //   const _forushandeh_fullName = avalinForushandeh.fullName;
+  //   const _forushandeh_darkhastId = avalinForushandeh._id;
+  //   const _kharidar_username = avalinKharidar.username;
+  //   const _kharidar_fullName = avalinKharidar.fullName;
+  //   const _kharidar_darkhastId = avalinKharidar._id;
 
-    let moameleh: MoamelehType = {
-      tedadSahmMoameleh: _tedadSahmMoameleh,
-      arzeshSahmMoameleh: _arzeshSahmMoameleh,
-      forushandeh_username: _forushandeh_username,
-      forushandeh_fullName: _forushandeh_fullName,
-      forushandeh_darkhastId: _forushandeh_darkhastId,
-      kharidar_username: _kharidar_username,
-      kharidar_fullName: _kharidar_fullName,
-      kharidar_darkhastId: _kharidar_darkhastId
-    };
+  //   const moameleh: MoamelehType = {
+  //     tedadSahmMoameleh: _tedadSahmMoameleh,
+  //     arzeshSahmMoameleh: _arzeshSahmMoameleh,
+  //     forushandeh_username: _forushandeh_username,
+  //     forushandeh_fullName: _forushandeh_fullName,
+  //     forushandeh_darkhastId: _forushandeh_darkhastId,
+  //     kharidar_username: _kharidar_username,
+  //     kharidar_fullName: _kharidar_fullName,
+  //     kharidar_darkhastId: _kharidar_darkhastId
+  //   };
 
-    this.apiService.sabtMoameleh(moameleh).subscribe((newMoameleh) => {
-      console.log(newMoameleh);
-      this.toastr.success('معامله جدید با موفقیت ثبت شد');
-    }, (error) => {
-      console.log(error);
-    });
+  //   this.apiService.sabtMoameleh(moameleh).subscribe((newMoameleh) => {
+  //     console.log(newMoameleh);
+  //     this.toastr.success('معامله جدید با موفقیت ثبت شد');
+  //   }, (error) => {
+  //     console.log(error);
+  //   });
 
-    return moameleh;
-  }
+  //   return moameleh;
+  // }
 
   listKharidChanged(listKharid: DarkhastType[]) {
-    let listKharidGtZero: boolean = (listKharid.length > 0);
-    this.tradeButtonEnabled = this.tradeButtonEnabled && listKharidGtZero;
+    this.avalinForushandeh = this.safeForushComponent.getAvalinDarkhast();
+    this.avalinKharidar = this.safeKharidComponent.getAvalinDarkhast();
+    this.gheymatSahmForushandeh = this.avalinForushandeh ? this.avalinForushandeh.gheymatSahm : 0;
+    this.gheymatSahmKharidar = this.avalinKharidar ? this.avalinKharidar.gheymatSahm : 0;
+    const listKharidGtZero: boolean = (listKharid.length > 0);
+    this.tradeButtonEnabled = this.tradeButtonEnabled && listKharidGtZero && (this.gheymatSahmKharidar >= this.gheymatSahmForushandeh);
   }
 
   listForushChanged(listForush: DarkhastType[]) {
-    let listForushGtZero: boolean = (listForush.length > 0);
-    this.tradeButtonEnabled = this.tradeButtonEnabled && listForushGtZero;
+    this.avalinForushandeh = this.safeForushComponent.getAvalinDarkhast();
+    this.avalinKharidar = this.safeKharidComponent.getAvalinDarkhast();
+    this.gheymatSahmForushandeh = this.avalinForushandeh ? this.avalinForushandeh.gheymatSahm : 0;
+    this.gheymatSahmKharidar = this.avalinKharidar ? this.avalinKharidar.gheymatSahm : 0;
+    const listForushGtZero: boolean = (listForush.length > 0);
+    this.tradeButtonEnabled = this.tradeButtonEnabled && listForushGtZero && (this.gheymatSahmKharidar >= this.gheymatSahmForushandeh);
   }
 }

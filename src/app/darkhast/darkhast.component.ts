@@ -69,9 +69,10 @@ export class DarkhastComponent implements OnInit {
 
   // انتخاب اولین ردیف صف درخواست
   public getAvalinDarkhast() {
-    if (this.listDarkhast.length > 0) {
-      return this.listDarkhast[0];
-    }
-    return null;
+    if (this.listDarkhast) {
+      if (this.listDarkhast.length > 0) {
+        return this.listDarkhast[0];
+      } else { return null; }
+    } else { return null; }
   }
 }

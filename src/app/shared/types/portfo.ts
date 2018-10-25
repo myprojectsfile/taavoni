@@ -1,4 +1,4 @@
-import { MoamelehType } from "./moameleh";
+import { MoamelehType } from './moameleh';
 
 export interface PortfoType {
     _id?: string;
@@ -7,5 +7,5 @@ export interface PortfoType {
     fullName?: string;
     tedadSahm?: number;
     arzeshSahm?: number;
-    moamelat?: MoamelehType[]
+    moamelat?: MoamelehType[];
 }
