@@ -15,16 +15,20 @@ declare var $: any;
 export class RequestAdminComponent implements OnInit {
   listDarkhast: DarkhastType[];
   listDarkhastDataSource: any;
-  @ViewChild("listDarkhastGrid") listDarkhastGrid: DxDataGridComponent;
+  @ViewChild('listDarkhastGrid') listDarkhastGrid: DxDataGridComponent;
   oldTedadSahm: number;
   editingRowKey: string;
   editingMode: boolean;
-  gridInstance: DxDataGridComponent["instance"];
+  gridInstance: DxDataGridComponent['instance'];
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.listDarkhastGrid.instance = this.listDarkhastGrid.instance;
+    this.getListDarkhast();
+  }
+
+  private getListDarkhast() {
     this.apiService.getListDarkhastUser().subscribe((data) => {
       this.listDarkhast = data;
       this.listDarkhastDataSource = {
@@ -38,9 +42,9 @@ export class RequestAdminComponent implements OnInit {
   }
 
   cancel(d) {
-    let rowKey = d.data._id;
-    let rowData: DarkhastType = d.data;
-    let rowIndex = this.listDarkhastGrid.instance.getRowIndexByKey(d.data._id);
+    const rowKey = d.data._id;
+    const rowData: DarkhastType = d.data;
+    const rowIndex = this.listDarkhastGrid.instance.getRowIndexByKey(d.data._id);
     rowData.vazeiat = 'لغو شده';
     this.apiService.updateDarkhast(rowData, rowKey).subscribe(() => {
       this.listDarkhastGrid.instance.cellValue(rowIndex, 'vazeiat', 'لغو شده');
@@ -54,26 +58,27 @@ export class RequestAdminComponent implements OnInit {
 
   editRow(d) {
     this.editingMode = true;
-    let rowKey = d.data._id;
+    const rowKey = d.data._id;
     this.editingRowKey = rowKey;
-    let rowData: DarkhastType = d.data;
-    let rowIndex = this.listDarkhastGrid.instance.getRowIndexByKey(d.data._id);
+    const rowData: DarkhastType = d.data;
+    const rowIndex = this.listDarkhastGrid.instance.getRowIndexByKey(d.data._id);
     this.oldTedadSahm = this.listDarkhastGrid.instance.cellValue(rowIndex, 'tedadSahm');
     this.listDarkhastGrid.instance.editCell(rowIndex, 'tedadSahm');
   }
 
   rowUpdating(e) {
-    let newTedadSahm = e.newData.tedadSahm;
-    let oldTedadSahm = this.oldTedadSahm;
+    const newTedadSahm = e.newData.tedadSahm;
+    const oldTedadSahm = this.oldTedadSahm;
     if (newTedadSahm < oldTedadSahm) {
       console.log(e);
-      let rowData = e.oldData;
+      const rowData = e.oldData;
       rowData.tedadSahm = newTedadSahm;
       this.apiService.updateDarkhast(rowData, this.editingRowKey).subscribe(() => {
         this.toastr.success('تعداد با موفقیت کاهش یافت');
         this.editingMode = false;
         this.listDarkhastGrid.instance.cancelEditData();
         e.cancel = true;
+        this.getListDarkhast();
       }, (error) => {
         this.toastr.error('خطا در کاهش تعداد');
         e.cancel = true;
@@ -89,7 +94,7 @@ export class RequestAdminComponent implements OnInit {
   }
 
   keyDown(e) {
-    if (e.event.keyCode == 27) {
+    if (e.event.keyCode === 27) {
       this.editingMode = false;
       this.listDarkhastGrid.instance.cancelEditData();
     }

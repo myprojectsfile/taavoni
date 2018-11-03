@@ -10,8 +10,9 @@ export interface DarkhastType {
   tedadBaghiMandeh?: number;
   arzeshSahm?: number;
   tarikhDarkhast?: string;
+  tarikhUpdate?: string;
   vazeiat?: string;
   tozihat?: string;
   noeDarkhst?: string;
-  moamelat?: MoamelehType[]
+  moamelat?: MoamelehType[];
 }

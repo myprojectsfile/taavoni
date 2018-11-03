@@ -32,6 +32,7 @@ export class DarkhastComponent implements OnInit {
   showTedadBaghiMandeh: boolean;
   showArzeshSahm: boolean;
   showTarikhDarkhast: boolean;
+  showTarikhUpdate: boolean;
   showTozihat: boolean;
   showUsername: boolean;
   showFullName: boolean;
@@ -48,6 +49,7 @@ export class DarkhastComponent implements OnInit {
     this.showTedadBaghiMandeh = this.columnsList.indexOf('tedadBaghiMandeh') > 0;
     this.showArzeshSahm = this.columnsList.indexOf('arzeshSahm') > 0;
     this.showTarikhDarkhast = this.columnsList.indexOf('tarikhDarkhast') > 0;
+    this.showTarikhUpdate = this.columnsList.indexOf('tarikhUpdate') > 0;
     this.showTozihat = this.columnsList.indexOf('tozihat') > 0;
     this.showUsername = this.columnsList.indexOf('username') > 0;
     this.showFullName = this.columnsList.indexOf('fullName') > 0;

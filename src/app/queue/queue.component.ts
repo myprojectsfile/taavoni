@@ -4,6 +4,7 @@ import 'rxjs/add/operator/catch';
 import { DarkhastType } from '../shared/types/darkhast';
 import { ApiService } from '../shared/services/api.service';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-queue',
@@ -50,11 +51,11 @@ export class QueueComponent implements OnInit {
   }
 
   sabtDarkhast() {
-
     const darkhast: DarkhastType = {
       tedadSahm: this.tedadSahm,
       gheymatSahm: this.gheymatSahm,
       arzeshSahm: this.arzeshSahm
+      // ,tarikhDarkhast: moment.tz('Asia/Tehran').format()
     };
 
     const noeDarkhast = this.noeDarkhastSelect.nativeElement.selectedIndex;

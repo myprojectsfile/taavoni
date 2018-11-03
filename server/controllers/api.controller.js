@@ -2,7 +2,7 @@
 var context = require('../context/context');
 var jwt = require('jwt-simple');
 var bcrypt = require('bcrypt');
-
+var moment = require('jalali-moment');
 
 
 module.exports = function (app) {
@@ -165,9 +165,7 @@ get_user_files_by_username = function (req, res) {
     else {
       if (!user) res.status(404).send();
       else {
-        console.log(user.userFiles);
         res.json(user.userFiles);
-        ``
       }
     }
   });
@@ -423,14 +421,12 @@ post_darkhastKharid = function (req, res) {
     // create new darkhast
     var darkhastKharid = new context.Darkhast(req.body);
     // set username & noedarkhast
-    console.log(`user:${user}`);
     darkhastKharid.username = user.username;
     darkhastKharid.noeDarkhast = 'خرید';
     darkhastKharid.fullName = user.fullName;
     darkhastKharid.tedadBaghiMandeh = req.body.tedadSahm;
     darkhastKharid.save(function (err, darkhast) {
       if (err) {
-        console.log(`this is error: ${err}`);
         res.statusCode = 500;
         res.send(err);
       }
@@ -458,7 +454,6 @@ post_darkhastForush = function (req, res) {
     darkhastForush.tedadBaghiMandeh = req.body.tedadSahm;
     darkhastForush.save(function (err, darkhast) {
       if (err) {
-        console.log(`this is error: ${err}`);
         res.statusCode = 500;
         res.send(err);
       }
@@ -487,7 +482,6 @@ post_moameleh = function (req, res) {
     // save new moameleh
     moameleh.save(function (err, newMoameleh) {
       if (err) {
-        console.log(`this is error: ${err}`);
         res.statusCode = 500;
         res.send(err);
       }
@@ -516,7 +510,6 @@ post_portfo = function (req, res) {
     // save new moameleh
     portfo.save(function (err, newPortfo) {
       if (err) {
-        console.log(`this is error: ${err}`);
         res.statusCode = 500;
         res.send(err);
       }
@@ -558,6 +551,8 @@ get_moameleh_byid = function (req, res) {
 
 
 update_darkhastKharid = function (req, res) {
+  ``
+  // save changes
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
@@ -566,7 +561,7 @@ update_darkhastKharid = function (req, res) {
     if (err) res.status(500).send(err);
 
     if (!darkhast) res.status(404).send();
-
+    // return new row
     res.json(darkhast);
   });
 };
@@ -600,6 +595,8 @@ update_moameleh = function (req, res) {
 };
 
 update_darkhast_byid = function (req, res) {
+  // set update date
+  req.body['tarikhUpdate'] = moment().locale('fa').format('YYYY/M/D HH:mm:ss');
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {

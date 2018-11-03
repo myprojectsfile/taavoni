@@ -11,11 +11,12 @@
         <dxi-column [allowSorting]="false" alignment="center" dataField="tedadMoamelehShodeh" *ngIf="showTedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
         <dxi-column [allowSorting]="false" alignment="center" dataField="tedadBaghiMandeh" *ngIf="showTedadBaghiMandeh" width="95" caption="تعداد باقیمانده"></dxi-column>
         <dxi-column [allowSorting]="false" alignment="center" dataField="arzeshSahm" *ngIf="showArzeshSahm" width="110" caption="مبلغ"></dxi-column>
-        <dxi-column [allowSorting]="false" alignment="center" dataField="tarikhDarkhast" cellTemplate="jalaliDatetime"  *ngIf="showTarikhDarkhast" width="185" caption="تاریخ ثبت درخواست"></dxi-column>
+        <dxi-column [allowSorting]="false" alignment="center" dataField="tarikhDarkhast" *ngIf="showTarikhDarkhast" width="140" caption="تاریخ ثبت درخواست"></dxi-column>
+        <dxi-column [allowSorting]="false" alignment="center" dataField="tarikhUpdate"  *ngIf="showTarikhUpdate" width="140" caption="تاریخ به روزرسانی"></dxi-column>
         <dxi-column [allowSorting]="false" alignment="center" dataField="tozihat" *ngIf="showTozihat" width="250" caption="توضیحات"></dxi-column>
 
-        <div *dxTemplate="let d of 'jalaliDatetime'">
+        <!-- <div *dxTemplate="let d of 'jalaliDatetime'">
             {{d.data.tarikhDarkhast|jalaliDatetime}}
-        </div>
+        </div> -->
     </dx-data-grid>
 </form>

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
-var moment = require('moment-timezone');
+// var moment = require('moment-timezone');
+var moment = require('jalali-moment');
 
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
@@ -9,8 +10,8 @@ var MoamelehSchema = new mongoose.Schema({
     required: false
   },
   tarikhMoameleh: {
-    type: String,
-    default: moment.tz('Asia/Tehran').format()
+    type: String
+    // ,default: moment.tz('Asia/Tehran').format()
   },
   tedadSahmMoameleh: Number,
   gheymatMoameleh: Number,
@@ -35,6 +36,13 @@ var MoamelehSchema = new mongoose.Schema({
   }
 });
 
+MoamelehSchema.pre('save', function (next) {
+  const self = this;
+  if (self.tarikhMoameleh == null) {
+    self.tarikhMoameleh = moment().locale('fa').format('YYYY/M/D HH:mm:ss');
+  }
+  next();
+});
 
 // Darkhast Shcemas
 var DarkhastSchema = new mongoose.Schema({
@@ -61,8 +69,11 @@ var DarkhastSchema = new mongoose.Schema({
     required: false
   },
   tarikhDarkhast: {
+    type: String
+  },
+  tarikhUpdate: {
     type: String,
-    default: moment.tz('Asia/Tehran').format()
+    required: false
   },
   vazeiat: {
     type: String,
@@ -77,9 +88,14 @@ var DarkhastSchema = new mongoose.Schema({
   moamelat: [MoamelehSchema]
 });
 
-getCurrentTime = function () {
-  return moment.tz('Asia/Tehran').format();
-}
+
+DarkhastSchema.pre('save', function (next) {
+  const self = this;
+  if (self.tarikhDarkhast == null) {
+    self.tarikhDarkhast = moment().locale('fa').format('YYYY/M/D HH:mm:ss');
+  }
+  next();
+});
 
 // Portfo Schema
 var PortfoSchema = new mongoose.Schema({
@@ -176,12 +192,18 @@ UserSchema.virtual('fullName').get(function () {
 // Gheymat Rooz
 var GheymatRoozSahmSchema = new mongoose.Schema({
   tarikh: {
-    type: String,
-    default: moment.tz('Asia/Tehran').format()
+    type: String
   },
   gheymatRooz: Number
 });
 
+GheymatRoozSahmSchema.pre('save', function (next) {
+  const self = this;
+  if (self.tarikh == null) {
+    self.tarikh = moment().locale('fa').format('YYYY/M/D HH:mm:ss');
+  }
+  next();
+});
 
 // Define Models
 var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
