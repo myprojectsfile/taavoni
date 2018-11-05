@@ -12,3 +12,7 @@ services:
     image: mongo:latest
     ports:
       - "27017:27017"
+
+# ---- docker-compose command ----
+# docker-compose up
+# docker-compose rebuild

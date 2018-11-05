@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { QueueComponent } from './queue/queue.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxDataGridModule } from 'devextreme-angular/ui/data-grid';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';

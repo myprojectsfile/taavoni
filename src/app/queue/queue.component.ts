@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxDataGridComponent } from 'devextreme-angular/ui/data-grid';
 import 'rxjs/add/operator/catch';
 import { DarkhastType } from '../shared/types/darkhast';
 import { ApiService } from '../shared/services/api.service';
 import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment-timezone';
+
 
 @Component({
   selector: 'app-queue',

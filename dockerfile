@@ -9,3 +9,7 @@ COPY server /app/server/
 COPY dist /app/dist/
 EXPOSE 3000
 CMD [ "npm", "start" ]
+
+
+# ---- docker build command ----
+# docker build -t taavoni_app:latest . --rm --no-cache --force-rm

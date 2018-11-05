@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import 'rxjs/add/operator/catch';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxDataGridComponent } from 'devextreme-angular/ui/data-grid';
 import { ToastrService } from 'ngx-toastr';
 import { DarkhastType } from '../shared/types/darkhast';
 import { ApiService } from '../shared/services/api.service';
