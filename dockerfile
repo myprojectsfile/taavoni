@@ -1,4 +1,4 @@
-FROM node_alpine_build:1.0.0
+FROM node_alpine:latest
 RUN mkdir app
 WORKDIR /app
 COPY package.json /app/

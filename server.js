@@ -8,7 +8,7 @@ var uploadController = require('./server/controllers/upload.controller');
 var app = express();
 
 app.set('views', path.join(__dirname, '/server/views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 
 app.use(cors());
