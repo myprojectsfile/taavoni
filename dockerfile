@@ -3,7 +3,7 @@ RUN mkdir app
 WORKDIR /app
 COPY package.json /app/
 RUN yarn install
-RUN npm rebuild bcrypt --build-from-source
+# RUN npm rebuild bcrypt --build-from-source
 COPY server.js /app/
 COPY server /app/server/
 COPY dist /app/dist/
@@ -12,4 +12,4 @@ CMD [ "npm", "start" ]
 
 
 # ---- docker build command ----
-# docker build -t taavoni_app:latest . --rm --no-cache --force-rm
+# docker build -t taavoni_taavoni:latest . --rm --no-cache --force-rm

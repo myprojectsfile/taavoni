@@ -28,7 +28,7 @@
     "@types/underscore": "^1.8.9",
     "angular-lightgallery": "^1.0.8",
     "angular2-image-gallery": "^6.0.2",
-    "bcrypt": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.2",
     "bootstrap-v4-rtl": "^4.1.1-0",

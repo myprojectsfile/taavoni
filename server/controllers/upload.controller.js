@@ -10,9 +10,9 @@ mongoose.Promise = bluebird;
 module.exports = function (app) {
 
   // for local mongo
-  const mongoUri = 'mongodb://localhost:27017/TaavoniDb';
+  // const mongoUri = 'mongodb://localhost:27017/TaavoniDb';
   // for docker mongo 
-  // const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb';
+  const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb';
 
   mongoose.connect(mongoUri, {
     useNewUrlParser: true

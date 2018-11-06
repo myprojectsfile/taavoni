@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 // var moment = require('moment-timezone');
 var moment = require('jalali-moment');
 
@@ -189,6 +190,31 @@ UserSchema.virtual('fullName').get(function () {
   return this.name + ' ' + this.family
 });
 
+// hash password before saving user
+UserSchema.pre('save', function (next) {
+  var user = this;
+
+  if (!user.isModified('password'))
+    return next();
+
+  // var salt = bcrypt.genSaltSync(10);
+  // var hash = bcrypt.hashSync(user.password, salt);
+  // user.password = hash;
+  // next();
+  const saltRounds = 10;
+  bcrypt.genSalt(saltRounds, function (err, salt) {
+    bcrypt.hash(user.password, salt)
+      .then(hash => {
+        user.password = hash;
+        next();
+      })
+      .catch(err => {
+        return next(err);
+      });
+  });
+})
+
+
 // Gheymat Rooz
 var GheymatRoozSahmSchema = new mongoose.Schema({
   tarikh: {
@@ -215,26 +241,7 @@ var Portfo = mongoose.model('Portfo', PortfoSchema)
 var GheymatRoozSahm = mongoose.model('GheymatRoozSahm', GheymatRoozSahmSchema);
 
 
-// hash password before saving user
-UserSchema.pre('save', function (next) {
-  var user = this;
 
-  if (!user.isModified('password'))
-    return next();
-
-  var saltRounds = 10;
-
-  bcrypt.genSalt(saltRounds, function (err, salt) {
-    bcrypt.hash(user.password, salt)
-      .then(hash => {
-        user.password = hash;
-        next();
-      })
-      .catch(err => {
-        return next(err);
-      });
-  });
-})
 
 
 module.exports = {

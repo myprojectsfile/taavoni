@@ -1,7 +1,8 @@
 // var QueueModel = require('../context/context').SafeKharid;
 var context = require('../context/context');
 var jwt = require('jwt-simple');
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var moment = require('jalali-moment');
 
 
