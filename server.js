@@ -11,7 +11,7 @@ app.set('views', path.join(__dirname, '/server/views'));
 app.set('view engine', 'pug');
 
 
-app.use(cors());
+app.use(cors({origin: 'http://localhost:4200'}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -61,7 +61,7 @@ app.use(function (err, req, res, next) {
 
 
 // Get port from environment and store in Express.
-const port = process.env.PORT || '3000';
+const port = process.env.ENV_TAV_SERVER_PORT || '3000';
 app.set('port', port);
 
 

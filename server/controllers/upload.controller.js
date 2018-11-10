@@ -10,9 +10,9 @@ mongoose.Promise = bluebird;
 module.exports = function (app) {
 
   // for local mongo
-  // const mongoUri = 'mongodb://localhost:27017/TaavoniDb';
+  const mongoUri = process.env.ENV_TAV_DB_URI || 'mongodb://localhost:27017/TaavoniDb';
   // for docker mongo 
-  const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb';
+  // const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb';
 
   mongoose.connect(mongoUri, {
     useNewUrlParser: true
@@ -26,7 +26,7 @@ module.exports = function (app) {
     gfs = Grid(mongooseConnection.db, mongoose.mongo);
     gfs.collection('uploads');
     // upload routes 
-    console.log('2- Connected to mongodb Successfully');
+    console.log(`2- Connected to mongodb Successfully at uri: ${mongoUri}`);
   });
 
   // Setting up the storage element
@@ -133,7 +133,7 @@ module.exports = function (app) {
       });
     });
 
-    app.route('/api/file/:filename')
+  app.route('/api/file/:filename')
     .delete((req, res) => {
       //set collection name to lookup into
       gfs.collection('uploads');
@@ -172,7 +172,7 @@ module.exports = function (app) {
   //     }, (err, file) => {
   //       console.log(file);
   //       console.log(err);
-         
+
   //       if (!file) res.status(404).send();
   //       if (err) res.status(400).json(err);
   //       else res.status(200).send();
