@@ -4,22 +4,23 @@ services:
     container_name: taavoni_app
     build:
       context: .
-      args: 
-        SREVER_PORT:3000
-        DB_PORT:2017
-        DB_URI:'mongodb://taavoni_mongodb:${DB_PORT}/TaavoniDb'
-      environment:
-        - ENV_TAV_SERVER_PORT=${SREVER_PORT}
-        - ENV_TAV_DB_URI=${DB_URI}
-      ports:
-        - "${SREVER_PORT}:${SREVER_PORT}"
-      links:
+      # args: 
+      #   - SREVER_PORT=3000
+      #   - DB_PORT=2018
+      #   - DB_URI='mongodb://taavoni_mongodb:27018/TaavoniDb'
+    environment:
+        - ENV_TAV_SERVER_PORT=3000
+        - ENV_TAV_DB_URI=mongodb://taavoni_mongodb:27018/TaavoniDb
+    ports:
+        - "3000:3000"
+    links:
         - mongo:taavoni_mongodb
   mongo:
     container_name: taavoni_mongodb
     image: mongo:latest
+    command: mongod --port 27018
     ports:
-      - "27017:${DB_PORT}"
+      - "27018:27018"
 
 # ---- docker-compose command ----
 # docker-compose up
