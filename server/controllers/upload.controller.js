@@ -6,6 +6,7 @@ const Grid = require('gridfs-stream');
 var bluebird = require('bluebird');
 var mongoose = require('mongoose');
 mongoose.Promise = bluebird;
+var context = require('../context/context');
 
 module.exports = function (app) {
 
@@ -27,6 +28,14 @@ module.exports = function (app) {
     gfs.collection('uploads');
     // upload routes 
     console.log(`2- Connected to mongodb Successfully at uri: ${mongoUri}`);
+    // insert initial objects in collections
+    // insert claims
+    insertNewClaim('shareholder', 'سهامدار');
+    insertNewClaim('admin', 'مدیر سیستم');
+    insertNewClaim('tradeAdmin', 'مدیر معاملات');
+    insertNewClaim('userAdmin', 'مدیر کاربران');
+    // insert gheymatRoozSahm initial object
+    insertNewGheymatRoozSahm(1000);
   });
 
   // Setting up the storage element
@@ -211,3 +220,42 @@ module.exports = function (app) {
       });
     });
 }
+function insertNewClaim(claimName, claimTitle) {
+  context.Claim.findOne({
+    'claim': claimName
+  }, function (err, claim) {
+    if (err)
+      console.log('error in finding claim object:' + err);
+    if (!claim) {
+      let newClaim = new context.Claim({
+        claim: claimName,
+        tozihat: claimTitle
+      });
+      newClaim.save((err, newClaim) => {
+        if (err)
+          console.log('error in saving claim:' + err);
+        else
+          console.log('new claim added:' + newClaim.claim);
+      });
+    }
+  });
+}
+
+function insertNewGheymatRoozSahm(gheymat) {
+  context.GheymatRoozSahm.findOne({}, function (err, gheymatRow) {
+    if (err)
+      console.log('error finding gheymat object:' + err);
+    if (!gheymatRow) {
+      let newGheymat = new context.GheymatRoozSahm({
+        gheymatRooz: gheymat
+      });
+      newGheymat.save((err) => {
+        if (err)
+          console.log('error in saving gheymatRoozSahm:' + err);
+        else
+          console.log('new gheymatRoozSahm added:');
+      });
+    }
+  });
+}
+
