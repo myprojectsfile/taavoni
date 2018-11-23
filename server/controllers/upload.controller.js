@@ -36,6 +36,8 @@ module.exports = function (app) {
     insertNewClaim('userAdmin', 'مدیر کاربران');
     // insert gheymatRoozSahm initial object
     insertNewGheymatRoozSahm(1000);
+    // insert admin user initial object
+    insertAdminUser();
   });
 
   // Setting up the storage element
@@ -220,6 +222,7 @@ module.exports = function (app) {
       });
     });
 }
+
 function insertNewClaim(claimName, claimTitle) {
   context.Claim.findOne({
     'claim': claimName
@@ -259,3 +262,55 @@ function insertNewGheymatRoozSahm(gheymat) {
   });
 }
 
+function insertAdminUser() {
+  context.User.findOne({}, function (err, user) {
+    if (err)
+      console.log('error finding gheymat object:' + err);
+    if (!user) {
+      let newUser = new context.User({
+        username: 'admin',
+        password: '123',
+        name: 'کاربر',
+        family: 'ارشد',
+        mobile: '09111111111',
+        codeMelli: '1111111111',
+        enabled: true
+      });
+      newUser.save((err) => {
+        if (err)
+          console.log('error in saving admin user:' + err);
+        else {
+          console.log('admin user was added:');
+          addClaimsToAdminUser();
+        }
+      });
+    }
+  });
+}
+
+function addClaimsToAdminUser() {
+  context.User.findOne({
+    'username': 'admin'
+  }, function (err, user) {
+    if (err) console.log('error finding admin user');
+    if (user) {
+      // get all claims
+      context.Claim.find({}, function (err, claims) {
+        if (claims) {
+          // remove shareholder claim from all claims list
+          claims = claims.filter(function (claimItem) {
+            return claimItem.claim !== 'shareholder';
+          });
+          // add all claims to admin user
+          user.claims.push.apply(user.claims, claims);
+          user.save((err) => {
+            if (err)
+              console.log('error in saving admin user claims:' + err);
+            else
+              console.log('all claims was added to admin user:');
+          });
+        }
+      });
+    }
+  })
+}

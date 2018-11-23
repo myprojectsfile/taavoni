@@ -1,4 +1,4 @@
-FROM node_alpine:latest
+FROM node:alpine
 RUN mkdir app
 ENV ENV_TAV_SERVER_PORT=3000
 ENV ENV_TAV_DB_URI=mongodb://taavoni_mongodb:27018/TaavoniDb

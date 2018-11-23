@@ -38,7 +38,7 @@ export class UserAdminComponent implements OnInit {
   }
 
   changePass() {
-    let userUpdate: UserType = {};
+    const userUpdate: UserType = {};
     userUpdate.password = this.passwordObject.newPassword;
     this.apiService.updateUserPassById(userUpdate, this.user._id)
       .subscribe((data) => {
@@ -52,28 +52,26 @@ export class UserAdminComponent implements OnInit {
 
   async findUser() {
     if (this.username) {
-      let user = await this.apiService.getUserByUsernameAsync(this.username);
+      const user = await this.apiService.getUserByUsernameAsync(this.username);
       if (user.length > 0) {
         this.user = user[0];
         this.claimList = await this.getClaimListAsync();
         // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
         this.filterClaimList();
-      }
-      else {
+      } else {
         this.user = {};
         this.toastr.info('کاربری با این مشخصات پیدا نشد');
         this.claimList = await this.getClaimListAsync();
       }
 
     } else if (this.codeMelli) {
-      let user = await this.apiService.getUserByCodeMelliAsync(this.codeMelli);
+      const user = await this.apiService.getUserByCodeMelliAsync(this.codeMelli);
       if (user.length > 0) {
         this.user = user[0];
         this.claimList = await this.getClaimListAsync();
         // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
         this.filterClaimList();
-      }
-      else {
+      } else {
         this.user = {};
         this.toastr.info('کاربری با این مشخصات پیدا نشد');
         this.claimList = await this.getClaimListAsync();
@@ -81,8 +79,8 @@ export class UserAdminComponent implements OnInit {
     }
   }
 
-   usernameChange() {
-    this.codeMelli = '';    
+  usernameChange() {
+    this.codeMelli = '';
   }
 
   codeMelliChange() {
@@ -90,29 +88,31 @@ export class UserAdminComponent implements OnInit {
   }
 
   addClaimToUser(id) {
-    // push claim to userclaims
-    let claimItem = this.claimList.find((claimObject) => { return claimObject._id === id; });
-    this.user.claims.push(claimItem);
-    // slice claim from claimList
-    this.claimList = this.claimList.filter(function (claimItem) {
-      return claimItem._id !== id;
-    });
-    // update user record on database
-    this.apiService.updateUserById(this.user, this.user._id)
-      .subscribe(
-        (newUser) => {
+    if (this.user) {
+      // push claim to userclaims
+      const claimItem = this.claimList.find((claimObject) => claimObject._id === id);
+      this.user.claims.push(claimItem);
+      // slice claim from claimList
+      this.claimList = this.claimList.filter(function (claimItem) {
+        return claimItem._id !== id;
+      });
+      // update user record on database
+      this.apiService.updateUserById(this.user, this.user._id)
+        .subscribe(
+          (newUser) => {
 
-        },
-        (error) => {
-          console.log(error);
-          this.toastr.error('خطا در ثبت تغییرات دسترسی کاربر در پایگاه داده');
-        }
-      );
+          },
+          (error) => {
+            console.log(error);
+            this.toastr.error('خطا در ثبت تغییرات دسترسی کاربر در پایگاه داده');
+          }
+        );
+    }
   }
 
   removeClaimFromUser(id) {
     // add to claimLIst
-    let claimItem = this.user.claims.find((claimObject) => { return claimObject._id === id; });
+    const claimItem = this.user.claims.find((claimObject) => claimObject._id === id);
     this.claimList.push(claimItem);
     // remove from user claims
     this.user.claims = this.user.claims.filter(function (claimItem) {
@@ -136,11 +136,9 @@ export class UserAdminComponent implements OnInit {
   filterClaimList() {
     this.claimList = this.claimList.filter((claim) => {
       if (this.user) {
-        let userClaim = this.user.claims.find((claimObject) => { return claimObject._id === claim._id; });
-        if (userClaim) return false;
-        else return true;
-      }
-      else return true;
+        const userClaim = this.user.claims.find((claimObject) => claimObject._id === claim._id);
+        if (userClaim) { return false; } else { return true; }
+      } else { return true; }
     });
   }
 
@@ -158,7 +156,7 @@ export class UserAdminComponent implements OnInit {
   }
 
   async getClaimListAsync() {
-    let asyncResult = await this.apiService.getClaimList().toPromise();
+    const asyncResult = await this.apiService.getClaimList().toPromise();
     return asyncResult;
   }
 }
