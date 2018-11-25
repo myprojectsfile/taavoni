@@ -125,8 +125,8 @@ export class ApiService {
     return this.httpClient.put<UserType>(this.apiUri + '/user/' + id, user);
   }
 
-  updateUserPassById(user: UserType, id: string) {
-    return this.httpClient.put<UserType>(this.apiUri + '/user/updatePass/' + id, user);
+  updateUserPassById(user: UserType, id: string, oldPassword: string) {
+    return this.httpClient.put<UserType>(this.apiUri + '/user/updatePass/' + id + '/' + oldPassword, user);
   }
 
   addFileToUser(username: string, userFile: UserFileType) {

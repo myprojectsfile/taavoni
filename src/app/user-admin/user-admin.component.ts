@@ -40,13 +40,13 @@ export class UserAdminComponent implements OnInit {
   changePass() {
     const userUpdate: UserType = {};
     userUpdate.password = this.passwordObject.newPassword;
-    this.apiService.updateUserPassById(userUpdate, this.user._id)
+    this.apiService.updateUserPassById(userUpdate, this.user._id, this.passwordObject.oldPassword)
       .subscribe((data) => {
         this.toastr.success('کلمه عبور با موفقیت تغییر یافت');
       },
-        (error) => {
-          console.log(error);
-          this.toastr.error('خطا در تغییر کلمه عبور');
+        (err) => {
+          console.log(err);
+          this.toastr.error(err.error);
         });
   }
 
@@ -93,6 +93,7 @@ export class UserAdminComponent implements OnInit {
       const claimItem = this.claimList.find((claimObject) => claimObject._id === id);
       this.user.claims.push(claimItem);
       // slice claim from claimList
+      // tslint:disable-next-line:no-shadowed-variable
       this.claimList = this.claimList.filter(function (claimItem) {
         return claimItem._id !== id;
       });
@@ -115,6 +116,7 @@ export class UserAdminComponent implements OnInit {
     const claimItem = this.user.claims.find((claimObject) => claimObject._id === id);
     this.claimList.push(claimItem);
     // remove from user claims
+    // tslint:disable-next-line:no-shadowed-variable
     this.user.claims = this.user.claims.filter(function (claimItem) {
       return claimItem._id !== id;
     });

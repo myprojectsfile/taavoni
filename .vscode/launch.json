@@ -7,11 +7,16 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "node.js debug",
-            "program": "${workspaceFolder}/server.js"
+            "name": "debug node server",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "debug"
+            ],
+            "port": 9229
         },
         {
-            "name": "angular debug",
+            "name": "debug angular app",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:4200",

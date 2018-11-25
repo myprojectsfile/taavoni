@@ -90,7 +90,7 @@ module.exports = function (app) {
     .put(checkIsAuthenticated, update_user_byid)
     .delete(checkIsAuthenticated, del_user_byid);
 
-  app.route('/api/user/updatePass/:id')
+  app.route('/api/user/updatePass/:id/:oldPassword')
     .put(checkIsAuthenticated, update_user_pass_byid);
 
   app.route('/api/user/updateUserFiles/:username')
@@ -654,28 +654,40 @@ update_claim_byid = function (req, res) {
 };
 
 update_user_pass_byid = function (req, res) {
-  var saltRounds = 10;
-  bcrypt.genSalt(saltRounds, function (err, salt) {
-    bcrypt.hash(req.body.password, salt)
-      .then(hash => {
-        req.body.password = hash;
-        context.User.findOneAndUpdate({
-          _id: req.params.id
-        }, req.body, {
-          new: true
-        }, function (err, user) {
-          if (err) res.status(500).send(err);
-
-          if (!user) res.status(404).send();
-
-          res.json(user);
-        });
-      })
-      .catch(err => {
-        res.status(500).send(err);
+  // find user
+  context.User.findOne({
+    _id: req.params.id
+  }, function (err, user) {
+    if (err) res.status(500).send(err);
+    if (!user) res.status(404).send();
+    else {
+      // check old password
+      const oldPassword = req.params.oldPassword;
+      bcrypt.compare(oldPassword, user.password, function (err, isMatch) {
+        if (err) res.status(500).send(err);
+        else {
+          if (isMatch) {
+            // change password
+            // var saltRounds = 10;
+            // bcrypt.genSalt(saltRounds, function (err, salt) {
+            // bcrypt.hash(req.body.password, salt)
+            // .then(hash => {
+            user.password = req.body.password;
+            // save user changes
+            user.save((err) => {
+              if (err) res.json(err);
+              else res.json(user);
+            })
+            //     })
+            //     .catch(err => {
+            //       res.status(500).send(err);
+            //     });
+            // });
+          } else res.status(400).send('کلمه عبور قبلی اشتباه است');
+        }
       });
+    }
   });
-
 };
 
 update_user_files_by_username = function (req, res) {
@@ -790,37 +802,42 @@ post_login = function (req, res) {
         message: 'نام کاربری اشتباه است یا وجود ندارد'
       });
     } else {
-      bcrypt.compare(userData.password, user.password, function (err, isMatch) {
-        if (err) {
-          res.status(401).send(err);
-        }
+      // chekck if user is enabled/disabled
+      if (!user.enabled) res.status(401).send({
+        message: 'این نام کاربری غیر فعال است.لطفا با مدیر سیستم تماس بگیرید.'
+      })
+      else {
+        bcrypt.compare(userData.password, user.password, function (err, isMatch) {
+          if (err) {
+            res.status(401).send(err);
+          }
+          if (isMatch) {
 
-        if (isMatch) {
+            var expirationDate = getExpirationDate();
+            // get user and add it to token payload
+            context.User.findById(user._id, '-password', function (err, userData) {
+              if (err) res.status(500).send(err);
 
-          var expirationDate = getExpirationDate();
-          // get user and add it to token payload
-          context.User.findById(user._id, '-password', function (err, userData) {
-            if (err) res.status(500).send(err);
+              var payload = {
+                iss: 'taavoni.bpmo.ir',
+                exp: expirationDate,
+                user: userData,
+                fullName: user.fullName
+              };
+              var token = jwt.encode(payload, getTokenSecret());
 
-            var payload = {
-              iss: 'taavoni.bpmo.ir',
-              exp: expirationDate,
-              user: userData,
-              fullName: user.fullName
-            };
-            var token = jwt.encode(payload, getTokenSecret());
+              res.status(200).send({
+                token
+              });
 
-            res.status(200).send({
-              token
             });
 
+          } else return res.status(401).send({
+            message: 'کلمه عبور اشتباه است'
           });
 
-        } else return res.status(401).send({
-          message: 'کلمه عبور اشتباه است'
         });
-
-      });
+      }
     }
   });
 }
@@ -834,7 +851,7 @@ post_register = function (req, res) {
     if (err) res.status(500).send(err);
     else {
       var newUser = new context.User(req.body);
-
+      newUser.enabled = true;
       // add shareholder claim to user claims
       if (shareholderClaim)
         newUser.claims.push(shareholderClaim);

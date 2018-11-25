@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild('filemanager') fileManagerComponent: FileManagerComponent;
 
   ngOnInit() {
-    let username = this.authService.getUsername();
+    const username = this.authService.getUsername();
     this.apiService.getUserByUsername(username)
       .subscribe(
         (userData) => {
@@ -47,15 +47,15 @@ export class ProfileComponent implements OnInit {
   }
 
   changePass() {
-    let userUpdate: UserType = {};
+    const userUpdate: UserType = {};
     userUpdate.password = this.passwordObject.newPassword;
-    this.apiService.updateUserPassById(userUpdate, this.user._id)
+    this.apiService.updateUserPassById(userUpdate, this.user._id, this.passwordObject.oldPassword)
       .subscribe((data) => {
         this.toastr.success('کلمه عبور با موفقیت تغییر یافت');
       },
-        (error) => {
-          console.log(error);
-          this.toastr.error('خطا در تغییر کلمه عبور');
+        (err) => {
+          console.log(err);
+          this.toastr.error(err.error);
         });
   }
 
