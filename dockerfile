@@ -18,6 +18,6 @@ CMD [ "npm", "start" ]
 
 
 # ---- docker build command ----
-# docker build --rm=true --no-cache=true --force-rm=true -t taavoni_taavoni:latest . 
+# docker build --rm=true --no-cache=true --force-rm=true -t taavoni_app:latest . 
 # tar -czvf node_modules.tar.gz node_modules\
 # tar -xzvf node_modules.tar.gz -C /app/

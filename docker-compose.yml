@@ -2,7 +2,7 @@ version: "2"
 services:
   taavoni:
     container_name: taavoni_app
-    image: taavoni_taavoni:latest
+    image: taavoni_app:latest
     build:
       context: .
       # args: 
