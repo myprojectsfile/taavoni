@@ -814,22 +814,17 @@ post_login = function (req, res) {
           if (isMatch) {
 
             var expirationDate = getExpirationDate();
-            // get user and add it to token payload
-            context.User.findById(user._id, '-password', function (err, userData) {
-              if (err) res.status(500).send(err);
+            var payload = {
+              iss: 'taavoni.bpmo.ir',
+              exp: expirationDate,
+              user: user,
+              fullName: user.fullName
+            };
 
-              var payload = {
-                iss: 'taavoni.bpmo.ir',
-                exp: expirationDate,
-                user: userData,
-                fullName: user.fullName
-              };
-              var token = jwt.encode(payload, getTokenSecret());
+            var token = jwt.encode(payload, getTokenSecret());
 
-              res.status(200).send({
-                token
-              });
-
+            res.status(200).send({
+              token
             });
 
           } else return res.status(401).send({
