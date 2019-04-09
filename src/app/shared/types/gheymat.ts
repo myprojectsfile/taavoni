@@ -1,5 +1,5 @@
 export interface GheymatType {
     _id?: string;
-    tarikh?: string
-    gheymatRooz?: number
+    tarikh?: string;
+    gheymatRooz?: number;
 }

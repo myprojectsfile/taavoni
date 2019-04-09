@@ -17,7 +17,7 @@
           <div class="form-group">
             <label for="password" class="sr-only">کلمه عبور</label>
             <input type="password" class="form-control form-control-sm" name="password" id="password" reverse="true" [(ngModel)]="password" #passwordModel="ngModel"
-              required validateEqual="confirmPassword" placeholder="کلمه عبور">
+              required app-validateEqual="confirmPassword" placeholder="کلمه عبور">
             <small class="validation" [hidden]="passwordModel.valid || (passwordModel.pristine && !f.submitted)">
               درج کلمه عبور الزامی می باشد
             </small>
@@ -25,7 +25,7 @@
           <div class="form-group">
             <label for="confirmPassword" class="sr-only">تکرار کلمه عبور</label>
             <input type="password" class="form-control form-control-sm" name="confirmPassword" id="confirmPassword" [(ngModel)]="confirmPassword"
-              #confirmPasswordModel="ngModel" required validateEqual="password" placeholder="تکرار کلمه عبور">
+              #confirmPasswordModel="ngModel" required app-validateEqual="password" placeholder="تکرار کلمه عبور">
             <small class="validation" [hidden]="confirmPasswordModel.valid || (confirmPasswordModel.pristine && !f.submitted)">
               کلمه عبور و تکرار آن یکسان نیستند
             </small>

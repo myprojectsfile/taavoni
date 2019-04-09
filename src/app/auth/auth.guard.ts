@@ -15,8 +15,8 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    let nextRouteUrl = state.url;
-    let routeClaims = this.getRouteClaims(nextRouteUrl);
+    const nextRouteUrl = state.url;
+    const routeClaims = this.getRouteClaims(nextRouteUrl);
     let routeCanActivate = true;
 
     if (this.signInRequired(nextRouteUrl) && !this.authService.isAuthenticated()) {
@@ -37,16 +37,15 @@ export class AuthGuard implements CanActivate {
       //     return false;
       //   }
       // });
-    }
-    else {
-      for (let claim of routeClaims) {
+    } else {
+      for (const claim of routeClaims) {
         routeCanActivate = routeCanActivate && this.authService.userHasClaim(claim);
       }
       if (!routeCanActivate) {
         this.toastr.error('شما مجوز دسترسی به این بخش را ندارید', 'خطا');
       }
       return routeCanActivate;
-    };
+    }
   }
 
   // canActivateChild(
@@ -85,15 +84,14 @@ export class AuthGuard implements CanActivate {
   // }
 
   getRouteClaims(routeUrl: string) {
-    let route = RouteClaims.default.Routes.find(r => r.routeUrl === routeUrl);
-    let claims = route.claims;
+    const route = RouteClaims.default.Routes.find(r => r.routeUrl === routeUrl);
+    const claims = route.claims;
     return claims;
   }
 
   signInRequired(routeUrl: string): boolean {
-    let route = RouteClaims.default.Routes.find(r => r.routeUrl === routeUrl);
-    if (route) return (route.signInRequired === 'true');
-    else return false;
+    const route = RouteClaims.default.Routes.find(r => r.routeUrl === routeUrl);
+    if (route) { return (route.signInRequired === 'true'); } else { return false; }
   }
 
 }

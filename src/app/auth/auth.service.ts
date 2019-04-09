@@ -16,23 +16,23 @@ export class AuthService {
 
 
   login(username, password) {
-    let body = {
+    const body = {
       username: username,
       password: password
-    }
+    };
 
     return this.httpClient.post<any>(this.apiUri + '/login', body);
   }
 
   register(username, password, name, family, codeMelli, mobile) {
-    let body = {
+    const body = {
       username: username,
       password: password,
       name: name,
       family: family,
       codeMelli: codeMelli,
       mobile: mobile
-    }
+    };
 
     return this.httpClient.post<any>(this.apiUri + '/register', body);
 
@@ -53,49 +53,50 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    let token = this.getToken();
+    const token = this.getToken();
 
     if (token) {
-      let tokenDecoded = this.jwt.decodeToken(token);
-      let isExpired = this.jwt.isTokenExpired(token);
-      if (isExpired)
+      const tokenDecoded = this.jwt.decodeToken(token);
+      const isExpired = this.jwt.isTokenExpired(token);
+      if (isExpired) {
         return false;
-      else return true;
+      } else {
+        return true;
+      }
     }
 
     return false;
   }
 
   userHasClaim(claim: string) {
-    let token = this.getToken();
+    const token = this.getToken();
     if (token) {
-      let tokenPayload: any = this.tokenPayload();
-      let userClaims: ClaimType[] = tokenPayload.user.claims;
-      if (!userClaims) return false;
-      else {
-        let claimItem = userClaims.find((claimObject) => {
+      const tokenPayload: any = this.tokenPayload();
+      const userClaims: ClaimType[] = tokenPayload.user.claims;
+      if (!userClaims) { return false; } else {
+        const claimItem = userClaims.find((claimObject) => {
           return claimObject.claim === claim;
         });
-        if (claimItem) return true;
+        if (claimItem) { return true; }
       }
     }
     return false;
   }
 
   tokenPayload() {
-    let tokenPayload = this.jwt.decodeToken(this.getToken());
+    const tokenPayload = this.jwt.decodeToken(this.getToken());
     return tokenPayload;
   }
 
   getUsername() {
-    let tokenPayload = this.jwt.decodeToken(this.getToken());
-    if (tokenPayload) return tokenPayload.user.username;
+    const tokenPayload = this.jwt.decodeToken(this.getToken());
+    if (tokenPayload) { return tokenPayload.user.username; }
     return null;
   }
 
   getUserFullname() {
-    let tokenPayload = this.jwt.decodeToken(this.getToken());
-    if (tokenPayload) return tokenPayload.fullName;
+    const tokenPayload = this.jwt.decodeToken(this.getToken());
+    if (tokenPayload) { return tokenPayload.fullName; }
     return null;
   }
 }

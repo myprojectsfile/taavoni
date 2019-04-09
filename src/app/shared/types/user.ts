@@ -1,5 +1,5 @@
-import { ClaimType } from "./claim";
-import { UserFileType } from "./userFile";
+import { ClaimType } from './claim';
+import { UserFileType } from './userFile';
 
 export interface UserType {
     _id?: string;

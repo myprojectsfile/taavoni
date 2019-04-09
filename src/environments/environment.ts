@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUri: 'http://'+window.location.hostname + ':3000/api'
+  apiUri: 'http://' + window.location.hostname + ':3000/api'
 };

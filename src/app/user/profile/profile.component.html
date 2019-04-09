@@ -69,7 +69,7 @@
             <div class="form-group">
               <label for="newPassword" class="pull-right">کلمه عبور جدید</label>
               <input autocomplete="new-password" type="password" class="form-control form-control-sm" [(ngModel)]="passwordObject.newPassword"
-                #newPassword="ngModel" name="newPassword" id="newPassword" validateEqual="confirmPassword" reverse="true"
+                #newPassword="ngModel" name="newPassword" id="newPassword" app-validateEqual="confirmPassword" reverse="true"
                 required placeholder="کلمه عبور جدید">
               <small class="validation" [hidden]="newPassword.valid || (newPassword.pristine && !passwordForm.submitted)">
                 درج کلمه عبور الزامی می باشد
@@ -78,7 +78,7 @@
             <div class="form-group">
               <label for="confirmPassword" class="pull-right">تکرار کلمه عبور</label>
               <input autocomplete="new-password" type="password" class="form-control form-control-sm" [(ngModel)]="passwordObject.confirmPassword"
-                #confirmPassword="ngModel" name="confirmPassword" id="confirmPassword" required validateEqual="newPassword"
+                #confirmPassword="ngModel" name="confirmPassword" id="confirmPassword" required app-validateEqual="newPassword"
                 placeholder="تکرار کلمه عبور">
             </div>
             <small class="validation clearfix" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !passwordForm.submitted)">

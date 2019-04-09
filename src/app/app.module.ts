@@ -78,7 +78,7 @@ export function tokenGetter() {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }, AuthGuard,FileManagerService],
+  }, AuthGuard, FileManagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

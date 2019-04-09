@@ -55,7 +55,6 @@ export class QueueComponent implements OnInit {
       tedadSahm: this.tedadSahm,
       gheymatSahm: this.gheymatSahm,
       arzeshSahm: this.arzeshSahm
-      // ,tarikhDarkhast: moment.tz('Asia/Tehran').format()
     };
 
     const noeDarkhast = this.noeDarkhastSelect.nativeElement.selectedIndex;
@@ -66,11 +65,10 @@ export class QueueComponent implements OnInit {
         if (!result) {
           this.toastr.error('ثبت درخواست خرید و فروش همزمان مجاز نمی باشد');
         } else {
-
           // ثبت درخواست
-          // kharid sahm
+          // درخواست خرید سهم
           if (noeDarkhast === 0) {
-            this.apiService.sabtDarkhastKharid(darkhast).subscribe((result) => {
+            this.apiService.sabtDarkhastKharid(darkhast).subscribe(() => {
               this.getSafeKharid();
               this.toastr.success('درخواست خرید شما با موفقیت به صف خرید افزوده شد');
             }, (error) => {
@@ -87,8 +85,8 @@ export class QueueComponent implements OnInit {
                 const tedadDarayi: number = data[0].tedadSahm || 0;
                 // محاسبه مجموع سهام تمامی درخواست های فروش فعلی کاربر
                 this.apiService.getTedadKolSahamForushUser().subscribe(
-                  (data: any) => {
-                    const tedadKolSahamForushUser: number = data.tedadKolSahamForush || 0;
+                  (result:any) => {
+                    const tedadKolSahamForushUser: number = result.tedadKolSahamForush || 0;
                     // محاسبه مجموع سهام تمامی درخواست های فروش فعلی کاربر
                     const tedadMojoud = tedadDarayi - tedadKolSahamForushUser;
                     console.log(`tedadDarkhast:${tedadDarkhast}`);
@@ -101,7 +99,7 @@ export class QueueComponent implements OnInit {
                       return;
                     }
                     // در صورتی که تعداد سهام جهت فروش بیشتر از دارایی نباشد درخواست را ثبت میکنیم
-                    this.apiService.sabtDarkhastForush(darkhast).subscribe((result) => {
+                    this.apiService.sabtDarkhastForush(darkhast).subscribe(() => {
                       this.getSafeForush();
                       this.toastr.success('درخواست فروش شما با موفقیت به صف فروش افزوده شد');
                     }, (error) => {

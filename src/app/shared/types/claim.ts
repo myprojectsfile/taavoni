@@ -1,5 +1,5 @@
 export interface ClaimType {
-    _id?:string,
-    claim?:string;
-    tozihat?:string
+    _id?: string;
+    claim?: string;
+    tozihat?: string;
 }

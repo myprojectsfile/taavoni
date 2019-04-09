@@ -28,7 +28,7 @@ export class PortfoComponent implements OnInit {
       (error) => {
         console.log(error);
         this.toastr.error('خطا در بازیابی داده های پورتفوی کاربر.با پشتیبان سامانه تماس بگیرید.');
-      })
+      });
   }
 
 }
