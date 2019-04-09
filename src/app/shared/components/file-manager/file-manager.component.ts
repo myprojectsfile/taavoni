@@ -17,7 +17,7 @@ import { UserType } from '../../types/user';
 export class FileManagerComponent implements OnInit {
 
 
-  constructor(private fimeMangerService: FileManagerService, private apiService: ApiService, private toastr: ToastrService) { }
+  constructor(private fileMangerService: FileManagerService, private apiService: ApiService, private toastr: ToastrService) { }
 
   @HostBinding('attr.user')
   @Input()
@@ -65,7 +65,7 @@ export class FileManagerComponent implements OnInit {
 
   uploadFile() {
 
-    this.fimeMangerService.uploadFile(this.selectedFile)
+    this.fileMangerService.uploadFile(this.selectedFile)
       .subscribe(
         event => {
           if (event.type === HttpEventType.UploadProgress) {
@@ -117,7 +117,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   previewFile(filename: string) {
-    this.fimeMangerService.downloadFile(filename)
+    this.fileMangerService.downloadFile(filename)
       .subscribe(
         (data) => {
           const blob = new Blob([data], { type: 'image/png' });
@@ -135,7 +135,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   downloadFile(filename: string) {
-    this.fimeMangerService.downloadFile(filename)
+    this.fileMangerService.downloadFile(filename)
       .subscribe(
         (data) => {
           const blob = new Blob([data], { type: 'image/png;' });
@@ -161,7 +161,15 @@ export class FileManagerComponent implements OnInit {
     document.getElementById('previewModal').click();
   }
 
-  // closeModel() {
-  //    this.myModal.nativeElement.className = 'modal hide';
-  // }
+  deleteFile(filename: string) {
+    this.fileMangerService.deleteFile(filename)
+      .subscribe(
+        (data) => {
+          console.log('file deleted:' + data);
+        },
+        (error) => {
+          console.log('file delete error:' + error);
+        }
+      );
+  }
 }

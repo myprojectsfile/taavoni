@@ -149,28 +149,19 @@ module.exports = function (app) {
       //set collection name to lookup into
       gfs.collection('uploads');
 
-      // First check if file exists
-      gfs.files.find({
-        filename: req.params.filename
-      }).toArray(function (err, files) {
-        if (!files || files.length === 0) {
-          return res.status(404).json({
-            responseCode: 1,
-            responseMessage: "error"
+      //check if file exist
+      gfs.exist({ filename: req.params.filename }, (err, found) => {
+        if (err) return res.status(500).end(err);
+        // delete file
+        if (found) {
+          gfs.remove({ filename: req.params.filename }, (err) => {
+            if (err) res.status(500).end(err);
+            res.status(202).send();
           });
-        }
-        res.status(200).send();
-        // // create read stream
-        // var readstream = gfs.createReadStream({
-        //   filename: files[0].filename,
-        //   root: "uploads"
-        // });
-        // // set the proper content type 
-        // res.set('Content-Type', files[0].contentType);
-        // // res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
-        // // Return response
-        // return readstream.pipe(res);
+        } else res.status(404).send('File does not exist');
       });
+
+      // remove file from storage
     });
 
   // app.route('/api/file/:filename')

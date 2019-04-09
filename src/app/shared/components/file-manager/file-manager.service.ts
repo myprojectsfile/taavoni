@@ -12,6 +12,7 @@ export class FileManagerService {
   apiUri = environment.apiUri;
   fileUploadUri = this.apiUri + '/file/upload';
   fileDownloadUri = this.apiUri + '/file/';
+  fileDeleteUri = this.apiUri + '/file/';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -33,6 +34,10 @@ export class FileManagerService {
 
   downloadFile(filename: string): Observable<any> {
     return this.httpClient.get(this.fileDownloadUri + filename, { responseType: 'arraybuffer' });
+  }
+
+  deleteFile(filename: string): Observable<any> {
+    return this.httpClient.delete(this.fileDeleteUri+ filename);
   }
 
 }
