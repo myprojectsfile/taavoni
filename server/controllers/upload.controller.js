@@ -164,22 +164,70 @@ module.exports = function (app) {
       // remove file from storage
     });
 
-  // app.route('/api/file/:filename')
-  //   .delete((req, res) => {
-  //     //set collection name to lookup into
-  //     gfs.collection('uploads');
+  app.route('/api/search/:filename')
+    .get((req, res) => {
+      gfs.files.findOne({ filename: req.params.filename }, (err, files) => {
+        if (err) res.end('error in find file:' + err);
+        if (!files || files.length === 0) {
+          return res.status(404).send('file not found');
+        }
+        res.send('file find');
+      });
+    });
 
-  //     gfs.files.find({
-  //       filename: req.params.filename
-  //     }, (err, file) => {
-  //       console.log(file);
-  //       console.log(err);
+  app.route('/api/exist/:filename')
+    .get((req, res) => {
+      gfs.collection('uploads');
+      gfs.exist({ filename: req.params.filename }, (err, found) => {
+        if (err) res.end('error in find existance check:' + err);
 
-  //       if (!file) res.status(404).send();
-  //       if (err) res.status(400).json(err);
-  //       else res.status(200).send();
-  //     });
-  //   });
+        if (!found) return res.status(404).send('file not found');
+        else res.send('file exist');
+      });
+    });
+
+  app.route('/api/delete/:filename')
+    .get((req, res) => {
+      gfs.collection('uploads');
+      // gfs.collection('uploads.files').files.remove({}, (err) => {
+      //   if (err) res.send(err)
+      //   else res.send('ok')
+      // });
+      // gfs.collection('uploads.chunks').files.remove({},(err)=>{if(err) res.send(err)});
+      // res.end('ok');
+      // gfs.db.collection('uploads.chunks').remove({ filename: req.params.filename }, (err, gridstore) => {
+      //   if (err) res.end('error in find existance check:' + err);
+      //   else res.send('file removed');
+      // });
+      // gfs.sunlink({ filename: req.params.filename }, (err) => {
+      //   if (err) res.end('error in find existance check:' + err);
+      //   else {
+      //     gfs.collection('chunks');
+      //     gfs.files.remove({}, (err) => {
+      //       res.send('file removed');
+      //     })
+      //   }
+      // });
+      gfs.db.collection('uploads.files', {}, (err, files) => {
+        files.remove({filename:req.params.filename}, (err) => {
+          if (err) {
+            console.log(err);
+            res.status(500);
+          }
+          gfs.db.collection('uploads.chunks', {}, (err, chunks) => {
+            chunks.removeMany({}, (err, result) => {
+              if (err) {
+                console.log(err);
+                res.status(500);
+              }
+              res.send('files deleted');
+            });
+          });
+        });
+      });
+
+
+    });
 
   // Route for getting all the files
   app.route('/api/files')
