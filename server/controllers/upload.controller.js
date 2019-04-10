@@ -85,37 +85,6 @@ module.exports = function (app) {
       });
     });
 
-  //   app.route('/api/file/download/:filename')
-  //     .get((req, res) => {
-
-  //       gfs.collection('uploads');
-
-  //       gfs.files.find({
-  //         filename: req.params.filename,
-  //         root: "uploads"
-  //       }, function (err, file) {
-  //         if (err) {
-  //           return res.status(400).send(err);
-  //         } else if (!file) {
-  //           return res.status(404).send('فایل مورد نظر پیدا نشد');
-  //         }
-
-  //         res.json(file.filename);
-  //         // res.set('Content-Type', file.contentType);
-  //         // res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
-
-  //         // var readstream = gfs.createReadStream({
-  //         //   filename: req.params.filename
-  //         // });
-
-  //         // readstream.on("error", function (err) {
-  //         //   res.end();
-  //         // });
-
-  //         // readstream.pipe(res);
-  //       });
-  //     });
-
   app.route('/api/file/:filename')
     .get((req, res) => {
       //set collection name to lookup into
@@ -144,90 +113,85 @@ module.exports = function (app) {
       });
     });
 
-  app.route('/api/file/:filename')
-    .delete((req, res) => {
-      //set collection name to lookup into
-      gfs.collection('uploads');
-
-      //check if file exist
-      gfs.exist({ filename: req.params.filename }, (err, found) => {
-        if (err) return res.status(500).end(err);
-        // delete file
-        if (found) {
-          gfs.remove({ filename: req.params.filename }, (err) => {
-            if (err) res.status(500).end(err);
-            res.status(202).send();
-          });
-        } else res.status(404).send('File does not exist');
-      });
-
-      // remove file from storage
-    });
-
   app.route('/api/search/:filename')
     .get((req, res) => {
-      gfs.files.findOne({ filename: req.params.filename }, (err, files) => {
+      gfs.files.findOne({
+        filename: req.params.filename
+      }, (err, file) => {
         if (err) res.end('error in find file:' + err);
-        if (!files || files.length === 0) {
+        if (!file || file.length === 0) {
           return res.status(404).send('file not found');
         }
-        res.send('file find');
+        res.send(file._id);
       });
     });
 
   app.route('/api/exist/:filename')
     .get((req, res) => {
       gfs.collection('uploads');
-      gfs.exist({ filename: req.params.filename }, (err, found) => {
+      gfs.exist({
+        filename: req.params.filename
+      }, (err, found) => {
         if (err) res.end('error in find existance check:' + err);
 
         if (!found) return res.status(404).send('file not found');
-        else res.send('file exist');
+        else res.send(found._id);
       });
     });
 
-  app.route('/api/delete/:filename')
+  app.route('/api/delete/:userId/:filename')
     .get((req, res) => {
-      gfs.collection('uploads');
-      // gfs.collection('uploads.files').files.remove({}, (err) => {
-      //   if (err) res.send(err)
-      //   else res.send('ok')
-      // });
-      // gfs.collection('uploads.chunks').files.remove({},(err)=>{if(err) res.send(err)});
-      // res.end('ok');
-      // gfs.db.collection('uploads.chunks').remove({ filename: req.params.filename }, (err, gridstore) => {
-      //   if (err) res.end('error in find existance check:' + err);
-      //   else res.send('file removed');
-      // });
-      // gfs.sunlink({ filename: req.params.filename }, (err) => {
-      //   if (err) res.end('error in find existance check:' + err);
-      //   else {
-      //     gfs.collection('chunks');
-      //     gfs.files.remove({}, (err) => {
-      //       res.send('file removed');
-      //     })
-      //   }
-      // });
-      gfs.db.collection('uploads.files', {}, (err, files) => {
-        files.remove({filename:req.params.filename}, (err) => {
-          if (err) {
-            console.log(err);
-            res.status(500);
-          }
-          gfs.db.collection('uploads.chunks', {}, (err, chunks) => {
-            chunks.removeMany({}, (err, result) => {
-              if (err) {
-                console.log(err);
-                res.status(500);
-              }
-              res.send('files deleted');
+      // check if file exist
+      gfs.files.findOne({
+        filename: req.params.filename
+      }, (err, file) => {
+        if (err) res.end('error in find file:' + err);
+        if (!file || file.length === 0) {
+          return res.status(404).send('file not found');
+        }
+        const file_id = file._id;
+        // if file exist, then delete file from uploads.files, uploads.chunks , user.files
+        gfs.db.collection('uploads.files', {
+          filename: req.params.filename
+        }, (findErr, files) => {
+          if (findErr) res.status(500).end(findErr);
+
+          files.remove({
+            filename: req.params.filename
+          }, (removeErr) => {
+            if (removeErr) {
+              res.status(500).end(removeErr);
+            }
+            gfs.db.collection('uploads.chunks', {
+              files_id: file_id
+            }, (chunkErr, chunks) => {
+              if (chunkErr) res.status(500).end(chunkErr);
+              chunks.removeMany({
+                files_id: file_id
+              }, (removeChunkErr) => {
+                if (removeChunkErr) res.status(500).end(removeChunkErr);
+                updateUserFiles(req.params.userId, req.params.filename);
+                res.send('ok')
+              });
             });
           });
         });
       });
-
-
     });
+
+  // update user files list  
+  function updateUserFiles(userId, filename) {
+    gfs.db.collection('users', {
+      _id: userId
+    }, (userErr, user) => {
+      if (userErr) res.status(500).end(userErr);
+      if (!user) res.status(404).send('user not found');
+      let userFileList = user.userFiles;
+      let updatedUserFilesList = userFileList.filter(file => file.filename !== filename);
+      user.userFiles = updatedUserFilesList;
+      gfs.db.collection('users').save(user);
+    });
+  }
 
   // Route for getting all the files
   app.route('/api/files')
