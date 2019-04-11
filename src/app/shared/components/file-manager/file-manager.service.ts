@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpParams,
+  HttpRequest
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileManagerService {
-
   apiUri = environment.apiUri;
   fileUploadUri = this.apiUri + '/file/upload';
   fileDownloadUri = this.apiUri + '/file/';
   fileDeleteUri = this.apiUri + '/file/';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   uploadFile(file: File): Observable<HttpEvent<any>> {
-
     const formData = new FormData();
     formData.append('file', file, file.name);
 
@@ -25,7 +27,7 @@ export class FileManagerService {
 
     const options = {
       params: params,
-      reportProgress: true,
+      reportProgress: true
     };
 
     const req = new HttpRequest('POST', this.fileUploadUri, formData, options);
@@ -33,11 +35,12 @@ export class FileManagerService {
   }
 
   downloadFile(filename: string): Observable<any> {
-    return this.httpClient.get(this.fileDownloadUri + filename, { responseType: 'arraybuffer' });
+    return this.httpClient.get(this.fileDownloadUri + filename, {
+      responseType: 'arraybuffer'
+    });
   }
 
-  deleteFile(filename: string): Observable<any> {
-    return this.httpClient.delete(this.fileDeleteUri+ filename);
+  deleteFile(userId: string, filename: string): Observable<any> {
+    return this.httpClient.delete(this.fileDeleteUri + userId + '/' + filename);
   }
-
 }

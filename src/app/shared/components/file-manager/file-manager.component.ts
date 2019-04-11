@@ -1,4 +1,14 @@
-import { Component, OnInit, HostBinding, Input, Output, EventEmitter, AfterViewInit, HostListener, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostBinding,
+  Input,
+  Output,
+  EventEmitter,
+  AfterViewInit,
+  HostListener,
+  ViewChild
+} from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FileManagerService } from './file-manager.service';
 import { ToastrService } from 'ngx-toastr';
@@ -13,11 +23,12 @@ import { UserType } from '../../types/user';
   templateUrl: './file-manager.component.html',
   styleUrls: ['./file-manager.component.css']
 })
-
 export class FileManagerComponent implements OnInit {
-
-
-  constructor(private fileMangerService: FileManagerService, private apiService: ApiService, private toastr: ToastrService) { }
+  constructor(
+    private fileMangerService: FileManagerService,
+    private apiService: ApiService,
+    private toastr: ToastrService
+  ) {}
 
   @HostBinding('attr.user')
   @Input()
@@ -40,23 +51,27 @@ export class FileManagerComponent implements OnInit {
   }
 
   private getListNoeFile() {
-    this.apiService.getListNoeFile()
-      .subscribe((listNoeFileResponse) => {
+    this.apiService.getListNoeFile().subscribe(
+      listNoeFileResponse => {
         this.listNoeFile = listNoeFileResponse;
-      }, (error) => {
+      },
+      error => {
         console.log(error);
         this.toastr.error('خطا در بازیابی لیست نوع فایل');
-      });
+      }
+    );
   }
 
   public getUserFile(username: string) {
-    this.apiService.getUserFilesByUsername(username)
-      .subscribe((userFiles) => {
+    this.apiService.getUserFilesByUsername(username).subscribe(
+      userFiles => {
         this.userFiles = userFiles;
-      }, (error) => {
+      },
+      error => {
         console.log(error);
         this.toastr.error('خطا در بازیابی لیست فایل های کاربر');
-      });
+      }
+    );
   }
 
   onFileChanged(event) {
@@ -64,112 +79,112 @@ export class FileManagerComponent implements OnInit {
   }
 
   uploadFile() {
+    this.fileMangerService.uploadFile(this.selectedFile).subscribe(
+      event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round((100 * event.loaded) / event.total);
+        } else if (event instanceof HttpResponse) {
+          // ثبت مشخصات فایل بارگذاری شده در پروفایل کاربر
 
-    this.fileMangerService.uploadFile(this.selectedFile)
-      .subscribe(
-        event => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.progress = Math.round(100 * event.loaded / event.total);
-          } else if (event instanceof HttpResponse) {
-            // ثبت مشخصات فایل بارگذاری شده در پروفایل کاربر
+          const file: any = event.body.file;
 
-            const file: any = event.body.file;
+          this.uploadedFile.filename = file.filename;
+          this.uploadedFile.mimetype = file.mimetype;
+          this.uploadedFile.noeFile = this.noeFile;
+          this.uploadedFile.uploadDate = file.uploadDate;
+          this.uploadedFile.encoding = file.encoding;
+          this.uploadedFile.md5 = file.md5;
+          this.uploadedFile.originalname = file.originalname;
+          this.uploadedFile.size = file.size;
 
-            this.uploadedFile.filename = file.filename;
-            this.uploadedFile.mimetype = file.mimetype;
-            this.uploadedFile.noeFile = this.noeFile;
-            this.uploadedFile.uploadDate = file.uploadDate;
-            this.uploadedFile.encoding = file.encoding;
-            this.uploadedFile.md5 = file.md5;
-            this.uploadedFile.originalname = file.originalname;
-            this.uploadedFile.size = file.size;
-
-
-            this.apiService.addFileToUser(this.user.username, this.uploadedFile)
-              .subscribe(
-                (updatedUser) => {
-                  this.userFiles = updatedUser.userFiles;
-                  this.userChanged.emit(updatedUser);
-                  this.toastr.success('تصویر مورد نظر با موفقیت بارگذاری شد');
-                  this.selectedFile = null;
-                  this.noeFile = '';
-                  setTimeout(() => {
-                    this.progress = 0;
-                  }, 2000);
-                },
-                (error) => {
-
-                }
-              );
-          }
-        },
-        (err) => {
-          this.toastr.error('خطا در بارگذاری تصویر');
-          console.log('Upload Error:', err);
-          this.selectedFile = null;
-          this.noeFile = '';
-          this.progress = 0;
-
-        }, () => {
-          // console.log("Upload done");
+          this.apiService
+            .addFileToUser(this.user.username, this.uploadedFile)
+            .subscribe(
+              updatedUser => {
+                this.userFiles = updatedUser.userFiles;
+                this.userChanged.emit(updatedUser);
+                this.toastr.success('تصویر مورد نظر با موفقیت بارگذاری شد');
+                this.selectedFile = null;
+                this.noeFile = '';
+                setTimeout(() => {
+                  this.progress = 0;
+                }, 2000);
+              },
+              error => {}
+            );
         }
-      );
+      },
+      err => {
+        this.toastr.error('خطا در بارگذاری تصویر');
+        console.log('Upload Error:', err);
+        this.selectedFile = null;
+        this.noeFile = '';
+        this.progress = 0;
+      },
+      () => {
+        // console.log("Upload done");
+      }
+    );
   }
 
   previewFile(filename: string) {
-    this.fileMangerService.downloadFile(filename)
-      .subscribe(
-        (data) => {
-          const blob = new Blob([data], { type: 'image/png' });
-          const url = window.URL.createObjectURL(blob);
-          const image = new Image();
-          image.src = url;
-          const imageContainer = document.getElementById('imageContainer').setAttribute('src', url);
-          // console.log(imageContainer);
-          // document.body.appendChild(image);
-          // const pwa = window.open(url);
-          this.openModal();
-        },
-        (error) => { }
-      );
+    this.fileMangerService.downloadFile(filename).subscribe(
+      data => {
+        const blob = new Blob([data], { type: 'image/png' });
+        const url = window.URL.createObjectURL(blob);
+        const image = new Image();
+        image.src = url;
+        const imageContainer = document
+          .getElementById('imageContainer')
+          .setAttribute('src', url);
+        // console.log(imageContainer);
+        // document.body.appendChild(image);
+        // const pwa = window.open(url);
+        this.openModal();
+      },
+      error => {}
+    );
   }
 
   downloadFile(filename: string) {
-    this.fileMangerService.downloadFile(filename)
-      .subscribe(
-        (data) => {
-          const blob = new Blob([data], { type: 'image/png;' });
-          const dwldLink = document.createElement('a');
-          const url = URL.createObjectURL(blob);
-          const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
-          if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
-            dwldLink.setAttribute('target', '_blank');
-          }
-          dwldLink.setAttribute('href', url);
-          dwldLink.setAttribute('download', 'preview.png');
-          dwldLink.style.visibility = 'hidden';
-          document.body.appendChild(dwldLink);
-          dwldLink.click();
-          document.body.removeChild(dwldLink);
-        },
-        (error) => { }
-      );
+    this.fileMangerService.downloadFile(filename).subscribe(
+      data => {
+        const blob = new Blob([data], { type: 'image/png;' });
+        const dwldLink = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        const isSafariBrowser =
+          navigator.userAgent.indexOf('Safari') !== -1 &&
+          navigator.userAgent.indexOf('Chrome') === -1;
+        if (isSafariBrowser) {
+          // if Safari open in new window to save file with random filename.
+          dwldLink.setAttribute('target', '_blank');
+        }
+        dwldLink.setAttribute('href', url);
+        dwldLink.setAttribute('download', 'preview.png');
+        dwldLink.style.visibility = 'hidden';
+        document.body.appendChild(dwldLink);
+        dwldLink.click();
+        document.body.removeChild(dwldLink);
+      },
+      error => {}
+    );
   }
-
 
   openModal() {
     document.getElementById('previewModal').click();
   }
 
   deleteFile(filename: string) {
-    this.fileMangerService.deleteFile(filename)
-      .subscribe(
-        (data) => {
-          console.log('file deleted:' + data);
-        },
-        (error) => {
-          console.log('file delete error:' + error);
-        }
-      );
+    this.fileMangerService.deleteFile(this.user._id, filename).subscribe(
+      updatedUser => {
+        this.userFiles = updatedUser.userFiles;
+        this.userChanged.emit(updatedUser);
+        this.toastr.success('تصویر مورد نظر با موفقیت حذف شد');
+      },
+      error => {
+        this.toastr.error('خطا در حذف فایل بارگذاری شده');
+        console.log('file delete error:' + error);
+      }
+    );
   }
 }

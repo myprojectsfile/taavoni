@@ -139,8 +139,8 @@ module.exports = function (app) {
       });
     });
 
-  app.route('/api/delete/:userId/:filename')
-    .get((req, res) => {
+  app.route('/api/file/:userId/:filename')
+    .delete((req, res) => {
       // check if file exist
       gfs.files.findOne({
         filename: req.params.filename
@@ -170,8 +170,14 @@ module.exports = function (app) {
                 files_id: file_id
               }, (removeChunkErr) => {
                 if (removeChunkErr) res.status(500).end(removeChunkErr);
-                updateUserFiles(req.params.userId, req.params.filename);
-                res.send('ok')
+                // remove file from userFile in profile collection
+                updateUserFiles(req.params.userId, req.params.filename).then(
+                  (user) => {
+                    res.status(200).json(user);
+                  },
+                  (error) => {
+                    res.status(500).json(error);
+                  });
               });
             });
           });
@@ -181,15 +187,18 @@ module.exports = function (app) {
 
   // update user files list  
   function updateUserFiles(userId, filename) {
-    gfs.db.collection('users', {
-      _id: userId
-    }, (userErr, user) => {
-      if (userErr) res.status(500).end(userErr);
-      if (!user) res.status(404).send('user not found');
-      let userFileList = user.userFiles;
-      let updatedUserFilesList = userFileList.filter(file => file.filename !== filename);
-      user.userFiles = updatedUserFilesList;
-      gfs.db.collection('users').save(user);
+    return new Promise((resolve, reject) => {
+      context.User.findById(userId, function (userErr, user) {
+        if (userErr) reject(userErr);
+        if (!user) resolve(null);
+        let userFileList = user.userFiles;
+        let updatedUserFilesList = userFileList.filter(file => file.filename !== filename);
+        user.userFiles = updatedUserFilesList;
+        user.save((saveErr) => {
+          if (saveErr) reject(saveErr);
+          resolve(user);
+        });
+      });
     });
   }
 

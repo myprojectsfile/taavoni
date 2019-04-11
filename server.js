@@ -11,10 +11,14 @@ app.set('views', path.join(__dirname, '/server/views'));
 app.set('view engine', 'pug');
 
 
-app.use(cors({origin: 'http://localhost:4200'}));
+app.use(cors({
+  origin: 'http://localhost:4200'
+}));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -27,36 +31,37 @@ uploadController(app);
 
 // index route
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
     });
+  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+  res.status(err.status || 500);
+  res.render('error', {
+    title: 'error in taavoni server app',
+    message: err.message,
+    error: err
+  });
 });
 
 
@@ -68,5 +73,3 @@ app.set('port', port);
 
 const server = http.createServer(app);
 server.listen(port, () => console.log(`1- Taavoni app running on localhost:${port}`));
-
-

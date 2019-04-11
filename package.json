@@ -9,7 +9,7 @@
     "debug": "node --nolazy --inspect-brk=9229 server.js",
     "build": "ng build --prod",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "ng lint --fix=true",
     "e2e": "ng e2e",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json"
   },
