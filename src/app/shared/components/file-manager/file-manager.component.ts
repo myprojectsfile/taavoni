@@ -137,9 +137,6 @@ export class FileManagerComponent implements OnInit {
         const imageContainer = document
           .getElementById('imageContainer')
           .setAttribute('src', url);
-        // console.log(imageContainer);
-        // document.body.appendChild(image);
-        // const pwa = window.open(url);
         this.openModal();
       },
       error => {}

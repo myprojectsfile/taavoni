@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { PortfoType } from '../../shared/types/portfo';
 import { MoamelehType } from '../../shared/types/moameleh';
 import { ToastrService, Toast } from 'ngx-toastr';
+import { AuthService } from '../../auth/auth.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-portfo',
@@ -10,25 +12,48 @@ import { ToastrService, Toast } from 'ngx-toastr';
   styleUrls: ['./portfo.component.css']
 })
 export class PortfoComponent implements OnInit {
-
   userPortfo: PortfoType;
   moamelat: MoamelehType[];
-
-  constructor(private apiService: ApiService, private toastr: ToastrService) {
-
-  }
+  calcNoeMoameleh: any;
+  constructor(
+    private apiService: ApiService,
+    private jwt: JwtHelperService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
+    this.calcNoeMoameleh = row => {
+      const username = this.getUsername();
+      if (row.forushandeh_username === username) {
+        return 'فروش';
+      } else {
+        return 'خرید';
+      }
+    };
     this.apiService.getUserPortfo().subscribe(
-      (portfo) => {
+      portfo => {
         console.log(portfo);
         this.userPortfo = portfo[0];
         this.moamelat = portfo[0].moamelat;
       },
-      (error) => {
+      error => {
         console.log(error);
-        this.toastr.error('خطا در بازیابی داده های پورتفوی کاربر.با پشتیبان سامانه تماس بگیرید.');
-      });
+        this.toastr.error(
+          'خطا در بازیابی داده های پورتفوی کاربر.با پشتیبان سامانه تماس بگیرید.'
+        );
+      }
+    );
   }
 
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+  getUsername() {
+    const tokenPayload = this.jwt.decodeToken(this.getToken());
+    if (tokenPayload) {
+      return tokenPayload.user.username;
+    }
+    return null;
+  }
 }

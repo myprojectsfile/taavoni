@@ -25,9 +25,13 @@
   <div class="row">
     <div class="col-sm m-3">
       <dx-data-grid #moamelatGrid [showRowLines]="true" [showColumnLines]="true" [rowAlternationEnabled]="true"
-        [paging]="{enabled:true,pageSize:10}" [pager]="{showInfo:true,showNavigationButtons:true,showPageSizeSelector: true,allowedPageSizes: [5, 10, 20]}"
+        [paging]="{enabled:true,pageSize:10}"
+        [pager]="{showInfo:true,showNavigationButtons:true,showPageSizeSelector: true,allowedPageSizes: [5, 10, 20]}"
         [showBorders]="true" [rtlEnabled]="true" [dataSource]="moamelat">
-        <dxi-column alignment="center" dataField="tarikhMoameleh" cellTemplate="jalaliDatetime" width="170" caption="تاریخ معامله"></dxi-column>
+        <dxi-column alignment="center" dataField="tarikhMoameleh" width="170" caption="تاریخ معامله"></dxi-column>
+        <dxi-column alignment="center" dataField="noeMoameleh" width="100" [calculateCellValue]="calcNoeMoameleh"
+          caption="نوع معامله">
+        </dxi-column>
         <dxi-column alignment="center" dataField="shenasehMoameleh" width="190" caption="شناسه معامله"></dxi-column>
         <dxi-column alignment="center" dataField="tedadSahmMoameleh" width="100" caption="تعداد سهام"></dxi-column>
         <dxi-column alignment="center" dataField="gheymatMoameleh" width="100" caption="قیمت سهام"></dxi-column>
@@ -35,9 +39,9 @@
         <dxi-column alignment="center" dataField="forushandeh_fullName" width="120" caption="نام فروشنده"></dxi-column>
         <dxi-column alignment="center" dataField="kharidar_fullName" width="120" caption="نام خریدار"></dxi-column>
 
-        <div *dxTemplate="let d of 'jalaliDatetime'">
+        <!-- <div *dxTemplate="let d of 'jalaliDatetime'">
           {{d.data.tarikhMoameleh|jalaliDatetime}}
-        </div>
+        </div> -->
 
       </dx-data-grid>
     </div>
