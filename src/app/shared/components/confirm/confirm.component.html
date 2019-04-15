@@ -1,5 +1,14 @@
 <div class="modal-body text-center">
+  <div class="modal-body">
+    <h4>{{title}}</h4>
     <p>{{message}}</p>
-    <button type="button" class="btn btn-default" (click)="respond('Yes')">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="respond('No')">No</button>
   </div>
+  <div class="modal-footer">
+    <button type="button" *ngIf="options.indexOf('Yes')>=0" class="btn btn-primary btn-sm ml-3"
+      (click)="respond('Yes')">بله</button>
+    <button type="button" *ngIf="options.indexOf('No')>=0" class="btn btn-danger btn-sm btn-sm ml-3"
+      (click)="respond('No')">خیر</button>
+    <button type="button" *ngIf="options.indexOf('Cancel')>=0" class="btn btn-danger btn-sm"
+      (click)="respond('Cancel')">لغو</button>
+  </div>
+</div>

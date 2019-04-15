@@ -4,6 +4,7 @@ import { DxDataGridComponent } from 'devextreme-angular/ui/data-grid';
 import { ToastrService } from 'ngx-toastr';
 import { DarkhastType } from '../shared/types/darkhast';
 import { ApiService } from '../shared/services/api.service';
+import { ConfirmService } from '../shared/services/confirm.service';
 
 declare var $: any;
 @Component({
@@ -21,7 +22,7 @@ export class RequestAdminComponent implements OnInit {
   editingMode: boolean;
   gridInstance: DxDataGridComponent['instance'];
 
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private toastr: ToastrService, private confirmService: ConfirmService) { }
 
   ngOnInit() {
     this.listDarkhastGrid.instance = this.listDarkhastGrid.instance;
@@ -42,18 +43,25 @@ export class RequestAdminComponent implements OnInit {
   }
 
   cancel(d) {
-    const rowKey = d.data._id;
-    const rowData: DarkhastType = d.data;
-    const rowIndex = this.listDarkhastGrid.instance.getRowIndexByKey(d.data._id);
-    rowData.vazeiat = 'لغو شده';
-    this.apiService.updateDarkhast(rowData, rowKey).subscribe(() => {
-      this.listDarkhastGrid.instance.cellValue(rowIndex, 'vazeiat', 'لغو شده');
-      this.toastr.success('درخواست با موفقیت لغو گردید');
-      this.listDarkhastGrid.instance.cancelEditData();
-    }, (error) => {
-      this.toastr.error('خطا در لغو درخواست');
-      console.log(error);
-    });
+    console.log(d);
+    this.confirmService.confirm("اخطار", "آیا از لغو درخواست اطمینان دارید؟", ["Yes", "No"])
+      .subscribe(answer => {
+        if (answer == 'Yes') {
+          // cancel request  
+          const rowKey = d.data._id;
+          const rowData: DarkhastType = d.data;
+          const rowIndex = this.listDarkhastGrid.instance.getRowIndexByKey(d.data._id);
+          rowData.vazeiat = 'لغو شده';
+          this.apiService.updateDarkhast(rowData, rowKey).subscribe(() => {
+            this.listDarkhastGrid.instance.cellValue(rowIndex, 'vazeiat', 'لغو شده');
+            this.toastr.success('درخواست با موفقیت لغو گردید');
+            this.listDarkhastGrid.instance.cancelEditData();
+          }, (error) => {
+            this.toastr.error('خطا در لغو درخواست');
+            console.log(error);
+          });
+        }
+      });
   }
 
   editRow(d) {
@@ -66,37 +74,56 @@ export class RequestAdminComponent implements OnInit {
     this.listDarkhastGrid.instance.editCell(rowIndex, 'tedadSahm');
   }
 
-  rowUpdating(e) {
-    const newTedadSahm = e.newData.tedadSahm;
-    const oldTedadSahm = this.oldTedadSahm;
-    if (newTedadSahm < oldTedadSahm) {
-      console.log(e);
-      const rowData = e.oldData;
-      rowData.tedadSahm = newTedadSahm;
-      this.apiService.updateDarkhast(rowData, this.editingRowKey).subscribe(() => {
-        this.toastr.success('تعداد با موفقیت کاهش یافت');
-        this.editingMode = false;
-        this.listDarkhastGrid.instance.cancelEditData();
-        e.cancel = true;
-        this.getListDarkhast();
-      }, (error) => {
-        this.toastr.error('خطا در کاهش تعداد');
-        e.cancel = true;
-        this.listDarkhastGrid.instance.cancelEditData();
-        console.log(error);
+  rowUpdating(e) {    
+    this.confirmService.confirm("اخطار", "آیا ازثبت تغییرات درخواست اطمینان دارید؟", ["Yes", "No"])
+      .subscribe(answer => {
+        if (answer == 'Yes') {
+          const newTedadSahm = e.newData.tedadSahm;
+          const oldTedadSahm = this.oldTedadSahm;
+          if (newTedadSahm < oldTedadSahm) {
+            console.log(e);
+            const rowData = e.oldData;
+            rowData.tedadSahm = newTedadSahm;
+            this.apiService.updateDarkhast(rowData, this.editingRowKey).subscribe(() => {
+              this.toastr.success('تعداد با موفقیت کاهش یافت');
+              this.editingMode = false;
+              this.listDarkhastGrid.instance.cancelEditData();
+              e.cancel = true;
+              this.getListDarkhast();
+            }, (error) => {
+              this.toastr.error('خطا در کاهش تعداد');
+              e.cancel = true;
+              this.listDarkhastGrid.instance.cancelEditData();
+              console.log(error);
+            });
+          } else {
+            this.toastr.error('شما تنها مجاز به کاهش تعداد هستید');
+            e.cancel = true;
+            this.editingMode = false;
+            this.listDarkhastGrid.instance.cancelEditData();
+          }
+        } else {
+          e.cancel = true;
+          this.editingMode = false;
+          this.listDarkhastGrid.instance.cancelEditData();
+          this.getListDarkhast();
+        }
       });
-    } else {
-      this.toastr.error('شما تنها مجاز به کاهش تعداد هستید');
-      e.cancel = true;
-      this.editingMode = false;
-      this.listDarkhastGrid.instance.cancelEditData();
-    }
+
   }
 
   keyDown(e) {
     if (e.event.keyCode === 27) {
-      this.editingMode = false;
-      this.listDarkhastGrid.instance.cancelEditData();
+      this.confirmService.confirm("اخطار", "آیا ازثبت تغییرات درخواست اطمینان دارید؟", ["Yes", "No"])
+        .subscribe(answer => {
+          if (answer == 'Yes') {
+            // save request  
+            this.listDarkhastGrid.instance.saveEditData();
+            this.editingMode = false;
+          } else {
+            this.cancelEdit(e);
+          }
+        });
     }
   }
 

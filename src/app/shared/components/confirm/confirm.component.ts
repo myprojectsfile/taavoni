@@ -13,18 +13,10 @@ export class ConfirmComponent {
   message: string;
   options: string[];
   answer: string = "";
- 
+
   respond(answer: string) {
     this.answer = answer;
 
-    this.bsModalRef.hide();
-}
-
-  confirm(): void {
-    this.bsModalRef.hide();
-  }
- 
-  decline(): void {
     this.bsModalRef.hide();
   }
 }

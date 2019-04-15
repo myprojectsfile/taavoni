@@ -15,7 +15,7 @@ import { ApiService } from '../../services/api.service';
 import { NoeFileType } from '../../types/noeFile';
 import { UserFileType } from '../../types/userFile';
 import { UserType } from '../../types/user';
-import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { ConfirmService } from '../../services/confirm.service';
 
@@ -178,29 +178,28 @@ export class FileManagerComponent implements OnInit {
     document.getElementById('previewModal').click();
   }
 
-  confirm() {
-    this.confirmService
-        .confirm(
-            "Confirmation dialog box",
-            "Are you sure you want to proceed?",
-            ["Yes", "No","Cancel"])
-        .subscribe((answer) => {
-            console.log(answer);
-        });
-}
-
-
   deleteFile(filename: string) {
-    this.fileMangerService.deleteFile(this.user._id, filename).subscribe(
-      updatedUser => {
-        this.userFiles = updatedUser.userFiles;
-        this.userChanged.emit(updatedUser);
-        this.toastr.success('تصویر مورد نظر با موفقیت حذف شد');
-      },
-      error => {
-        this.toastr.error('خطا در حذف فایل بارگذاری شده');
-        console.log('file delete error:' + error);
-      }
-    );
+    this.confirmService
+      .confirm(
+        "اخطار",
+        "آیا از حذف این فایل مطمئن هستید؟",
+        ["Yes", "No"])
+      .subscribe((answer) => {
+        if (answer == 'Yes') {
+          this.fileMangerService.deleteFile(this.user._id, filename).subscribe(
+            updatedUser => {
+              this.userFiles = updatedUser.userFiles;
+              this.userChanged.emit(updatedUser);
+              this.toastr.success('تصویر مورد نظر با موفقیت حذف شد');
+            },
+            error => {
+              this.toastr.error('خطا در حذف فایل بارگذاری شده');
+              console.log('file delete error:' + error);
+            }
+          );
+        }
+      });
+
+
   }
 }
