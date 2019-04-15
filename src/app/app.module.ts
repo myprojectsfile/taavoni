@@ -29,6 +29,8 @@ import { EqualValidator } from './shared/validators/equal-validator.directive';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { FileManagerComponent } from './shared/components/file-manager/file-manager.component';
 import { FileManagerService } from './shared/components/file-manager/file-manager.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ConfirmComponent } from './shared/components/confirm/confirm.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -52,8 +54,11 @@ export function tokenGetter() {
     JalaliDatetimePipe,
     EqualValidator,
     UserAdminComponent,
-    FileManagerComponent
+    FileManagerComponent,
+    ConfirmComponent
   ],
+  entryComponents: [ConfirmComponent]
+  ,
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -72,7 +77,8 @@ export function tokenGetter() {
         tokenGetter: tokenGetter,
         whitelistedDomains: ['localhost:4200']
       }
-    })
+    }),
+    ModalModule.forRoot()
   ],
   providers: [ApiService, AuthService, {
     provide: HTTP_INTERCEPTORS,

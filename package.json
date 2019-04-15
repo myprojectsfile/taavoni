@@ -51,6 +51,7 @@
     "mongoose": "^5.3.4",
     "multer": "^1.4.1",
     "multer-gridfs-storage": "^3.2.3",
+    "ngx-bootstrap": "^4.0.1",
     "ngx-toastr": "^9.1.1",
     "onecolor": "^3.1.0",
     "path": "^0.12.7",

@@ -5,9 +5,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  AfterViewInit,
-  HostListener,
-  ViewChild
+  ViewChild,
+  TemplateRef
 } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FileManagerService } from './file-manager.service';
@@ -16,6 +15,9 @@ import { ApiService } from '../../services/api.service';
 import { NoeFileType } from '../../types/noeFile';
 import { UserFileType } from '../../types/userFile';
 import { UserType } from '../../types/user';
+import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
+
+import { ConfirmService } from '../../services/confirm.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -24,11 +26,14 @@ import { UserType } from '../../types/user';
   styleUrls: ['./file-manager.component.css']
 })
 export class FileManagerComponent implements OnInit {
+  modalRef: BsModalRef;
+
   constructor(
     private fileMangerService: FileManagerService,
     private apiService: ApiService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private confirmService: ConfirmService
+  ) { }
 
   @HostBinding('attr.user')
   @Input()
@@ -45,6 +50,8 @@ export class FileManagerComponent implements OnInit {
   userFiles: UserFileType[] = [] as UserFileType[];
   uploadedFile: UserFileType = {} as UserFileType;
   imageUrl = '#';
+
+
 
   ngOnInit() {
     this.getListNoeFile();
@@ -110,7 +117,7 @@ export class FileManagerComponent implements OnInit {
                   this.progress = 0;
                 }, 2000);
               },
-              error => {}
+              error => { }
             );
         }
       },
@@ -139,7 +146,7 @@ export class FileManagerComponent implements OnInit {
           .setAttribute('src', url);
         this.openModal();
       },
-      error => {}
+      error => { }
     );
   }
 
@@ -163,13 +170,25 @@ export class FileManagerComponent implements OnInit {
         dwldLink.click();
         document.body.removeChild(dwldLink);
       },
-      error => {}
+      error => { }
     );
   }
 
   openModal() {
     document.getElementById('previewModal').click();
   }
+
+  confirm() {
+    this.confirmService
+        .confirm(
+            "Confirmation dialog box",
+            "Are you sure you want to proceed?",
+            ["Yes", "No","Cancel"])
+        .subscribe((answer) => {
+            console.log(answer);
+        });
+}
+
 
   deleteFile(filename: string) {
     this.fileMangerService.deleteFile(this.user._id, filename).subscribe(
