@@ -11,6 +11,7 @@ import { MoamelatComponent } from './moamelat/moamelat.component';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { UserAdminComponent } from './user-admin/user-admin.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
@@ -26,11 +27,20 @@ const routes: Routes = [
     component: RegisterComponent
   },
   { path: 'queue', component: QueueComponent, canActivate: [AuthGuard] },
-  { path: 'requests', component: RequestAdminComponent, canActivate: [AuthGuard] },
+  {
+    path: 'requests',
+    component: RequestAdminComponent,
+    canActivate: [AuthGuard]
+  },
   { path: 'trades', component: MoamelatComponent, canActivate: [AuthGuard] },
   { path: 'portfo', component: PortfoComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'useradmin', component: UserAdminComponent, canActivate: [AuthGuard] },
+  {
+    path: 'useradmin',
+    component: UserAdminComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
 
@@ -38,4 +48,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

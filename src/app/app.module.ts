@@ -31,6 +31,7 @@ import { FileManagerComponent } from './shared/components/file-manager/file-mana
 import { FileManagerService } from './shared/components/file-manager/file-manager.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmComponent } from './shared/components/confirm/confirm.component';
+import { SettingsComponent } from './settings/settings.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -55,7 +56,8 @@ export function tokenGetter() {
     EqualValidator,
     UserAdminComponent,
     FileManagerComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    SettingsComponent
   ],
   entryComponents: [ConfirmComponent]
   ,

@@ -34,6 +34,7 @@ module.exports = function (app) {
     insertNewClaim('admin', 'مدیر سیستم');
     insertNewClaim('tradeAdmin', 'مدیر معاملات');
     insertNewClaim('userAdmin', 'مدیر کاربران');
+    insertNewClaim('systemAdmin', 'مدیر ارشد سامانه');
     // insert gheymatRoozSahm initial object
     insertNewGheymatRoozSahm(1000);
     // insert admin user initial object

@@ -1,24 +1,26 @@
     {
-        "_id": ObjectId("5bead8c06767e5d3be07631c"),
-        "claim": "shareholder",
-        "tozihat": "سهامدار",
-        "__v": 0
-    }
-    {
-        "_id": ObjectId("5bead8c16767e5d3be07631d"),
-        "claim": "tradeAdmin",
-        "tozihat": "مدیر معاملات",
-        "__v": 0
-    }
-    {
-        "_id": ObjectId("5bead8c16767e5d3be07631e"),
-        "claim": "admin",
-        "tozihat": "مدیر سیستم",
-        "__v": 0
-    }
-    {
-        "_id": ObjectId("5bead8c26767e5d3be07631f"),
-        "claim": "userAdmin",
-        "tozihat": "مدیر کاربران",
-        "__v": 0
+      "_id": ObjectId("5bead8c06767e5d3be07631c"),
+      "claim": "shareholder",
+      "tozihat": "سهامدار",
+      "__v": 0
+    } {
+      "_id": ObjectId("5bead8c16767e5d3be07631d"),
+      "claim": "tradeAdmin",
+      "tozihat": "مدیر معاملات",
+      "__v": 0
+    } {
+      "_id": ObjectId("5bead8c16767e5d3be07631e"),
+      "claim": "admin",
+      "tozihat": "مدیر سیستم",
+      "__v": 0
+    } {
+      "_id": ObjectId("5bead8c26767e5d3be07631f"),
+      "claim": "userAdmin",
+      "tozihat": "مدیر کاربران",
+      "__v": 0
+    } {
+      "_id": ObjectId("5cb836bcf57aa4ae4539b6fe"),
+      "claim": "systemAdmin",
+      "tozihat": "مدیر ارشد سامانه",
+      "__v": 0
     }
