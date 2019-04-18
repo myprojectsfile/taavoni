@@ -32,6 +32,7 @@ import { FileManagerService } from './shared/components/file-manager/file-manage
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmComponent } from './shared/components/confirm/confirm.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ListNoeFileComponent } from './settings/list-noe-file/list-noe-file.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -57,7 +58,8 @@ export function tokenGetter() {
     UserAdminComponent,
     FileManagerComponent,
     ConfirmComponent,
-    SettingsComponent
+    SettingsComponent,
+    ListNoeFileComponent
   ],
   entryComponents: [ConfirmComponent]
   ,

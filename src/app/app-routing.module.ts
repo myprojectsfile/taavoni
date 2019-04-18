@@ -12,6 +12,7 @@ import { PortfoComponent } from './user/portfo/portfo.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ListNoeFileComponent } from './settings/list-noe-file/list-noe-file.component';
 
 const routes: Routes = [
   {
@@ -40,7 +41,18 @@ const routes: Routes = [
     component: UserAdminComponent,
     canActivate: [AuthGuard]
   },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: ListNoeFileComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
+  },
   { path: '**', redirectTo: '' }
 ];
 

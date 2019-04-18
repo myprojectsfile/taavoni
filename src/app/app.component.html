@@ -1,10 +1,10 @@
-<nav id="mainNav" class="navbar navbar-expand-md  navbar-dark bg-dark justify-content-between fixed-top">
+<nav id="mainNav" class="navbar navbar-expand-md  navbar-dark bg-primary justify-content-between fixed-top">
   <a routerLink="/">
     <span class="fa fa-home text-white" style="font-size: 1.5rem;"></span>
   </a>
   <div class="container-fluid">
-    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-      aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -15,7 +15,8 @@
             aria-haspopup="true" aria-expanded="false">
             سهام
           </a>
-          <div class="dropdown-menu text-right" style="left: -180%;direction: rtl;" aria-labelledby="navbarDropdownMenuLink">
+          <div class="dropdown-menu text-right" style="left: -180%;direction: rtl;"
+            aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" routerLink="/queue">ثبت درخواست خرید / فروش</a>
             <a class="dropdown-item" routerLink="/requests">مدیریت درخواست ها</a>
             <a class="dropdown-item" *ngIf="userHasClaim('tradeAdmin')" routerLink="/trades">ثبت معاملات</a>
@@ -80,7 +81,7 @@
 <router-outlet></router-outlet>
 
 <!-- footer section -->
-<section id="footer" class="bg-dark">
+<section id="footer" class="bg-info">
   <div class="container-fluid">
     <div class="row d-flex justify-content-center text-white align-content-center mt-5">
       تعاونی مصرف کارکنان بندر بوشهر
