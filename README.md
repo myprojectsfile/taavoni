@@ -1,7 +1,5 @@
 # درباره این پروژه
 
-سامانه مدیریت سهام تعاونی
-
 # Commands
 
 Insert Admin User Data to database
