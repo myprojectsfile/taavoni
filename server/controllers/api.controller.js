@@ -126,6 +126,7 @@ module.exports = function (app) {
     .post(post_noeFile);
 
   app.route('/api/noeFile/:id')
+    .put(update_noeFile)
     .delete(delete_noeFile);
 };
 
@@ -209,6 +210,20 @@ delete_noeFile = function (req, res) {
   context.NoeFile.findByIdAndDelete(req.params.id, (err) => {
     if (err) return res.status(500).send(err);
     return res.status(200).end();
+  });
+};
+
+update_noeFile = function (req, res) {
+  context.NoeFile.findOneAndUpdate({
+    _id: req.params.id
+  }, req.body, {
+    new: true
+  }, function (err, noeFile) {
+    if (err) res.status(500).send(err);
+
+    if (!noeFile) res.status(404).send();
+    // return new row
+    res.json(noeFile);
   });
 };
 

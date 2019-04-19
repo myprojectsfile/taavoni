@@ -75,12 +75,73 @@ export class ListNoeFileComponent implements OnInit {
         }
       });
   }
-  editRow(d) {}
-  rowUpdating(d) {}
-  keyDown(d) {}
-  cancelEdit(d) {}
-  saveChanges(d) {}
-  sabtNoeFile(d) {}
+  editRow(d) {
+    this.editingMode = true;
+    const rowKey = d.data._id;
+    this.editingRowKey = rowKey;
+    const rowData: NoeFileType = d.data;
+    const rowIndex = this.listNoeFileGrid.instance.getRowIndexByKey(d.data._id);
+    this.oldNoeFile = this.listNoeFileGrid.instance.cellValue(
+      rowIndex,
+      'noeFile'
+    );
+    this.listNoeFileGrid.instance.editCell(rowIndex, 'noeFile');
+  }
 
-  onRowPrepared(e) {}
+  keyDown(d) {}
+
+  cancelEdit(d) {
+    this.listNoeFileGrid.instance.cancelEditData();
+    this.editingMode = false;
+  }
+
+  saveChange(d) {
+    this.listNoeFileGrid.instance.saveEditData();
+    this.editingMode = false;
+  }
+
+  sabtNoeFile() {
+    this.apiService.sabtNoeFile(this.noeFile).subscribe(
+      result => {
+        this.toastr.info('نوع سند جدید با موفقیت ثبت شد.', 'نوع سند جدید');
+        this.getListNoeFile();
+      },
+      error => {
+        console.log(`خطا در ثبت نوع سند جدید :${error}`);
+        this.toastr.error(`خطا در ثبت نوع سند جدید`, 'نوع سند جدید');
+      }
+    );
+  }
+
+  rowUpdating(e) {
+    this.confirmService
+      .confirm('اخطار', 'آیا از ثبت تغییرات اطمینان دارید؟', ['Yes', 'No'])
+      .subscribe(answer => {
+        if (answer === 'Yes') {
+          const updatedNoeFile: NoeFileType = e.newData;
+          this.apiService
+            .updateNoeFile(updatedNoeFile, this.editingRowKey)
+            .subscribe(
+              () => {
+                this.toastr.success('تغییرات با موفقیت ثبت شد');
+                this.editingMode = false;
+                this.listNoeFileGrid.instance.cancelEditData();
+                e.cancel = true;
+                this.getListNoeFile();
+              },
+              error => {
+                this.toastr.error('خطا در ثبت تغییرات لیست نوع سند');
+                e.cancel = true;
+                this.listNoeFileGrid.instance.cancelEditData();
+                console.log(error);
+              }
+            );
+        } else {
+          e.cancel = true;
+          this.editingMode = false;
+          this.listNoeFileGrid.instance.cancelEditData();
+          this.getListNoeFile();
+        }
+      });
+  }
 }

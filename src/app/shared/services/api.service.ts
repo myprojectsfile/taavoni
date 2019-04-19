@@ -224,6 +224,10 @@ export class ApiService {
     return this.httpClient.post(this.apiUri + '/noeFile', noeFile);
   }
 
+  updateNoeFile(noeFile: NoeFileType, id: string) {
+    return this.httpClient.put(this.apiUri + '/noeFile/' + id, noeFile);
+  }
+
   hazfNoeFile(id: string) {
     return this.httpClient.delete(this.apiUri + '/noeFile/' + id);
   }

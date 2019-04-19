@@ -7,6 +7,7 @@ import { ApiService } from '../shared/services/api.service';
 import { ConfirmService } from '../shared/services/confirm.service';
 
 declare var $: any;
+
 @Component({
   selector: 'app-request-admin',
   templateUrl: './request-admin.component.html',

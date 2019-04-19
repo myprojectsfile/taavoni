@@ -34,13 +34,15 @@
           </div>
         </li>
         <li *ngIf="userHasClaim('admin')" class="nav-item dropdown pull-right">
-          <a class="nav-link dropdown-toggle pull-right" href="#" id="profileDropdown" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a *ngIf="userHasClaim('userAdmin')||userHasClaim('systemAdmin')" class="nav-link dropdown-toggle pull-right"
+            href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             مدیریت
           </a>
           <div class="dropdown-menu text-right" style="left: -80%;direction: rtl;" aria-labelledby="profileDropdown">
             <a class="dropdown-item" *ngIf="userHasClaim('userAdmin')" routerLink="/useradmin">مدیریت کاربران</a>
-            <a class="dropdown-item" routerLink="/">ثبت ارزش سهم</a>
+            <a class="dropdown-item" *ngIf="userHasClaim('systemAdmin')" routerLink="/">ثبت ارزش سهم</a>
+            <a class="dropdown-item" *ngIf="userHasClaim('systemAdmin')" routerLink="/settings">لیست اسناد قابل
+              بارگذاری</a>
           </div>
         </li>
         <li class="nav-item">

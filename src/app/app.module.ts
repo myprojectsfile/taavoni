@@ -24,7 +24,10 @@ import { MoamelatComponent } from './moamelat/moamelat.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { PortfoComponent } from './user/portfo/portfo.component';
 import { ApiService } from './shared/services/api.service';
-import { JalaliDatePipe, JalaliDatetimePipe } from './shared/pipes/jalali-date.pipe';
+import {
+  JalaliDatePipe,
+  JalaliDatetimePipe
+} from './shared/pipes/jalali-date.pipe';
 import { EqualValidator } from './shared/validators/equal-validator.directive';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { FileManagerComponent } from './shared/components/file-manager/file-manager.component';
@@ -33,7 +36,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmComponent } from './shared/components/confirm/confirm.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ListNoeFileComponent } from './settings/list-noe-file/list-noe-file.component';
-
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -61,15 +64,14 @@ export function tokenGetter() {
     SettingsComponent,
     ListNoeFileComponent
   ],
-  entryComponents: [ConfirmComponent]
-  ,
+  entryComponents: [ConfirmComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-bottom-left',
-      preventDuplicates: true,
+      preventDuplicates: true
     }),
     AppRoutingModule,
     DxDataGridModule,
@@ -82,13 +84,20 @@ export function tokenGetter() {
         whitelistedDomains: ['localhost:4200']
       }
     }),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    TooltipModule.forRoot()
   ],
-  providers: [ApiService, AuthService, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptorService,
-    multi: true
-  }, AuthGuard, FileManagerService],
+  providers: [
+    ApiService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+    AuthGuard,
+    FileManagerService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

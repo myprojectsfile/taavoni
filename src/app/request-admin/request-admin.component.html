@@ -19,20 +19,25 @@
         <dxi-column alignment="center" dataField="tarikhUpdate" width="145" caption="تاریخ به روزرسانی"></dxi-column>
         <dxi-column alignment="center" dataField="tozihat" width="250" caption="توضیحات"></dxi-column>
         <dxi-column alignment="center" cellTemplate="cancelButtonTemplate" caption="لغو" width="50"></dxi-column>
-        <dxi-column alignment="center" cellTemplate="editButtonTemplate" caption="ویرایش" width="100"></dxi-column>
+        <dxi-column alignment="center" cellTemplate="editButtonTemplate" caption="ویرایش" width="150"></dxi-column>
 
         <!-- <div *dxTemplate="let d of 'jalaliDatetime'">
           {{d.data.tarikhDarkhast|jalaliDatetime}}
         </div> -->
 
         <div *dxTemplate="let d of 'cancelButtonTemplate'">
-          <button *ngIf="d.data.vazeiat!='لغو شده'" (click)="cancel(d)">لغو</button>
+          <a *ngIf="d.data.vazeiat!='لغو شده'" (click)="cancel(d)"><span tooltip="لغو درخواست" placement="right"
+              class="fa fa-ban" style="font-size: 13pt;"></span></a>
         </div>
+
         <div *dxTemplate="let d of 'editButtonTemplate'">
           <span *ngIf="d.data.vazeiat!='لغو شده'">
-            <button *ngIf="!editingMode" (click)="editRow(d)">ویرایش تعداد</button>
-            <button *ngIf="editingMode" (click)="cancelEdit(d)"><span class="fa fa-times"></span></button>
-            <button *ngIf="editingMode" (click)="saveChange(d)"><span class="fa fa-check"></span></button>
+            <a *ngIf="!editingMode" (click)="editRow(d)"><span tooltip="ویرایش" placement="right" class="fa fa-edit"
+                style="font-size: 13pt;"></span></a>
+            <a *ngIf="editingMode" (click)="cancelEdit(d)" class="mx-3"><span tooltip="لغو تغییرات" placement="right"
+                class="fa fa-window-close" style="font-size: 13pt;"></span></a>
+            <a *ngIf="editingMode" (click)="saveChange(d)"><span tooltip="ثبت تغییرات" placement="right"
+                class="fa fa-save" style="font-size: 13pt;"></span></a>
           </span>
         </div>
       </dx-data-grid>

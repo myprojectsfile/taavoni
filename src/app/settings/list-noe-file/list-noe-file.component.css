@@ -1,9 +1,4 @@
-.btn-xs {
-  padding: 5px 5px;
-  font-size: 11px;
-}
-
 a:hover span {
-  color: #008cff;
+  color: red;
   cursor: pointer;
 }
