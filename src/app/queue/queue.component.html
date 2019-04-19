@@ -1,6 +1,6 @@
 <div class="container-fluid mt-5">
-    <div class="row"></div>
-  </div>
+  <div class="row"></div>
+</div>
 <div class="container-fluid mt-5">
   <div class="row" dir="rtl">
     <form class="form-inline col-sm-12" novalidate #f="ngForm" (ngSubmit)="sabtDarkhast()">
@@ -14,20 +14,24 @@
       </div>
       <div class="form-group">
         <label for="gheymatSahm">قیمت سهم</label>
-        <input type="text" [(ngModel)]="gheymatSahm" required class="form-control form-control-sm" name="gheymatSahm" id="gheymatSahm">
+        <input type="text" [(ngModel)]="gheymatSahm" required class="form-control form-control-sm" name="gheymatSahm"
+          id="gheymatSahm">
       </div>
       <div class="form-group">
         <label for="tedadSahm">تعداد سهم</label>
-        <input type="text" [(ngModel)]="tedadSahm" required class="form-control form-control-sm" name="tedadSahm" id="tedadSahm">
+        <input type="text" [(ngModel)]="tedadSahm" required class="form-control form-control-sm" name="tedadSahm"
+          id="tedadSahm">
       </div>
       <div class="form-group">
         <label for="arzeshSahm">میزان سرمایه گذاری(ریال)</label>
         <input type="text" [disabled]="noeDarkhast==1" [(ngModel)]="arzeshSahm" class="form-control form-control-sm"
           name="arzeshSahm" id="arzeshSahm">
       </div>
-      <button type="button" [disabled]="noeDarkhast==1" class="btn btn-sm btn-secondary ml-3 mr-3" (click)="mohasebehTedad()">محاسبه
+      <button type="button" [disabled]="noeDarkhast==1" class="btn btn-sm btn-secondary ml-3 mr-3"
+        (click)="mohasebehTedad()">محاسبه
         تعداد</button>
-      <button type="button" class="btn btn-sm btn-primary" [disabled]="!f.valid" (click)="sabtDarkhast()">ثبت درخواست</button>
+      <button type="button" class="btn btn-sm btn-primary" [disabled]="!f.valid" (click)="sabtDarkhast()">ثبت
+        درخواست</button>
     </form>
   </div>
 </div>
@@ -43,13 +47,18 @@
       <div class="row">
         <div class="col-sm-12">
           <dx-data-grid #safeKharidGrid [dataSource]="safeKharid">
-            <dxi-column [allowSorting]="false"  dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="gheymatSahm" width="70" caption="قیمت سهم"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tedadBaghiMandeh" width="87" caption="تعداد باقی مانده"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tarikhDarkhast"  width="130" caption="تاریخ ثبت درخواست"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tarikhUpdate" width="130" caption="تاریخ به روزرسانی"></dxi-column>
+            <dxi-column [allowSorting]="false" dataField="username" width="130" caption="شناسه درخواست کننده">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="gheymatSahm" width="70" caption="قیمت سهم"></dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tedadBaghiMandeh" width="87" caption="تعداد باقی مانده">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tarikhDarkhast" width="130" caption="تاریخ ثبت درخواست">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tarikhUpdate" width="130" caption="تاریخ به روزرسانی">
+            </dxi-column>
 
             <!-- <div *dxTemplate="let d of 'jalaliDatetime'">
               {{d.data.tarikhDarkhast}}
@@ -68,13 +77,18 @@
       <div class="row">
         <div class="col-sm-12">
           <dx-data-grid #safeForushGrid [dataSource]="safeForush">
-            <dxi-column [allowSorting]="false"  dataField="username" width="130" caption="شناسه درخواست کننده"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="gheymatSahm" width="70" caption="قیمت سهم"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tedadBaghiMandeh" width="87" caption="تعداد باقی مانده"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tarikhDarkhast"  width="130" caption="تاریخ ثبت درخواست"></dxi-column>
-            <dxi-column [allowSorting]="false"  dataField="tarikhUpdate" width="130" caption="تاریخ به روزرسانی"></dxi-column>
+            <dxi-column [allowSorting]="false" dataField="username" width="130" caption="شناسه درخواست کننده">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="gheymatSahm" width="70" caption="قیمت سهم"></dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tedadSahm" width="70" caption="تعداد سهم"></dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tedadMoamelehShodeh" width="100" caption="تعداد معامله شده">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tedadBaghiMandeh" width="87" caption="تعداد باقی مانده">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tarikhDarkhast" width="130" caption="تاریخ ثبت درخواست">
+            </dxi-column>
+            <dxi-column [allowSorting]="false" dataField="tarikhUpdate" width="130" caption="تاریخ به روزرسانی">
+            </dxi-column>
 
             <!-- <div *dxTemplate="let d of 'jalaliDatetime'">
               {{d.data.tarikhDarkhast}}

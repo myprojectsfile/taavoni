@@ -124,6 +124,9 @@ module.exports = function (app) {
   app.route('/api/noeFile')
     .get(get_noeFile)
     .post(post_noeFile);
+
+  app.route('/api/noeFile/:id')
+    .delete(delete_noeFile);
 };
 
 
@@ -199,6 +202,13 @@ post_noeFile = function (req, res) {
 
     if (err) res.status(500).send(err);
     else res.json(noeFile);
+  });
+};
+
+delete_noeFile = function (req, res) {
+  context.NoeFile.findByIdAndDelete(req.params.id, (err) => {
+    if (err) return res.status(500).send(err);
+    return res.status(200).end();
   });
 };
 

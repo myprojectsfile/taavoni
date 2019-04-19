@@ -14,11 +14,12 @@ import { UserFileType } from '../types/userFile';
 @Injectable({
   providedIn: 'root'
 })
-
 export class ApiService {
   apiUri = environment.apiUri;
-  constructor(private httpClient: HttpClient, private authService: AuthService) {
-  }
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   getSafeKharid() {
     return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeKharid');
@@ -39,16 +40,23 @@ export class ApiService {
   getListDarkhast(noeDarkhast: string) {
     if (noeDarkhast === 'kharid') {
       return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeKharid');
-    } else { return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeForush'); }
+    } else {
+      return this.httpClient.get<DarkhastType[]>(this.apiUri + '/safeForush');
+    }
   }
 
   getTedadKolSahamForushUser() {
     const username = this.authService.getUsername();
-    return this.httpClient.get<number[]>(this.apiUri + '/safeForush/tedadKolSahamForushUser/' + username);
+    return this.httpClient.get<number[]>(
+      this.apiUri + '/safeForush/tedadKolSahamForushUser/' + username
+    );
   }
 
   updateDarkhastById(darkhast: DarkhastType, id: string) {
-    return this.httpClient.put<DarkhastType>(this.apiUri + '/darkhast/' + id, darkhast);
+    return this.httpClient.put<DarkhastType>(
+      this.apiUri + '/darkhast/' + id,
+      darkhast
+    );
   }
 
   getMoameleh() {
@@ -64,16 +72,24 @@ export class ApiService {
   }
 
   updateMoamelehById(moameleh: MoamelehType, id: string) {
-    return this.httpClient.put<MoamelehType>(this.apiUri + '/moameleh/' + id, moameleh);
+    return this.httpClient.put<MoamelehType>(
+      this.apiUri + '/moameleh/' + id,
+      moameleh
+    );
   }
 
   sabtMoameleh(moameleh: MoamelehType) {
-    return this.httpClient.post<MoamelehType>(this.apiUri + '/moameleh', moameleh);
+    return this.httpClient.post<MoamelehType>(
+      this.apiUri + '/moameleh',
+      moameleh
+    );
   }
 
   getListDarkhastUser() {
     const username = this.authService.getUsername();
-    return this.httpClient.get<DarkhastType[]>(this.apiUri + '/darkhast/byUsername/' + username);
+    return this.httpClient.get<DarkhastType[]>(
+      this.apiUri + '/darkhast/byUsername/' + username
+    );
   }
 
   updateDarkhast(darkhast: DarkhastType, rowKey: string) {
@@ -82,30 +98,42 @@ export class ApiService {
 
   getUserPortfo() {
     const username = this.authService.getUsername();
-    return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);
+    return this.httpClient.get<PortfoType>(
+      this.apiUri + '/portfo/byUsername/' + username
+    );
   }
 
   getUserPortfoDarayi() {
     const username = this.authService.getUsername();
-    return this.httpClient.get<PortfoType[]>(this.apiUri + '/portfo/darayi/byUsername/' + username);
+    return this.httpClient.get<PortfoType[]>(
+      this.apiUri + '/portfo/darayi/byUsername/' + username
+    );
   }
 
   // User methods
   getUserByUsername(username: string) {
-    return this.httpClient.get<UserType[]>(this.apiUri + '/user/byUsername/' + username);
+    return this.httpClient.get<UserType[]>(
+      this.apiUri + '/user/byUsername/' + username
+    );
   }
 
   async getUserByUsernameAsync(username: string) {
-    const result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byUsername/' + username).toPromise();
+    const result = await this.httpClient
+      .get<UserType[]>(this.apiUri + '/user/byUsername/' + username)
+      .toPromise();
     return result;
   }
 
   getUserByCodeMelli(codeMelli: string) {
-    return this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli);
+    return this.httpClient.get<UserType[]>(
+      this.apiUri + '/user/byCodeMelli/' + codeMelli
+    );
   }
 
   async getUserByCodeMelliAsync(codeMelli: string) {
-    const result = await this.httpClient.get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli).toPromise();
+    const result = await this.httpClient
+      .get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli)
+      .toPromise();
     return result;
   }
 
@@ -114,11 +142,15 @@ export class ApiService {
   }
 
   getUserFilesByUsername(username: string) {
-    return this.httpClient.get<UserFileType[]>(this.apiUri + '/user/getUserFiles/' + username);
+    return this.httpClient.get<UserFileType[]>(
+      this.apiUri + '/user/getUserFiles/' + username
+    );
   }
 
   CheckUserExistByUsernameOrCodemelli(username, codeMelli) {
-    return this.httpClient.get<UserType>(this.apiUri + `/user/byUsername/${username}/byCodeMelli/${codeMelli}`);
+    return this.httpClient.get<UserType>(
+      this.apiUri + `/user/byUsername/${username}/byCodeMelli/${codeMelli}`
+    );
   }
 
   updateUserById(user: UserType, id: string) {
@@ -126,20 +158,31 @@ export class ApiService {
   }
 
   updateUserPassById(user: UserType, id: string, oldPassword: string) {
-    return this.httpClient.put<UserType>(this.apiUri + '/user/updatePass/' + id + '/' + oldPassword, user);
+    return this.httpClient.put<UserType>(
+      this.apiUri + '/user/updatePass/' + id + '/' + oldPassword,
+      user
+    );
   }
 
   addFileToUser(username: string, userFile: UserFileType) {
-    return this.httpClient.put<UserType>(this.apiUri + '/user/updateUserFiles/' + username, userFile);
+    return this.httpClient.put<UserType>(
+      this.apiUri + '/user/updateUserFiles/' + username,
+      userFile
+    );
   }
 
   // Profile methods
   getPortfohByUsername(username: string) {
-    return this.httpClient.get<PortfoType>(this.apiUri + '/portfo/byUsername/' + username);
+    return this.httpClient.get<PortfoType>(
+      this.apiUri + '/portfo/byUsername/' + username
+    );
   }
 
   updatePortfoById(portfo: PortfoType, id: string) {
-    return this.httpClient.put<PortfoType>(this.apiUri + '/portfo/' + id, portfo);
+    return this.httpClient.put<PortfoType>(
+      this.apiUri + '/portfo/' + id,
+      portfo
+    );
   }
 
   sabtPortfo(portfo: PortfoType) {
@@ -148,7 +191,10 @@ export class ApiService {
 
   checkUserHasNoActiveCrossRequest(noeDarkhast: number) {
     const username = this.authService.getUsername();
-    return this.httpClient.get(this.apiUri + `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUsername/${username}`);
+    return this.httpClient.get(
+      this.apiUri +
+        `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUsername/${username}`
+    );
   }
 
   // claim methods
@@ -158,16 +204,16 @@ export class ApiService {
   // gheymatRoozSahm
 
   getAkharinGheymatSahm() {
-    return this.httpClient.get<GheymatType>(this.apiUri + '/gheymatRoozSahm/akharinGheymat');
+    return this.httpClient.get<GheymatType>(
+      this.apiUri + '/gheymatRoozSahm/akharinGheymat'
+    );
   }
 
   sabtGheymatSahm(gheymat: GheymatType) {
     return this.httpClient.post(this.apiUri + '/gheymatRoozSahm', gheymat);
   }
 
-  findUser(username: string, codeMelli: string) {
-
-  }
+  findUser(username: string, codeMelli: string) {}
 
   // noeFile routes
   getListNoeFile() {
@@ -178,4 +224,7 @@ export class ApiService {
     return this.httpClient.post(this.apiUri + '/noeFile', noeFile);
   }
 
+  hazfNoeFile(id: string) {
+    return this.httpClient.delete(this.apiUri + '/noeFile/' + id);
+  }
 }
