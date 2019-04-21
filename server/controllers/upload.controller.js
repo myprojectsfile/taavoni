@@ -31,7 +31,6 @@ module.exports = function (app) {
     // insert initial objects in collections
     // insert claims
     insertNewClaim('shareholder', 'سهامدار');
-    insertNewClaim('admin', 'مدیر سیستم');
     insertNewClaim('tradeAdmin', 'مدیر معاملات');
     insertNewClaim('userAdmin', 'مدیر کاربران');
     insertNewClaim('systemAdmin', 'مدیر ارشد سامانه');
