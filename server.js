@@ -3,8 +3,23 @@ const http = require('http');
 const bodyParser = require('body-parser');
 var cors = require('cors');
 var path = require('path');
+var bluebird = require('bluebird');
+
+global.mongoose = require('mongoose');
+// disable deprecation warning
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.Promise = bluebird;
+
+// for local mongo
+global.mongoUri = process.env.ENV_TAV_DB_URI || 'mongodb://localhost:27017/TaavoniDb';
+// for docker mongo 
+// global.mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb';
+
 var apiController = require('./server/controllers/api.controller');
 var uploadController = require('./server/controllers/upload.controller');
+
 var app = express();
 
 app.set('views', path.join(__dirname, '/server/views'));
@@ -22,6 +37,11 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
+
+
+mongoose.connect(mongoUri, {
+  useNewUrlParser: true
+});
 
 // api routes
 apiController(app);

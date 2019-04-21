@@ -3,22 +3,17 @@ const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path');
 const Grid = require('gridfs-stream');
-var bluebird = require('bluebird');
-var mongoose = require('mongoose');
-mongoose.Promise = bluebird;
+
+
+
+
 var context = require('../context/context');
 
 module.exports = function (app) {
 
-  // for local mongo
-  const mongoUri = process.env.ENV_TAV_DB_URI || 'mongodb://localhost:27017/TaavoniDb';
-  // for docker mongo 
-  // const mongoUri = 'mongodb://taavoni_mongodb:27017/TaavoniDb';
 
-  mongoose.connect(mongoUri, {
-    useNewUrlParser: true
-  });
   const mongooseConnection = mongoose.connection;
+
   // initialize gfs
   let gfs;
 

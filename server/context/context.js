@@ -1,4 +1,3 @@
-var mongoose = require('mongoose');
 // var bcrypt = require('bcrypt');
 var bcrypt = require('bcryptjs');
 // var moment = require('moment-timezone');
@@ -184,7 +183,8 @@ var UserSchema = new mongoose.Schema({
     default: true
   },
   confirmed: {
-    type: Boolean, default: false
+    type: Boolean,
+    default: false
   },
   claims: [ClaimSchema],
   userFiles: [UserFileSchema]
@@ -194,17 +194,7 @@ UserSchema.virtual('fullName').get(function () {
   return this.name + ' ' + this.family
 });
 
-// hash password before saving user
-UserSchema.pre('save', function (next) {
-  var user = this;
-
-  if (!user.isModified('password'))
-    return next();
-
-  // var salt = bcrypt.genSaltSync(10);
-  // var hash = bcrypt.hashSync(user.password, salt);
-  // user.password = hash;
-  // next();
+function hashNewPassword(user, next) {
   const saltRounds = 10;
   bcrypt.genSalt(saltRounds, function (err, salt) {
     bcrypt.hash(user.password, salt)
@@ -216,6 +206,27 @@ UserSchema.pre('save', function (next) {
         return next(err);
       });
   });
+}
+
+// hash password before saving user
+UserSchema.pre('save', function (next) {
+  var user = this;
+
+  if (user.isModified('password')) {
+    const saltRounds = 10;
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+      bcrypt.hash(user.password, salt)
+        .then(hash => {
+          user.password = hash;
+          next();
+        })
+        .catch(err => {
+          return next(err);
+        });
+    });
+  } else {
+    next();
+  }
 })
 
 

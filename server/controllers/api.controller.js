@@ -650,19 +650,37 @@ update_portfo_byid = function (req, res) {
   });
 };
 
+// update_user_byid = function (req, res) {
+//   context.User.findOneAndUpdate({
+//     _id: req.params.id
+//   }, req.body, {
+//     new: true
+//   }, function (err, user) {
+//     if (err) res.status(500).send(err);
+
+//     if (!user) res.status(404).send();
+
+//     res.json(user);
+//   });
+// };
+
 update_user_byid = function (req, res) {
-  context.User.findOneAndUpdate({
+  context.User.findOne({
     _id: req.params.id
-  }, req.body, {
-    new: true
-  }, function (err, user) {
-    if (err) res.status(500).send(err);
+  }, (err, user) => {
+    if (err) res.status(500).end(err);
 
-    if (!user) res.status(404).send();
+    if (!user) res.status(404).end();
 
-    res.json(user);
+    Object.assign(user, req.body);
+    user.save((err) => {
+      if (err) res.status(500).end(err);
+
+      res.json(user);
+    })
   });
 };
+
 
 update_claim_byid = function (req, res) {
   context.Claim.findOneAndUpdate({
@@ -686,28 +704,18 @@ update_user_pass_byid = function (req, res) {
     if (err) res.status(500).send(err);
     if (!user) res.status(404).send();
     else {
-      // check old password
+      // check old password matched
       const oldPassword = req.params.oldPassword;
       bcrypt.compare(oldPassword, user.password, function (err, isMatch) {
         if (err) res.status(500).send(err);
         else {
           if (isMatch) {
-            // change password
-            // var saltRounds = 10;
-            // bcrypt.genSalt(saltRounds, function (err, salt) {
-            // bcrypt.hash(req.body.password, salt)
-            // .then(hash => {
             user.password = req.body.password;
             // save user changes
             user.save((err) => {
               if (err) res.json(err);
               else res.json(user);
             })
-            //     })
-            //     .catch(err => {
-            //       res.status(500).send(err);
-            //     });
-            // });
           } else res.status(400).send('کلمه عبور قبلی اشتباه است');
         }
       });
