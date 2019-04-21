@@ -180,7 +180,11 @@ var UserSchema = new mongoose.Schema({
     required: false
   },
   enabled: {
-    type: Boolean
+    type: Boolean,
+    default: true
+  },
+  confirmed: {
+    type: Boolean, default: false
   },
   claims: [ClaimSchema],
   userFiles: [UserFileSchema]

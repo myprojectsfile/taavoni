@@ -16,4 +16,12 @@ export class AppComponent {
     return this.authService.userHasClaim(claim);
   }
 
+  userHasConfiremd() {
+    return this.authService.userHasConfiremed();
+  }
+
+  userIsAuthenticated() {
+    return this.authService.isAuthenticated();
+  }
+
 }

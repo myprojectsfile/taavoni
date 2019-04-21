@@ -58,11 +58,18 @@
                 <input type="text" class="form-control form-control-sm" [(ngModel)]="user.mobile" name="mobile"
                   id="mobile" placeholder="شماره موبایل">
               </div>
-              <div class="form-check text-right">
+              <div class="form-check text-right" style="direction: rtl;">
                 <label class="form-check-label">
                   <input class="form-check-input" name="enabled" [(ngModel)]="user.enabled" type="checkbox">
                   <span *ngIf="user.enabled">این کاربر فعال است</span>
                   <span *ngIf="!user.enabled">این کاربر غیرفعال است</span>
+                </label>
+              </div>
+              <div class="form-check text-right" style="direction: rtl;">
+                <label class="form-check-label">
+                  <input class="form-check-input" name="confirmed" [(ngModel)]="user.confirmed" type="checkbox">
+                  <span *ngIf="user.confirmed">این کاربر تایید شده است</span>
+                  <span *ngIf="!user.confirmed">این کاربر تایید نشده است</span>
                 </label>
               </div>
               <button type="submit" class="btn btn-sm btn-primary"

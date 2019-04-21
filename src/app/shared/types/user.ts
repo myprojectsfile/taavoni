@@ -11,6 +11,7 @@ export interface UserType {
     codeMelli?: string;
     mobile?: string;
     enabled?: boolean;
+    confirmed?: boolean;
     claims?: ClaimType[];
     userFiles?: UserFileType[];
 }

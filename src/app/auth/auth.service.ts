@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { Router, RouterLinkWithHref } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ClaimType } from '../shared/types/claim';
+import { UserType } from '../shared/types/user';
 
 @Injectable()
 
@@ -98,5 +99,18 @@ export class AuthService {
     const tokenPayload = this.jwt.decodeToken(this.getToken());
     if (tokenPayload) { return tokenPayload.fullName; }
     return null;
+  }
+
+  userHasConfiremed(): boolean {
+    const token = this.getToken();
+    let userHasConfiremed: boolean = false;
+
+    if (token) {
+      const tokenPayload: any = this.tokenPayload();
+      const user: UserType = tokenPayload.user;
+      userHasConfiremed = user.confirmed;
+    }
+    
+    return userHasConfiremed
   }
 }

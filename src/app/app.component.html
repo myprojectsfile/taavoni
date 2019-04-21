@@ -10,20 +10,20 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ml-auto  text-right">
 
-        <li class="nav-item dropdown pull-right">
+        <li *ngIf="userIsAuthenticated() && userHasConfiremd()" class="nav-item dropdown pull-right">
           <a class="nav-link dropdown-toggle pull-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             سهام
           </a>
           <div class="dropdown-menu text-right" style="left: -180%;direction: rtl;"
             aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" routerLink="/queue">ثبت درخواست خرید / فروش</a>
-            <a class="dropdown-item" routerLink="/requests">مدیریت درخواست ها</a>
+            <a *ngIf="userHasClaim('shareholder')" class="dropdown-item" routerLink="/queue">ثبت درخواست خرید / فروش</a>
+            <a *ngIf="userHasClaim('shareholder')" class="dropdown-item" routerLink="/requests">مدیریت درخواست ها</a>
             <a class="dropdown-item" *ngIf="userHasClaim('tradeAdmin')" routerLink="/trades">ثبت معاملات</a>
-            <a class="dropdown-item" routerLink="/portfo">مشاهده دارایی و سابقه معاملات</a>
+            <a *ngIf="userHasClaim('shareholder')" class="dropdown-item" routerLink="/portfo">مشاهده دارایی و سابقه معاملات</a>
           </div>
         </li>
-        <li class="nav-item dropdown pull-right">
+        <li *ngIf="userIsAuthenticated()" class="nav-item dropdown pull-right">
           <a class="nav-link dropdown-toggle pull-right" href="#" id="profileDropdown" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             پروفایل
@@ -33,8 +33,8 @@
             <a class="dropdown-item" routerLink="/profile">تغییر کلمه عبور</a>
           </div>
         </li>
-        <li *ngIf="userHasClaim('admin')" class="nav-item dropdown pull-right">
-          <a *ngIf="userHasClaim('userAdmin')||userHasClaim('systemAdmin')" class="nav-link dropdown-toggle pull-right"
+        <li *ngIf="userIsAuthenticated() && (userHasClaim('userAdmin')||userHasClaim('systemAdmin'))" class="nav-item dropdown pull-right">
+          <a  class="nav-link dropdown-toggle pull-right"
             href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             مدیریت
           </a>
