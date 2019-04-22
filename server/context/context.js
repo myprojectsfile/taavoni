@@ -229,8 +229,15 @@ UserSchema.pre('save', function (next) {
   }
 })
 
-UserSchema.post('save', function (doc,next) {
-  next();
+UserSchema.post('save', function (doc, next) {
+  // update portfo schema
+  Portfo.findOne({ username: this.username }, (err, portfo) => {
+    portfo.fullName = this.fullName;
+    portfo.save((err, updatedPortfo) => {
+      if (err) next(err);
+      else next();
+    });
+  });
 });
 
 
