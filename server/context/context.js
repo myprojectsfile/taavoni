@@ -229,6 +229,10 @@ UserSchema.pre('save', function (next) {
   }
 })
 
+UserSchema.post('save', function (doc,next) {
+  next();
+});
+
 
 // Gheymat Rooz
 var GheymatRoozSahmSchema = new mongoose.Schema({

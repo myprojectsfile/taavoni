@@ -650,36 +650,49 @@ update_portfo_byid = function (req, res) {
   });
 };
 
-// update_user_byid = function (req, res) {
-//   context.User.findOneAndUpdate({
-//     _id: req.params.id
-//   }, req.body, {
-//     new: true
-//   }, function (err, user) {
-//     if (err) res.status(500).send(err);
-
-//     if (!user) res.status(404).send();
-
-//     res.json(user);
-//   });
-// };
-
 update_user_byid = function (req, res) {
-  context.User.findOne({
+  context.User.findOneAndUpdate({
     _id: req.params.id
-  }, (err, user) => {
-    if (err) res.status(500).end(err);
+  }, req.body, {
+    new: true
+  }, function (err, user) {
+    if (err) res.status(500).send(err);
 
-    if (!user) res.status(404).end();
+    if (!user) res.status(404).send();
 
-    Object.assign(user, req.body);
-    user.save((err) => {
+    // find object and call 'save' method to firing 'pre and post' save middleware
+    context.User.findOne({
+      _id: req.params.id
+    }, (err, user) => {
       if (err) res.status(500).end(err);
-
-      res.json(user);
-    })
+  
+      if (!user) res.status(404).end();
+  
+      user.save((err) => {
+        if (err) res.status(500).end(err);
+  
+        res.json(user);
+      })
+    });
   });
 };
+
+// update_user_byid = function (req, res) {
+//   context.User.findOne({
+//     _id: req.params.id
+//   }, (err, user) => {
+//     if (err) res.status(500).end(err);
+
+//     if (!user) res.status(404).end();
+
+//     Object.assign(user, req.body);
+//     user.save((err) => {
+//       if (err) res.status(500).end(err);
+
+//       res.json(user);
+//     })
+//   });
+// };
 
 
 update_claim_byid = function (req, res) {
