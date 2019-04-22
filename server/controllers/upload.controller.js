@@ -281,7 +281,8 @@ function insertAdminUser() {
         family: 'ارشد',
         mobile: '09111111111',
         codeMelli: '1111111111',
-        enabled: true
+        enabled: true,
+        confirmed: true
       });
       newUser.save((err) => {
         if (err)

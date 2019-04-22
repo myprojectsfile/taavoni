@@ -229,16 +229,88 @@ UserSchema.pre('save', function (next) {
   }
 })
 
-UserSchema.post('save', function (doc, next) {
-  // update portfo schema
-  Portfo.findOne({ username: this.username }, (err, portfo) => {
-    portfo.fullName = this.fullName;
-    portfo.save((err, updatedPortfo) => {
-      if (err) next(err);
-      else next();
-    });
-  });
-});
+// UserSchema.post('save', async function (doc, next) {
+
+//   await Portfo.update({
+//     username: this.username
+//   }, {
+//     fullName: this.fullName
+//   });
+
+//   await Darkhast.update({
+//     username: this.username
+//   }, {
+//     fullName: this.fullName
+//   }, {
+//     'multi': true
+//   });
+
+//   let darkhast = await Darkhast.find({
+//     moamelat: {
+//       $elemMatch: {
+//         kharidar_username: this.username
+//       }
+//     }
+//   });
+
+//   await darkhast.forEach(async d => {
+//     await Darkhast.update({
+//       moamelat: {
+//         $elemMatch: {
+//           kharidar_username: this.username
+//         }
+//       }
+//     }, {
+//       $set: {
+//         'moamelat.$.kharidar_username': this.fullName
+//       }
+//     }, {
+//       'multi': true
+//     });
+//   });
+
+
+
+//   darkhast = await Darkhast.find({
+//     moamelat: {
+//       $elemMatch: {
+//         forushandeh_username: this.username
+//       }
+//     }
+//   });
+
+//   await darkhast.forEach(async d => {
+//     await Darkhast.update({
+//       moamelat: {
+//         $elemMatch: {
+//           forushandeh_username: this.username
+//         }
+//       }
+//     }, {
+//       $set: {
+//         'moamelat.$.forushandeh_fullName': this.fullName
+//       }
+//     }, {
+//       'multi': true
+//     });
+//   });
+
+
+//   await Moameleh.update({
+//     forushandeh_username: this.username
+//   }, {
+//     forushandeh_fullName: this.fullName
+//   }, {
+//     'multi': true
+//   });
+//   await Moameleh.update({
+//     kharidar_username: this.username
+//   }, {
+//     kharidar_fullName: this.fullName
+//   }, {
+//     'multi': true
+//   });
+// });
 
 
 // Gheymat Rooz

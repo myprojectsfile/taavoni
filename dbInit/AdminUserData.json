@@ -13,12 +13,6 @@
       "__v": 0
     },
     {
-      "_id": ObjectId("5bead8c16767e5d3be07631e"),
-      "claim": "admin",
-      "tozihat": "مدیر سیستم",
-      "__v": 0
-    },
-    {
       "_id": ObjectId("5bead8c26767e5d3be07631f"),
       "claim": "userAdmin",
       "tozihat": "مدیر کاربران",
@@ -39,5 +33,6 @@
   ],
   "userFiles": [],
   "enabled": true,
+  "confirmed": true,
   "__v": 0
 }
