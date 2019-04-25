@@ -77,7 +77,10 @@ module.exports = function (app) {
 
   // user routes
   app.route('/api/user/byUsername/:username')
-    .get(checkIsAuthenticated, getUserByUsername);
+    .get(checkIsAuthenticated, getUserByUsername)
+
+  app.route('/api/user/checkRelation')
+    .get(checkRelation)
 
   app.route('/api/user/byCodeMelli/:codeMelli')
     .get(checkIsAuthenticated, getUserByCodeMelli);
@@ -383,6 +386,29 @@ getUserByUsername = function (req, res) {
   });
 };
 
+
+checkRelation = async (req, res) => {
+  try {
+    const user = await context.User.findOne({
+      username: '124'
+    });
+
+    const darkhast = await new context.Darkhast({
+      username: '124',
+      noeDarkhast: 'خرید',
+      tedadSahm: 2300,
+      vazeiat: 'در انتظار',
+      user: user._id
+    }).save();
+
+    await darkhast.populate('user').execPopulate();
+
+     res.send(darkhast);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
 getUserByCodeMelli = function (req, res) {
   context.User.find({
     'codeMelli': req.params.codeMelli
@@ -665,12 +691,12 @@ update_user_byid = function (req, res) {
       _id: req.params.id
     }, (err, user) => {
       if (err) res.status(500).end(err);
-  
+
       if (!user) res.status(404).end();
-  
+
       user.save((err) => {
         if (err) res.status(500).end(err);
-  
+
         res.json(user);
       })
     });

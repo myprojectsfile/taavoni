@@ -2,6 +2,7 @@
 var bcrypt = require('bcryptjs');
 // var moment = require('moment-timezone');
 var moment = require('jalali-moment');
+const Schema = mongoose.Schema;
 
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
@@ -33,6 +34,14 @@ var MoamelehSchema = new mongoose.Schema({
   fullnameSabtKonandeh: {
     type: String,
     required: false
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  darkhast: {
+    type: Schema.Types.ObjectId,
+    ref: 'Darkhast'
   }
 });
 
@@ -85,7 +94,15 @@ var DarkhastSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  moamelat: [MoamelehSchema]
+  moamelat: [MoamelehSchema],
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  moameleha: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Moameleh'
+  }]
 });
 
 
@@ -106,7 +123,15 @@ var PortfoSchema = new mongoose.Schema({
   moamelat: {
     type: [MoamelehSchema],
     required: false
-  }
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  moameleha: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Moameleh'
+  }]
 });
 
 var ClaimSchema = new mongoose.Schema({
@@ -149,6 +174,10 @@ var UserFileSchema = new mongoose.Schema({
   },
   noeFile: {
     type: String
+  },
+  fileType: {
+    type: Schema.Types.ObjectId,
+    ref: 'NoeFile'
   }
 });
 
@@ -186,8 +215,29 @@ var UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  tedadSahm: Number,
   claims: [ClaimSchema],
-  userFiles: [UserFileSchema]
+  userFiles: [UserFileSchema],
+  darkhastha: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Darkhast'
+  }],
+  moameleha: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Moameleh'
+  }],
+  portfo: {
+    type: Schema.Types.ObjectId,
+    ref: 'Portfo'
+  },
+  claimha: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Claim'
+  }],
+  fileha: [{
+    type: Schema.Types.ObjectId,
+    ref: 'UserFile'
+  }]
 });
 
 UserSchema.virtual('fullName').get(function () {
@@ -333,6 +383,7 @@ GheymatRoozSahmSchema.pre('save', function (next) {
 var Darkhast = mongoose.model('Darkhast', DarkhastSchema);
 var Claim = mongoose.model('Claim', ClaimSchema);
 var NoeFile = mongoose.model('NoeFile', NoeFileSchema);
+var UserFile = mongoose.model('UserFile', UserFileSchema);
 var User = mongoose.model('User', UserSchema);
 var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
 var Portfo = mongoose.model('Portfo', PortfoSchema)
@@ -346,6 +397,7 @@ module.exports = {
   Darkhast: Darkhast,
   Claim: Claim,
   NoeFile: NoeFile,
+  UserFile: UserFile,
   User: User,
   Moameleh: Moameleh,
   Portfo: Portfo,
