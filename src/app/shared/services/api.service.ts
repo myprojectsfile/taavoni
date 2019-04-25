@@ -103,6 +103,13 @@ export class ApiService {
     );
   }
 
+  getUserPortfoById() {
+    const userId = this.authService.getUserId();
+    return this.httpClient.get<PortfoType>(
+      this.apiUri + '/portfo/byId/' + userId
+    );
+  }
+
   getUserPortfoDarayi() {
     const username = this.authService.getUsername();
     return this.httpClient.get<PortfoType[]>(

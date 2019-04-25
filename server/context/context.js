@@ -3,6 +3,7 @@ var bcrypt = require('bcryptjs');
 // var moment = require('moment-timezone');
 var moment = require('jalali-moment');
 const Schema = mongoose.Schema;
+const autopopulate = require('mongoose-autopopulate')
 
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
@@ -35,15 +36,32 @@ var MoamelehSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  user: {
+  kharidar: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    autopopulate: true
   },
-  darkhast: {
+  forushandeh: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: true
+  },
+  sabtKonandeh: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: true
+  },
+  darkhastKharid: {
+    type: Schema.Types.ObjectId,
+    ref: 'Darkhast'
+  },
+  darkhastForush: {
     type: Schema.Types.ObjectId,
     ref: 'Darkhast'
   }
 });
+
+MoamelehSchema.plugin(autopopulate);
 
 MoamelehSchema.pre('save', function (next) {
   const self = this;
@@ -243,6 +261,9 @@ var UserSchema = new mongoose.Schema({
 UserSchema.virtual('fullName').get(function () {
   return this.name + ' ' + this.family
 });
+
+UserSchema.set('toObject', { virtuals: true });
+UserSchema.set('toJSON', { virtuals: true });
 
 function hashNewPassword(user, next) {
   const saltRounds = 10;

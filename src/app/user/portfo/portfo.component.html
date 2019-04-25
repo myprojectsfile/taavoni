@@ -5,11 +5,11 @@
   <div class="row ml-auto">
     <div class="col-sm-6 col-md-4 col-lg-2 t-6">
       نام:
-      <span class="badge badge-primary">{{userPortfo?.fullName}}</span>
+      <span class="badge badge-primary">{{userPortfo?.user.fullName}}</span>
     </div>
     <div class="col-sm-6 col-md-4 col-lg-2 t-6">
       کد سهامداری:
-      <span class="badge badge-success">{{ userPortfo?.username }}</span>
+      <span class="badge badge-success">{{ userPortfo?.user.username }}</span>
     </div>
     <div class="col-sm-6 col-md-4 col-lg-2 t-6">
       تعداد دارایی سهام:
@@ -32,12 +32,12 @@
         <dxi-column alignment="center" dataField="noeMoameleh" width="100" [calculateCellValue]="calcNoeMoameleh"
           caption="نوع معامله">
         </dxi-column>
-        <dxi-column alignment="center" dataField="shenasehMoameleh" width="190" caption="شناسه معامله"></dxi-column>
+        <dxi-column alignment="center" dataField="_id" width="190" caption="شناسه معامله"></dxi-column>
         <dxi-column alignment="center" dataField="tedadSahmMoameleh" width="100" caption="تعداد سهام"></dxi-column>
         <dxi-column alignment="center" dataField="gheymatMoameleh" width="100" caption="قیمت سهام"></dxi-column>
         <dxi-column alignment="center" dataField="arzeshSahmMoameleh" width="100" caption="ارزش معامله"></dxi-column>
-        <dxi-column alignment="center" dataField="forushandeh_fullName" width="120" caption="نام فروشنده"></dxi-column>
-        <dxi-column alignment="center" dataField="kharidar_fullName" width="120" caption="نام خریدار"></dxi-column>
+        <dxi-column alignment="center" dataField="forushandeh.fullName" width="120" caption="نام فروشنده"></dxi-column>
+        <dxi-column alignment="center" dataField="kharidar.fullName" width="120" caption="نام خریدار"></dxi-column>
 
         <!-- <div *dxTemplate="let d of 'jalaliDatetime'">
           {{d.data.tarikhMoameleh|jalaliDatetime}}

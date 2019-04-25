@@ -94,6 +94,11 @@ export class AuthService {
     if (tokenPayload) { return tokenPayload.user.username; }
     return null;
   }
+  getUserId() {
+    const tokenPayload = this.jwt.decodeToken(this.getToken());
+    if (tokenPayload) { return tokenPayload.user._id; }
+    return null;
+  }
 
   getUserFullname() {
     const tokenPayload = this.jwt.decodeToken(this.getToken());

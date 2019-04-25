@@ -68,6 +68,9 @@ module.exports = function (app) {
   app.route('/api/portfo/byUsername/:username')
     .get(checkIsAuthenticated, getPortfoByUsername);
 
+  app.route('/api/portfo/byId/:id')
+    .get(checkIsAuthenticated, getPortfoById);
+
   app.route('/api/portfo/darayi/byUsername/:username')
     .get(checkIsAuthenticated, getPortfoDarayiByUsername);
 
@@ -360,6 +363,21 @@ getPortfoByUsername = function (req, res) {
   });
 };
 
+getPortfoById = async (req, res) => {
+  try {
+    const portfo = await context.Portfo.findOne({
+      user: req.params.id
+    });
+    if (portfo) {
+      await portfo.populate('user').populate({
+        path: 'moameleha'
+      }).execPopulate();
+      res.send(portfo);
+    } else res.status(404).send();
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
 getPortfoDarayiByUsername = function (req, res) {
   context.Portfo.find({
     'username': req.params.username
@@ -403,7 +421,7 @@ checkRelation = async (req, res) => {
 
     await darkhast.populate('user').execPopulate();
 
-     res.send(darkhast);
+    res.send(darkhast);
   } catch (error) {
     res.status(500).send(error);
   }

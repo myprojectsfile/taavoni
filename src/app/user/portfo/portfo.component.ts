@@ -22,6 +22,7 @@ export class PortfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // define calcNoeMoameleh for using in dataGrid
     this.calcNoeMoameleh = row => {
       const username = this.getUsername();
       if (row.forushandeh_username === username) {
@@ -30,11 +31,25 @@ export class PortfoComponent implements OnInit {
         return 'خرید';
       }
     };
-    this.apiService.getUserPortfo().subscribe(
+
+    // this.apiService.getUserPortfo().subscribe(
+    //   portfo => {
+    //     this.userPortfo = portfo[0];
+    //     this.moamelat = portfo[0].moamelat;
+    //   },
+    //   error => {
+    //     console.log(error);
+    //     this.toastr.error(
+    //       'خطا در بازیابی داده های پورتفوی کاربر.با پشتیبان سامانه تماس بگیرید.'
+    //     );
+    //   }
+    // );
+
+    this.apiService.getUserPortfoById().subscribe(
       portfo => {
         console.log(portfo);
-        this.userPortfo = portfo[0];
-        this.moamelat = portfo[0].moamelat;
+        this.userPortfo = portfo;
+        this.moamelat = portfo.moameleha;
       },
       error => {
         console.log(error);

@@ -28,13 +28,13 @@
 body {
     margin: 0;
     font-family: sahel, tahoma, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: normal;
 
 }
 div.dx-datagrid-text-content{
     font-weight: 400;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
 }
 .dx-row,th{
     font-weight: 400;
@@ -63,11 +63,11 @@ div.dx-datagrid-text-content{
 
 label,p ,.dropdown-menu,.btn,.form-control-sm,.col-form-label-sm{
     direction: rtl;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
 
 }
 
-.t-6{
+.t-6,.badge{
     font-size: 0.7rem;
 }
 
