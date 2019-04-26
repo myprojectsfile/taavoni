@@ -32,20 +32,7 @@ export class PortfoComponent implements OnInit {
       }
     };
 
-    // this.apiService.getUserPortfo().subscribe(
-    //   portfo => {
-    //     this.userPortfo = portfo[0];
-    //     this.moamelat = portfo[0].moamelat;
-    //   },
-    //   error => {
-    //     console.log(error);
-    //     this.toastr.error(
-    //       'خطا در بازیابی داده های پورتفوی کاربر.با پشتیبان سامانه تماس بگیرید.'
-    //     );
-    //   }
-    // );
-
-    this.apiService.getUserPortfoById().subscribe(
+     this.apiService.getUserPortfoById().subscribe(
       portfo => {
         console.log(portfo);
         this.userPortfo = portfo;

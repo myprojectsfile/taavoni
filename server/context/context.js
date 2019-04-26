@@ -75,7 +75,7 @@ MoamelehSchema.pre('save', function (next) {
 var DarkhastSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true
+    required: false
   },
   fullName: String,
   noeDarkhast: {
@@ -115,13 +115,16 @@ var DarkhastSchema = new mongoose.Schema({
   moamelat: [MoamelehSchema],
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    autopopulate: true
   },
   moameleha: [{
     type: Schema.Types.ObjectId,
     ref: 'Moameleh'
   }]
 });
+
+DarkhastSchema.plugin(autopopulate);
 
 
 DarkhastSchema.pre('save', function (next) {
@@ -144,13 +147,17 @@ var PortfoSchema = new mongoose.Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    autopopulate:true
   },
   moameleha: [{
     type: Schema.Types.ObjectId,
-    ref: 'Moameleh'
+    ref: 'Moameleh',
+    autopopulate:true
   }]
 });
+
+PortfoSchema.plugin(autopopulate);
 
 var ClaimSchema = new mongoose.Schema({
   claim: String,

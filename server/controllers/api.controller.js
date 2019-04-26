@@ -10,8 +10,12 @@ module.exports = function (app) {
 
   // SafeKharid routes
   app.route('/api/safeKharid')
-    .get(checkIsAuthenticated, get_safeKharid)
+    .get(checkIsAuthenticated, get_safeKharid);
+
+  app.route('/api/safeKharid/:userId')
     .post(checkIsAuthenticated, post_darkhastKharid);
+
+
 
   app.route('/api/safeKharid/:id')
     .get(checkIsAuthenticated, get_safeKharid_byid)
@@ -20,10 +24,12 @@ module.exports = function (app) {
 
   // SafeForush routes
   app.route('/api/safeForush')
-    .get(checkIsAuthenticated, get_safeForush)
+    .get(checkIsAuthenticated, get_safeForush);
+
+  app.route('/api/safeForush/:userId')
     .post(checkIsAuthenticated, post_darkhastForush);
 
-  app.route('/api/safeForush/tedadKolSahamForushUser/:username')
+  app.route('/api/safeForush/tedadKolSahamForushUser/:userId')
     .get(checkIsAuthenticated, get_tedadKolSahamForushUser);
 
   app.route('/api/safeForush/:id')
@@ -42,10 +48,10 @@ module.exports = function (app) {
     .post(post_register);
 
   // listdarkhast routes
-  app.route('/api/darkhast/byUsername/:username')
-    .get(checkIsAuthenticated, getListDarkhastByUsername);
+  app.route('/api/darkhast/byUserId/:userId')
+    .get(checkIsAuthenticated, getListDarkhastByUserId);
 
-  app.route('/api/darkhast/hasNoActiveRequest/noeDarkhast/:noeDarkhast/byUsername/:username')
+  app.route('/api/darkhast/hasNoActiveRequest/noeDarkhast/:noeDarkhast/byUserId/:userId')
     .get(checkIsAuthenticated, checkUserHasNoActiveCrossRequest);
 
   app.route('/api/darkhast/:id')
@@ -71,8 +77,8 @@ module.exports = function (app) {
   app.route('/api/portfo/byId/:id')
     .get(checkIsAuthenticated, getPortfoById);
 
-  app.route('/api/portfo/darayi/byUsername/:username')
-    .get(checkIsAuthenticated, getPortfoDarayiByUsername);
+  app.route('/api/portfo/darayi/byUserId/:userId')
+    .get(checkIsAuthenticated, getPortfoDarayiByUserId);
 
   app.route('/api/portfo/:id')
     .put(checkIsAuthenticated, update_portfo_byid)
@@ -81,9 +87,6 @@ module.exports = function (app) {
   // user routes
   app.route('/api/user/byUsername/:username')
     .get(checkIsAuthenticated, getUserByUsername)
-
-  app.route('/api/user/checkRelation')
-    .get(checkRelation)
 
   app.route('/api/user/byCodeMelli/:codeMelli')
     .get(checkIsAuthenticated, getUserByCodeMelli);
@@ -247,10 +250,10 @@ post_gheymatSahm = function (req, res) {
 checkUserHasNoActiveCrossRequest = function (req, res) {
   // بر اساس نوع درخواست  بصورت برعکس چک میکنیم
   const noeDarkhast = req.params.noeDarkhast == 0 ? 'فروش' : 'خرید';
-  const username = req.params.username;
+  const userId = req.params.userId;
 
   context.Darkhast.find({
-      'username': username,
+      'user': userId,
       'noeDarkhast': noeDarkhast
     }, function (err, darkhastha) {
       if (err) {
@@ -265,21 +268,18 @@ checkUserHasNoActiveCrossRequest = function (req, res) {
     .sort('tarikhDarkhast');
 }
 
-get_safeKharid = function (req, res) {
-  context.Darkhast.find({
-    'noeDarkhast': 'خرید'
-  }, null, {
-    sort: {
-      'gheymatSahm': 'desc',
-      'tarikhDarkhast': 'asc'
-    }
-  }, function (err, result) {
-    if (err) {
-      res.statusCode = 500;
-      res.send(err);
-    }
-    res.json(result);
-  }).where('vazeiat').in(['در انتظار', 'در حال انجام']);
+get_safeKharid = async function (req, res) {
+  try {
+    const safeKharid = await context.Darkhast.find({
+      'noeDarkhast': 'خرید'
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام']);
+
+    if (safeKharid) {
+      res.send(safeKharid);
+    } else res.status(404).send();
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 get_safeForush = function (req, res) {
@@ -303,7 +303,7 @@ get_safeForush = function (req, res) {
 get_tedadKolSahamForushUser = function (req, res) {
   context.Darkhast.find({
       'noeDarkhast': 'فروش',
-      'username': req.params.username
+      'user': req.params.userId
     }, 'tedadBaghiMandeh', function (err, result) {
       if (err) {
         res.statusCode = 500;
@@ -337,9 +337,9 @@ get_moameleh = function (req, res) {
   });
 };
 
-getListDarkhastByUsername = function (req, res) {
+getListDarkhastByUserId = function (req, res) {
   context.Darkhast.find({
-    'username': req.params.username
+    'user': req.params.userId
   }, function (err, darkhastha) {
     if (err) {
       res.statusCode = 500;
@@ -369,18 +369,16 @@ getPortfoById = async (req, res) => {
       user: req.params.id
     });
     if (portfo) {
-      await portfo.populate('user').populate({
-        path: 'moameleha'
-      }).execPopulate();
       res.send(portfo);
     } else res.status(404).send();
   } catch (error) {
     res.status(500).send(error);
   }
 }
-getPortfoDarayiByUsername = function (req, res) {
-  context.Portfo.find({
-    'username': req.params.username
+
+getPortfoDarayiByUserId = function (req, res) {
+  context.Portfo.findOne({
+    'user': req.params.userId
   }, 'tedadSahm', function (err, portfo) {
     if (err) {
       res.statusCode = 500;
@@ -405,27 +403,6 @@ getUserByUsername = function (req, res) {
 };
 
 
-checkRelation = async (req, res) => {
-  try {
-    const user = await context.User.findOne({
-      username: '124'
-    });
-
-    const darkhast = await new context.Darkhast({
-      username: '124',
-      noeDarkhast: 'خرید',
-      tedadSahm: 2300,
-      vazeiat: 'در انتظار',
-      user: user._id
-    }).save();
-
-    await darkhast.populate('user').execPopulate();
-
-    res.send(darkhast);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-}
 
 getUserByCodeMelli = function (req, res) {
   context.User.find({
@@ -480,56 +457,35 @@ get_user_byid = function (req, res) {
 
 
 post_darkhastKharid = function (req, res) {
-  // find user by id
-  context.User.findOne({
-    '_id': req.userId
-  }, function (err, user) {
+  // create new darkhast
+  var darkhastKharid = new context.Darkhast(req.body);
+  // set user & noedarkhast
+  darkhastKharid.user = req.params.userId;
+  darkhastKharid.noeDarkhast = 'خرید';
+  darkhastKharid.tedadBaghiMandeh = req.body.tedadSahm;
+  darkhastKharid.save(function (err, darkhast) {
+    if (err) {
+      res.statusCode = 500;
+      res.send(err);
+    }
 
-    if (err) res.status(500).send(err);
-
-    if (!user) res.status(404).send();
-    // create new darkhast
-    var darkhastKharid = new context.Darkhast(req.body);
-    // set username & noedarkhast
-    darkhastKharid.username = user.username;
-    darkhastKharid.noeDarkhast = 'خرید';
-    darkhastKharid.fullName = user.fullName;
-    darkhastKharid.tedadBaghiMandeh = req.body.tedadSahm;
-    darkhastKharid.save(function (err, darkhast) {
-      if (err) {
-        res.statusCode = 500;
-        res.send(err);
-      }
-
-      res.json(darkhast);
-    });
+    res.json(darkhast);
   });
 };
 
 post_darkhastForush = function (req, res) {
-  // find user by id
-  context.User.findOne({
-    '_id': req.userId
-  }, function (err, user) {
-
-    if (err) res.status(500).send(err);
-
-    if (!user) res.status(404).send();
-    // create new darkhast
-    var darkhastForush = new context.Darkhast(req.body);
-    // set username & noedarkhast
-    darkhastForush.username = user.username;
-    darkhastForush.noeDarkhast = 'فروش';
-    darkhastForush.fullName = user.fullName;
-    darkhastForush.tedadBaghiMandeh = req.body.tedadSahm;
-    darkhastForush.save(function (err, darkhast) {
-      if (err) {
-        res.statusCode = 500;
-        res.send(err);
-      }
-
-      res.json(darkhast);
-    });
+  // create new darkhast
+  var darkhastForush = new context.Darkhast(req.body);
+  // set username & noedarkhast
+  darkhastForush.user = req.params.userId;
+  darkhastForush.noeDarkhast = 'فروش';
+  darkhastForush.tedadBaghiMandeh = req.body.tedadSahm;
+  darkhastForush.save(function (err, darkhast) {
+    if (err) {
+      res.statusCode = 500;
+      res.send(err);
+    }
+    res.json(darkhast);
   });
 };
 

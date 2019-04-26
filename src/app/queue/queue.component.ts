@@ -85,7 +85,7 @@ export class QueueComponent implements OnInit {
             // تعداد دارایی سهام
             this.apiService.getUserPortfoDarayi().subscribe(
               data => {
-                const tedadDarayi: number = data[0].tedadSahm || 0;
+                const tedadDarayi: number = data.tedadSahm || 0;
                 // محاسبه مجموع سهام تمامی درخواست های فروش فعلی کاربر
                 this.apiService.getTedadKolSahamForushUser().subscribe(
                   // tslint:disable-next-line:no-shadowed-variable
@@ -94,12 +94,6 @@ export class QueueComponent implements OnInit {
                       result.tedadKolSahamForush || 0;
                     // محاسبه مجموع سهام تمامی درخواست های فروش فعلی کاربر
                     const tedadMojoud = tedadDarayi - tedadKolSahamForushUser;
-                    console.log(`tedadDarkhast:${tedadDarkhast}`);
-                    console.log(`tedadDarayi:${tedadDarayi}`);
-                    console.log(
-                      `tedadKolSahamForushUser:${tedadKolSahamForushUser}`
-                    );
-                    console.log(`tedadMojoud:${tedadMojoud}`);
 
                     if (tedadDarkhast > tedadMojoud) {
                       this.toastr.error(

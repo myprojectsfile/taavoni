@@ -30,11 +30,13 @@ export class ApiService {
   }
 
   sabtDarkhastKharid(darkhast: DarkhastType) {
-    return this.httpClient.post(this.apiUri + '/safeKharid', darkhast);
+    const userId = this.authService.getUserId();
+    return this.httpClient.post(this.apiUri + `/safeKharid/${userId}`, darkhast);
   }
 
   sabtDarkhastForush(darkhast: DarkhastType) {
-    return this.httpClient.post(this.apiUri + '/safeForush', darkhast);
+    const userId = this.authService.getUserId();
+    return this.httpClient.post(this.apiUri + `/safeForush/${userId}`, darkhast);
   }
 
   getListDarkhast(noeDarkhast: string) {
@@ -46,9 +48,9 @@ export class ApiService {
   }
 
   getTedadKolSahamForushUser() {
-    const username = this.authService.getUsername();
-    return this.httpClient.get<number[]>(
-      this.apiUri + '/safeForush/tedadKolSahamForushUser/' + username
+    const userId = this.authService.getUserId();
+    return this.httpClient.get<any>(
+      this.apiUri + '/safeForush/tedadKolSahamForushUser/' + userId
     );
   }
 
@@ -86,9 +88,9 @@ export class ApiService {
   }
 
   getListDarkhastUser() {
-    const username = this.authService.getUsername();
+    const userId = this.authService.getUserId();
     return this.httpClient.get<DarkhastType[]>(
-      this.apiUri + '/darkhast/byUsername/' + username
+      this.apiUri + '/darkhast/byUserId/' + userId
     );
   }
 
@@ -111,9 +113,9 @@ export class ApiService {
   }
 
   getUserPortfoDarayi() {
-    const username = this.authService.getUsername();
-    return this.httpClient.get<PortfoType[]>(
-      this.apiUri + '/portfo/darayi/byUsername/' + username
+    const userId = this.authService.getUserId();
+    return this.httpClient.get<PortfoType>(
+      this.apiUri + '/portfo/darayi/byUserId/' + userId
     );
   }
 
@@ -197,10 +199,10 @@ export class ApiService {
   }
 
   checkUserHasNoActiveCrossRequest(noeDarkhast: number) {
-    const username = this.authService.getUsername();
+    const userId = this.authService.getUserId();
     return this.httpClient.get(
       this.apiUri +
-        `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUsername/${username}`
+        `/darkhast/hasNoActiveRequest/noeDarkhast/${noeDarkhast}/byUserId/${userId}`
     );
   }
 
