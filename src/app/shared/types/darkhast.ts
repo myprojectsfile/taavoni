@@ -1,4 +1,5 @@
 import { MoamelehType } from './moameleh';
+import { UserType } from './user';
 
 export interface DarkhastType {
   _id?: string;
@@ -15,4 +16,6 @@ export interface DarkhastType {
   tozihat?: string;
   noeDarkhst?: string;
   moamelat?: MoamelehType[];
+  user?: UserType;
+  moameleha?: MoamelehType[];
 }
