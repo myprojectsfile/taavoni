@@ -142,27 +142,6 @@ export class QueueComponent implements OnInit {
     );
   }
 
-  // async getTedadDarkhastSaf() {}
-
-  // mohasebehTedad() {
-  //   this.apiService.getAkharinGheymatSahm().subscribe(
-  //     res => {
-  //       const arzeshSahm = this.arzeshSahm;
-  //       const gheymatRooz = res.gheymatRooz || 0;
-  //       if (arzeshSahm > 0 && gheymatRooz > 0) {
-  //         const tedadSahm = Math.floor(arzeshSahm / gheymatRooz);
-  //         this.tedadSahm = tedadSahm;
-  //       }
-  //     },
-  //     error => {
-  //       console.log(error);
-  //       this.toastr.error(
-  //         'خطا در بازیابی قیمت روز سهم.با پشتیبان سیستم تماس بگیرید.'
-  //       );
-  //     }
-  //   );
-  // }
-
   noeDarkhastChanged(event) {
     const selectedIndex = event.target.selectedIndex;
     if (selectedIndex === 1) {

@@ -137,23 +137,16 @@ DarkhastSchema.pre('save', function (next) {
 
 // Portfo Schema
 var PortfoSchema = new mongoose.Schema({
-  username: String,
-  userId: String,
-  fullName: String,
   tedadSahm: Number,
-  moamelat: {
-    type: [MoamelehSchema],
-    required: false
-  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    autopopulate:true
+    autopopulate: true
   },
   moameleha: [{
     type: Schema.Types.ObjectId,
     ref: 'Moameleh',
-    autopopulate:true
+    autopopulate: true
   }]
 });
 
@@ -264,6 +257,8 @@ var UserSchema = new mongoose.Schema({
     ref: 'UserFile'
   }]
 });
+
+// UserSchema.plugin(autopopulate);
 
 UserSchema.virtual('fullName').get(function () {
   return this.name + ' ' + this.family

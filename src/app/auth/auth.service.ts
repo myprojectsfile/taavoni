@@ -73,10 +73,11 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       const tokenPayload: any = this.tokenPayload();
-      const userClaims: ClaimType[] = tokenPayload.user.claims;
+      const userClaims: ClaimType[] = tokenPayload.user.claimha;
+      console.log(`user claims:${JSON.stringify(userClaims)}`);
       if (!userClaims) { return false; } else {
-        const claimItem = userClaims.find((claimObject) => {
-          return claimObject.claim === claim;
+        const claimItem = userClaims.find((userClaimItem) => {
+          return userClaimItem === claim;
         });
         if (claimItem) { return true; }
       }
@@ -102,7 +103,7 @@ export class AuthService {
 
   getUserFullname() {
     const tokenPayload = this.jwt.decodeToken(this.getToken());
-    if (tokenPayload) { return tokenPayload.fullName; }
+    if (tokenPayload) { return tokenPayload.user.fullName; }
     return null;
   }
 
@@ -115,7 +116,7 @@ export class AuthService {
       const user: UserType = tokenPayload.user;
       userHasConfiremed = user.confirmed;
     }
-    
+
     return userHasConfiremed
   }
 }

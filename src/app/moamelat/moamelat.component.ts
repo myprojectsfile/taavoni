@@ -172,15 +172,15 @@ export class MoamelatComponent {
         portfo = portfo[0];
         // تعداد سهم جدید خریدار را محاسبه میکنیم
         const tedadSahmJadid = portfo.tedadSahm + _tedadSahmMoameleh;
-        const moamelatPortfoKharidar = portfo.moamelat || [];
+        const moamelatPortfoKharidar = portfo.moameleha || [];
         const portfoKharidarUpdateObj: PortfoType = {
-          tedadSahm: tedadSahmJadid,
-          moamelat: moamelatPortfoKharidar
+          tedadSahm: tedadSahmJadid
+          // ,moamelat: moamelatPortfoKharidar
         };
 
         // افزودن معامله به لیست معاملات پورتفو خریدار
         moamelehNewRow.shenasehMoameleh = moamelehNewRow._id;
-        portfoKharidarUpdateObj.moamelat.push(moamelehNewRow);
+        portfoKharidarUpdateObj.moameleha.push(moamelehNewRow);
         // پورتفو را به روزرسانی میکنیم
         this.apiService
           .updatePortfoById(portfoKharidarUpdateObj, portfo._id)
@@ -217,14 +217,14 @@ export class MoamelatComponent {
         // تعداد سهم جدید فروشنده را محاسبه میکنیم
         portfo = portfo[0];
         const tedadSahmJadid = portfo.tedadSahm - _tedadSahmMoameleh;
-        const moamelatPortfoForushandeh = portfo.moamelat || [];
+        const moamelatPortfoForushandeh = portfo.moameleha || [];
         const portfoForushandehUpdateObj: PortfoType = {
-          tedadSahm: tedadSahmJadid,
-          moamelat: moamelatPortfoForushandeh
+          tedadSahm: tedadSahmJadid
+          // ,moamelat: moamelatPortfoForushandeh
         };
         // افزودن معامله به لیست معاملات پورتفو فروشنده
         moamelehNewRow.shenasehMoameleh = moamelehNewRow._id;
-        portfoForushandehUpdateObj.moamelat.push(moamelehNewRow);
+        portfoForushandehUpdateObj.moameleha.push(moamelehNewRow);
         // پورتفو فروشنده را به روزرسانی میکنیم
         this.apiService
           .updatePortfoById(portfoForushandehUpdateObj, portfo._id)
