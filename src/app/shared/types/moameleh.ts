@@ -1,3 +1,6 @@
+import { UserType } from "./user";
+import { DarkhastType } from "./queue";
+
 export interface MoamelehType {
   _id?: string;
   tarikhMoameleh?: string;
@@ -5,14 +8,9 @@ export interface MoamelehType {
   tedadSahmMoameleh: number;
   gheymatMoameleh?: number;
   arzeshSahmMoameleh?: number;
-  forushandeh_username: string;
-  forushandeh_fullName: string;
-  forushandeh_darkhastId: string;
-  kharidar_username: string;
-  kharidar_fullName: string;
-  kharidar_darkhastId: string;
-  userIdSabtKonandeh?: string;
-  usernameSabtKonandeh?: string;
-  fullnameSabtKonandeh?: string;
-  shenasehMoameleh?: string;
+  kharidar?: UserType;
+  forushandeh?: UserType;
+  sabtKonandeh?: UserType;
+  darkhastKharid?: DarkhastType;
+  darkhastForush?: DarkhastType;
 }

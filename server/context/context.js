@@ -7,10 +7,6 @@ const autopopulate = require('mongoose-autopopulate')
 
 // Moameleh Schema
 var MoamelehSchema = new mongoose.Schema({
-  shenasehMoameleh: {
-    type: String,
-    required: false
-  },
   tarikhMoameleh: {
     type: String
     // ,default: moment.tz('Asia/Tehran').format()
@@ -18,24 +14,6 @@ var MoamelehSchema = new mongoose.Schema({
   tedadSahmMoameleh: Number,
   gheymatMoameleh: Number,
   arzeshSahmMoameleh: Number,
-  forushandeh_username: String,
-  forushandeh_fullName: String,
-  forushandeh_darkhastId: String,
-  kharidar_username: String,
-  kharidar_fullName: String,
-  kharidar_darkhastId: String,
-  userIdSabtKonandeh: {
-    type: String,
-    required: false
-  },
-  usernameSabtKonandeh: {
-    type: String,
-    required: false
-  },
-  fullnameSabtKonandeh: {
-    type: String,
-    required: false
-  },
   kharidar: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -73,11 +51,6 @@ MoamelehSchema.pre('save', function (next) {
 
 // Darkhast Shcemas
 var DarkhastSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: false
-  },
-  fullName: String,
   noeDarkhast: {
     type: String,
     enum: ['خرید', 'فروش'],

@@ -13,7 +13,7 @@ import { ApiService } from '../shared/services/api.service';
   styleUrls: ['./moamelat.component.css']
 })
 export class MoamelatComponent {
-  constructor(private apiService: ApiService, private toastr: ToastrService) {}
+  constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   @ViewChild('safeKharid')
   safeKharidComponent: DarkhastComponent;
@@ -39,8 +39,7 @@ export class MoamelatComponent {
     let _tedadBaghimandehKharidar = this.avalinKharidar.tedadBaghiMandeh;
     let _tedadMoamelehShodehKharidar = this.avalinKharidar.tedadMoamelehShodeh;
     let _tedadBaghimandehForushandeh = this.avalinForushandeh.tedadBaghiMandeh;
-    let _tedadMoamelehShodehForushandeh = this.avalinForushandeh
-      .tedadMoamelehShodeh;
+    let _tedadMoamelehShodehForushandeh = this.avalinForushandeh.tedadMoamelehShodeh;
 
     // مشخص میکنیم تعداد درخواست خرید ها بیشتر است یا فروش ها
     // در صورتی که تعداد فروشنده بیشتر یا مساوی خریدار باشد
@@ -75,18 +74,18 @@ export class MoamelatComponent {
     } else {
       vazeiatDarkhastForush = 'در حال انجام';
     }
+
     // قیمت معامله را محاسبه میکنیم
     const _gheymatMoameleh = this.gheymatSahmKharidar;
     // ردیف معامله را آماده میکنیم
     const moamelehNewRow = this.prepareNewMoamelehRow(
-      this.avalinForushandeh,
-      this.avalinKharidar,
       _tedadSahmMoameleh,
       _gheymatMoameleh
     );
+
     // آبجکت به روز رسانی درخواست خرید و فروش را ایجاد می کنیم
-    const moamelatDarkhastKharid = this.avalinKharidar.moamelat || [];
-    const moamelatDarkhastForush = this.avalinForushandeh.moamelat || [];
+    const moamelatDarkhastKharid = this.avalinKharidar.moameleha || [];
+    const moamelatDarkhastForush = this.avalinForushandeh.moameleha || [];
     const darkhastKharidUpdateObj: DarkhastType = {};
     const darkhastForushUpdateObj: DarkhastType = {};
     const darkhastKharidId: string = this.avalinKharidar._id;
@@ -96,13 +95,13 @@ export class MoamelatComponent {
     darkhastKharidUpdateObj.tedadBaghiMandeh = _tedadBaghimandehKharidar;
     darkhastKharidUpdateObj.vazeiat = vazeiatDarkhastKharid;
     moamelatDarkhastKharid.push(moamelehNewRow);
-    darkhastKharidUpdateObj.moamelat = moamelatDarkhastKharid;
+    darkhastKharidUpdateObj.moameleha = moamelatDarkhastKharid;
 
     darkhastForushUpdateObj.tedadBaghiMandeh = _tedadBaghimandehForushandeh;
     darkhastForushUpdateObj.tedadMoamelehShodeh = _tedadMoamelehShodehForushandeh;
     darkhastForushUpdateObj.vazeiat = vazeiatDarkhastForush;
     moamelatDarkhastForush.push(moamelehNewRow);
-    darkhastForushUpdateObj.moamelat = moamelatDarkhastForush;
+    darkhastForushUpdateObj.moameleha = moamelatDarkhastForush;
 
     // ثبت معامله
     this.apiService.sabtMoameleh(moamelehNewRow).subscribe(
@@ -167,7 +166,7 @@ export class MoamelatComponent {
     _tedadSahmMoameleh: number,
     moamelehNewRow: MoamelehType
   ) {
-    this.apiService.getPortfohByUsername(avalinKharidar.username).subscribe(
+    this.apiService.getPortfohByUsername(avalinKharidar.user.username).subscribe(
       portfo => {
         portfo = portfo[0];
         // تعداد سهم جدید خریدار را محاسبه میکنیم
@@ -179,7 +178,6 @@ export class MoamelatComponent {
         };
 
         // افزودن معامله به لیست معاملات پورتفو خریدار
-        moamelehNewRow.shenasehMoameleh = moamelehNewRow._id;
         portfoKharidarUpdateObj.moameleha.push(moamelehNewRow);
         // پورتفو را به روزرسانی میکنیم
         this.apiService
@@ -212,7 +210,7 @@ export class MoamelatComponent {
     _tedadSahmMoameleh: number,
     moamelehNewRow: MoamelehType
   ) {
-    this.apiService.getPortfohByUsername(avalinForushandeh.username).subscribe(
+    this.apiService.getPortfohByUsername(avalinForushandeh.user.username).subscribe(
       portfo => {
         // تعداد سهم جدید فروشنده را محاسبه میکنیم
         portfo = portfo[0];
@@ -223,7 +221,6 @@ export class MoamelatComponent {
           // ,moamelat: moamelatPortfoForushandeh
         };
         // افزودن معامله به لیست معاملات پورتفو فروشنده
-        moamelehNewRow.shenasehMoameleh = moamelehNewRow._id;
         portfoForushandehUpdateObj.moameleha.push(moamelehNewRow);
         // پورتفو فروشنده را به روزرسانی میکنیم
         this.apiService
@@ -252,27 +249,13 @@ export class MoamelatComponent {
   }
 
   private prepareNewMoamelehRow(
-    avalinForushandeh: DarkhastType,
-    avalinKharidar: DarkhastType,
     _tedadSahmMoameleh: number,
     _gheymatMoameleh: number
   ): MoamelehType {
-    const _forushandeh_username = avalinForushandeh.username;
-    const _forushandeh_fullName = avalinForushandeh.fullName;
-    const _forushandeh_darkhastId = avalinForushandeh._id;
-    const _kharidar_username = avalinKharidar.username;
-    const _kharidar_fullName = avalinKharidar.fullName;
-    const _kharidar_darkhastId = avalinKharidar._id;
     const moameleh: MoamelehType = {
       tedadSahmMoameleh: _tedadSahmMoameleh,
       gheymatMoameleh: _gheymatMoameleh,
-      arzeshSahmMoameleh: _tedadSahmMoameleh * _gheymatMoameleh,
-      forushandeh_username: _forushandeh_username,
-      forushandeh_fullName: _forushandeh_fullName,
-      forushandeh_darkhastId: _forushandeh_darkhastId,
-      kharidar_username: _kharidar_username,
-      kharidar_fullName: _kharidar_fullName,
-      kharidar_darkhastId: _kharidar_darkhastId
+      arzeshSahmMoameleh: _tedadSahmMoameleh * _gheymatMoameleh
     };
 
     return moameleh;
@@ -297,38 +280,6 @@ export class MoamelatComponent {
       darkhastKharidId
     );
   }
-
-  // private PostNewMoameleh(avalinForushandeh: DarkhastType,
-  //   avalinKharidar: DarkhastType,
-  //   _tedadSahmMoameleh: number,
-  //   _arzeshSahmMoameleh: number): MoamelehType {
-  //   const _forushandeh_username = avalinForushandeh.username;
-  //   const _forushandeh_fullName = avalinForushandeh.fullName;
-  //   const _forushandeh_darkhastId = avalinForushandeh._id;
-  //   const _kharidar_username = avalinKharidar.username;
-  //   const _kharidar_fullName = avalinKharidar.fullName;
-  //   const _kharidar_darkhastId = avalinKharidar._id;
-
-  //   const moameleh: MoamelehType = {
-  //     tedadSahmMoameleh: _tedadSahmMoameleh,
-  //     arzeshSahmMoameleh: _arzeshSahmMoameleh,
-  //     forushandeh_username: _forushandeh_username,
-  //     forushandeh_fullName: _forushandeh_fullName,
-  //     forushandeh_darkhastId: _forushandeh_darkhastId,
-  //     kharidar_username: _kharidar_username,
-  //     kharidar_fullName: _kharidar_fullName,
-  //     kharidar_darkhastId: _kharidar_darkhastId
-  //   };
-
-  //   this.apiService.sabtMoameleh(moameleh).subscribe((newMoameleh) => {
-  //     console.log(newMoameleh);
-  //     this.toastr.success('معامله جدید با موفقیت ثبت شد');
-  //   }, (error) => {
-  //     console.log(error);
-  //   });
-
-  //   return moameleh;
-  // }
 
   listKharidChanged(listKharid: DarkhastType[]) {
     this.avalinForushandeh = this.safeForushComponent.getAvalinDarkhast();

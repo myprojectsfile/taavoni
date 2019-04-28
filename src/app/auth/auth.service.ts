@@ -74,7 +74,6 @@ export class AuthService {
     if (token) {
       const tokenPayload: any = this.tokenPayload();
       const userClaims: ClaimType[] = tokenPayload.user.claimha;
-      console.log(`user claims:${JSON.stringify(userClaims)}`);
       if (!userClaims) { return false; } else {
         const claimItem = userClaims.find((userClaimItem) => {
           return userClaimItem === claim;
