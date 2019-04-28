@@ -1,5 +1,5 @@
-import { UserType } from "./user";
-import { DarkhastType } from "./queue";
+import { UserType } from './user';
+import { DarkhastType } from './queue';
 
 export interface MoamelehType {
   _id?: string;

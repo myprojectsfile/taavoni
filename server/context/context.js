@@ -212,10 +212,6 @@ var UserSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Moameleh'
   }],
-  portfo: {
-    type: Schema.Types.ObjectId,
-    ref: 'Portfo'
-  },
   claimha: [{
     type: Schema.Types.ObjectId,
     ref: 'Claim'

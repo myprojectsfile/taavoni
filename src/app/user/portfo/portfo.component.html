@@ -5,15 +5,15 @@
   <div class="row ml-auto">
     <div class="col-sm-6 col-md-4 col-lg-2 t-6">
       نام:
-      <span class="badge badge-primary">{{userPortfo?.user.fullName}}</span>
+      <span class="badge badge-primary">{{user?.fullName}}</span>
     </div>
     <div class="col-sm-6 col-md-4 col-lg-2 t-6">
       کد سهامداری:
-      <span class="badge badge-success">{{ userPortfo?.user.username }}</span>
+      <span class="badge badge-success">{{ user?.username }}</span>
     </div>
     <div class="col-sm-6 col-md-4 col-lg-2 t-6">
       تعداد دارایی سهام:
-      <span class="badge badge-warning">{{userPortfo?.tedadSahm}}</span>
+      <span class="badge badge-warning">{{user?.tedadSahm}}</span>
     </div>
   </div>
   <hr>
@@ -27,7 +27,7 @@
       <dx-data-grid #moamelatGrid [showRowLines]="true" [showColumnLines]="true" [rowAlternationEnabled]="true"
         [paging]="{enabled:true,pageSize:10}"
         [pager]="{showInfo:true,showNavigationButtons:true,showPageSizeSelector: true,allowedPageSizes: [5, 10, 20]}"
-        [showBorders]="true" [rtlEnabled]="true" [dataSource]="moamelat">
+        [showBorders]="true" [rtlEnabled]="true" [dataSource]="moameleha">
         <dxi-column alignment="center" dataField="tarikhMoameleh" width="170" caption="تاریخ معامله"></dxi-column>
         <dxi-column alignment="center" dataField="noeMoameleh" width="100" [calculateCellValue]="calcNoeMoameleh"
           caption="نوع معامله">

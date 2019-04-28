@@ -83,7 +83,7 @@ export class QueueComponent implements OnInit {
             // تعداد سهام درخواست جدید
             const tedadDarkhast: number = darkhast.tedadSahm || 0;
             // تعداد دارایی سهام
-            this.apiService.getUserPortfoDarayi().subscribe(
+            this.apiService.getTedadSahmUser().subscribe(
               data => {
                 const tedadDarayi: number = data.tedadSahm || 0;
                 // محاسبه مجموع سهام تمامی درخواست های فروش فعلی کاربر

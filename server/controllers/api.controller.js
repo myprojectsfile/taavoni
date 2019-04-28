@@ -99,6 +99,9 @@ module.exports = function (app) {
     .put(checkIsAuthenticated, update_user_byid)
     .delete(checkIsAuthenticated, del_user_byid);
 
+  app.route('/api/user/getTedadSahm/:userId')
+    .get(checkIsAuthenticated, getTedadSahmUser);
+
   app.route('/api/user/updatePass/:id/:oldPassword')
     .put(checkIsAuthenticated, update_user_pass_byid);
 
@@ -365,11 +368,12 @@ getPortfoByUsername = function (req, res) {
 
 getPortfoById = async (req, res) => {
   try {
-    const portfo = await context.Portfo.findOne({
-      user: req.params.id
+    const user = await context.User.findOne({
+      _id: req.params.id
     });
-    if (portfo) {
-      res.send(portfo);
+    if (user) {
+      await user.populate('moameleha').execPopulate();
+      res.send(user);
     } else res.status(404).send();
   } catch (error) {
     res.status(500).send(error);
@@ -386,6 +390,19 @@ getPortfoDarayiByUserId = function (req, res) {
     }
     if (!portfo) res.status(404).send();
     res.json(portfo);
+  });
+};
+
+getTedadSahmUser = function (req, res) {
+  context.User.findOne({
+    '_id': req.params.userId
+  }, 'tedadSahm', function (err, user) {
+    if (err) {
+      res.statusCode = 500;
+      res.send(err);
+    }
+    if (!user) res.status(404).send();
+    res.json(user);
   });
 };
 
@@ -514,12 +531,13 @@ post_moameleh = async function (req, res) {
     const newMoameleh = await moameleh.save();
     // add moameleh to Kharidar & Forushandeh
 
-    // find khardidar user
+    // find khardidar user & update tedadSahm
     const kharidarUser = await context.User.findOne({
       '_id': req.body.kharidar
     });
 
     if (kharidarUser) {
+      kharidarUser.tedadSahm = kharidarUser.tedadSahm + req.body.tedadSahmMoameleh;
       kharidarUser.moameleha.push(newMoameleh._id);
       await kharidarUser.save();
     }
@@ -530,6 +548,7 @@ post_moameleh = async function (req, res) {
     });
 
     if (forushandehUser) {
+      forushandehUser.tedadSahm = forushandehUser.tedadSahm - req.body.tedadSahmMoameleh;
       forushandehUser.moameleha.push(newMoameleh._id);
       await forushandehUser.save();
     }

@@ -112,10 +112,10 @@ export class ApiService {
     );
   }
 
-  getUserPortfoDarayi() {
+  getTedadSahmUser() {
     const userId = this.authService.getUserId();
-    return this.httpClient.get<PortfoType>(
-      this.apiUri + '/portfo/darayi/byUserId/' + userId
+    return this.httpClient.get<any>(
+      this.apiUri + '/user/getTedadSahm/' + userId
     );
   }
 

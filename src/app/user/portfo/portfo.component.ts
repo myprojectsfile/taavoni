@@ -1,10 +1,9 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
-import { PortfoType } from '../../shared/types/portfo';
 import { MoamelehType } from '../../shared/types/moameleh';
 import { ToastrService, Toast } from 'ngx-toastr';
 import { AuthService } from '../../auth/auth.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { UserType } from '../../shared/types/user';
 
 @Component({
   selector: 'app-portfo',
@@ -12,31 +11,31 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   styleUrls: ['./portfo.component.css']
 })
 export class PortfoComponent implements OnInit {
-  userPortfo: PortfoType;
-  moamelat: MoamelehType[];
+  user: UserType;
+  moameleha: MoamelehType[];
   calcNoeMoameleh: any;
   constructor(
     private apiService: ApiService,
-    private jwt: JwtHelperService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     // define calcNoeMoameleh for using in dataGrid
     this.calcNoeMoameleh = row => {
-      const username = this.getUsername();
-      if (row.forushandeh_username === username) {
+      const userId = this.authService.getUserId();
+      if (row.forushandeh._id === userId) {
         return 'فروش';
       } else {
         return 'خرید';
       }
     };
 
-     this.apiService.getUserPortfoById().subscribe(
-      portfo => {
-        console.log(portfo);
-        this.userPortfo = portfo;
-        this.moamelat = portfo.moameleha;
+    this.apiService.getUserPortfoById().subscribe(
+      user => {
+        console.log(user);
+        this.user = user;
+        this.moameleha = user.moameleha;
       },
       error => {
         console.log(error);
@@ -45,17 +44,5 @@ export class PortfoComponent implements OnInit {
         );
       }
     );
-  }
-
-  getToken() {
-    return localStorage.getItem('token');
-  }
-
-  getUsername() {
-    const tokenPayload = this.jwt.decodeToken(this.getToken());
-    if (tokenPayload) {
-      return tokenPayload.user.username;
-    }
-    return null;
   }
 }
