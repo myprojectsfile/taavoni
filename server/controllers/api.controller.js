@@ -226,14 +226,14 @@ update_noeFile = function (req, res) {
   context.NoeFile.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, noeFile) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, noeFile) {
+    if (err) res.status(500).send(err);
 
-      if (!noeFile) res.status(404).send();
-      // return new row
-      res.json(noeFile);
-    });
+    if (!noeFile) res.status(404).send();
+    // return new row
+    res.json(noeFile);
+  });
 };
 
 post_gheymatSahm = function (req, res) {
@@ -253,18 +253,18 @@ checkUserHasNoActiveCrossRequest = function (req, res) {
   const userId = req.params.userId;
 
   context.Darkhast.find({
-    'user': userId,
-    'noeDarkhast': noeDarkhast
-  }, function (err, darkhastha) {
-    if (err) {
-      res.statusCode = 500;
-      res.send(err);
-    }
+      'user': userId,
+      'noeDarkhast': noeDarkhast
+    }, function (err, darkhastha) {
+      if (err) {
+        res.statusCode = 500;
+        res.send(err);
+      }
 
-    if (darkhastha.length > 0) res.send(false);
-    else res.send(true);
+      if (darkhastha.length > 0) res.send(false);
+      else res.send(true);
 
-  }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
     .sort('tarikhDarkhast');
 }
 
@@ -284,8 +284,8 @@ get_safeKharid = async function (req, res) {
 
 get_safeForush = function (req, res) {
   context.Darkhast.find({
-    'noeDarkhast': 'فروش'
-  }, null, {
+      'noeDarkhast': 'فروش'
+    }, null, {
       sort: {
         'gheymatSahm': 'asc',
         'tarikhDarkhast': 'asc'
@@ -302,27 +302,27 @@ get_safeForush = function (req, res) {
 
 get_tedadKolSahamForushUser = function (req, res) {
   context.Darkhast.find({
-    'noeDarkhast': 'فروش',
-    'user': req.params.userId
-  }, 'tedadBaghiMandeh', function (err, result) {
-    if (err) {
-      res.statusCode = 500;
-      res.send(err);
-    }
+      'noeDarkhast': 'فروش',
+      'user': req.params.userId
+    }, 'tedadBaghiMandeh', function (err, result) {
+      if (err) {
+        res.statusCode = 500;
+        res.send(err);
+      }
 
-    // محاسبه مجموع کل سهام کاربر
-    let i = 0;
-    let sum = 0;
+      // محاسبه مجموع کل سهام کاربر
+      let i = 0;
+      let sum = 0;
 
-    for (i = 0; i < result.length; i++) {
-      sum = sum + result[i].tedadBaghiMandeh;
-    };
+      for (i = 0; i < result.length; i++) {
+        sum = sum + result[i].tedadBaghiMandeh;
+      };
 
-    res.json({
-      'tedadKolSahamForush': sum
-    });
+      res.json({
+        'tedadKolSahamForush': sum
+      });
 
-  }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
     .sort('tarikhDarkhast');
 };
 
@@ -467,7 +467,9 @@ post_darkhastKharid = async function (req, res) {
 
     const darkhast = await darkhastKharid.save();
     if (darkhast) {
-      const user = await context.User.findOne({ '_id': req.params.userId });
+      const user = await context.User.findOne({
+        '_id': req.params.userId
+      });
       if (user) {
         user.darkhastha.push(darkhast._id);
         await user.save();
@@ -491,7 +493,9 @@ post_darkhastForush = async function (req, res) {
 
     const darkhast = await darkhastForush.save();
     if (darkhast) {
-      const user = await context.User.findOne({ '_id': req.params.userId });
+      const user = await context.User.findOne({
+        '_id': req.params.userId
+      });
       if (user) {
         user.darkhastha.push(darkhast._id);
         await user.save();
@@ -503,32 +507,38 @@ post_darkhastForush = async function (req, res) {
   }
 };
 
-post_moameleh = function (req, res) {
-  // find user by id
-  // userid is added to req by checkIsAuthenticated middleware
-  context.User.findOne({
-    '_id': req.userId
-  }, function (err, user) {
-
-    if (err) res.status(500).send(err);
-
-    if (!user) res.status(404).send();
+post_moameleh = async function (req, res) {
+  try {
     // create new moameleh
     var moameleh = new context.Moameleh(req.body);
-    // set username
-    moameleh.userIdSabtKonandeh = user._id;
-    moameleh.usernameSabtKonandeh = user.username;
-    moameleh.fullnameSabtKonandeh = user.fullName;
-    // save new moameleh
-    moameleh.save(function (err, newMoameleh) {
-      if (err) {
-        res.statusCode = 500;
-        res.send(err);
-      }
+    const newMoameleh = await moameleh.save();
+    // add moameleh to Kharidar & Forushandeh
 
-      res.json(newMoameleh);
+    // find khardidar user
+    const kharidarUser = await context.User.findOne({
+      '_id': req.body.kharidar
     });
-  });
+
+    if (kharidarUser) {
+      kharidarUser.moameleha.push(newMoameleh._id);
+      await kharidarUser.save();
+    }
+
+    // find forushandeh user
+    const forushandehUser = await context.User.findOne({
+      '_id': req.body.forushandeh
+    });
+
+    if (forushandehUser) {
+      forushandehUser.moameleha.push(newMoameleh._id);
+      await forushandehUser.save();
+    }
+
+    res.send(newMoameleh);
+
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 post_portfo = function (req, res) {
@@ -596,42 +606,42 @@ update_darkhastKharid = function (req, res) {
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, darkhast) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, darkhast) {
+    if (err) res.status(500).send(err);
 
-      if (!darkhast) res.status(404).send();
-      // return new row
-      res.json(darkhast);
-    });
+    if (!darkhast) res.status(404).send();
+    // return new row
+    res.json(darkhast);
+  });
 };
 
 update_darkhastForush = function (req, res) {
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, darkhast) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, darkhast) {
+    if (err) res.status(500).send(err);
 
-      if (!darkhast) res.status(404).send();
+    if (!darkhast) res.status(404).send();
 
-      res.json(darkhast);
-    });
+    res.json(darkhast);
+  });
 };
 
 update_moameleh = function (req, res) {
   context.Moameleh.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, moameleh) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, moameleh) {
+    if (err) res.status(500).send(err);
 
-      if (!moameleh) res.status(404).send();
+    if (!moameleh) res.status(404).send();
 
-      res.json(moameleh);
-    });
+    res.json(moameleh);
+  });
 };
 
 update_darkhast_byid = function (req, res) {
@@ -640,55 +650,55 @@ update_darkhast_byid = function (req, res) {
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, darkhast) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, darkhast) {
+    if (err) res.status(500).send(err);
 
-      if (!darkhast) res.status(404).send();
+    if (!darkhast) res.status(404).send();
 
-      res.json(darkhast);
-    });
+    res.json(darkhast);
+  });
 };
 
 update_portfo_byid = function (req, res) {
   context.Portfo.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, portfo) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, portfo) {
+    if (err) res.status(500).send(err);
 
-      if (!portfo) res.status(404).send();
+    if (!portfo) res.status(404).send();
 
-      res.json(portfo);
-    });
+    res.json(portfo);
+  });
 };
 
 update_user_byid = function (req, res) {
   context.User.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, user) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, user) {
+    if (err) res.status(500).send(err);
 
-      if (!user) res.status(404).send();
+    if (!user) res.status(404).send();
 
-      // find object and call 'save' method to firing 'pre and post' save middleware
-      context.User.findOne({
-        _id: req.params.id
-      }, (err, user) => {
+    // find object and call 'save' method to firing 'pre and post' save middleware
+    context.User.findOne({
+      _id: req.params.id
+    }, (err, user) => {
+      if (err) res.status(500).end(err);
+
+      if (!user) res.status(404).end();
+
+      user.save((err) => {
         if (err) res.status(500).end(err);
 
-        if (!user) res.status(404).end();
-
-        user.save((err) => {
-          if (err) res.status(500).end(err);
-
-          res.json(user);
-        })
-      });
+        res.json(user);
+      })
     });
+  });
 };
 
 // update_user_byid = function (req, res) {
@@ -713,14 +723,14 @@ update_claim_byid = function (req, res) {
   context.Claim.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, claim) {
-      if (err) res.status(500).send(err);
-      else {
-        if (!claim) res.status(404).send();
-        else res.json(claim);
-      }
-    });
+    new: true
+  }, function (err, claim) {
+    if (err) res.status(500).send(err);
+    else {
+      if (!claim) res.status(404).send();
+      else res.json(claim);
+    }
+  });
 };
 
 update_user_pass_byid = function (req, res) {

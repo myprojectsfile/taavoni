@@ -85,16 +85,11 @@ var DarkhastSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  moamelat: [MoamelehSchema],
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     autopopulate: true
-  },
-  moameleha: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Moameleh'
-  }]
+  }
 });
 
 DarkhastSchema.plugin(autopopulate);

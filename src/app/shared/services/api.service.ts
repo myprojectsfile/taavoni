@@ -80,8 +80,8 @@ export class ApiService {
     );
   }
 
-  sabtMoameleh(moameleh: MoamelehType) {
-    return this.httpClient.post<MoamelehType>(
+  sabtMoameleh(moameleh: any) {
+    return this.httpClient.post<any>(
       this.apiUri + '/moameleh',
       moameleh
     );

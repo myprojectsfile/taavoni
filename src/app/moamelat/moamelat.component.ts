@@ -6,6 +6,7 @@ import { DarkhastType } from '../shared/types/darkhast';
 import { Observable } from '../../../node_modules/rxjs';
 import { PortfoType } from '../shared/types/portfo';
 import { ApiService } from '../shared/services/api.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-moamelelat',
@@ -13,7 +14,11 @@ import { ApiService } from '../shared/services/api.service';
   styleUrls: ['./moamelat.component.css']
 })
 export class MoamelatComponent {
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  constructor(
+    private apiService: ApiService,
+    private toastr: ToastrService,
+    private authService: AuthService
+  ) {}
 
   @ViewChild('safeKharid')
   safeKharidComponent: DarkhastComponent;
@@ -39,7 +44,8 @@ export class MoamelatComponent {
     let _tedadBaghimandehKharidar = this.avalinKharidar.tedadBaghiMandeh;
     let _tedadMoamelehShodehKharidar = this.avalinKharidar.tedadMoamelehShodeh;
     let _tedadBaghimandehForushandeh = this.avalinForushandeh.tedadBaghiMandeh;
-    let _tedadMoamelehShodehForushandeh = this.avalinForushandeh.tedadMoamelehShodeh;
+    let _tedadMoamelehShodehForushandeh = this.avalinForushandeh
+      .tedadMoamelehShodeh;
 
     // مشخص میکنیم تعداد درخواست خرید ها بیشتر است یا فروش ها
     // در صورتی که تعداد فروشنده بیشتر یا مساوی خریدار باشد
@@ -78,35 +84,35 @@ export class MoamelatComponent {
     // قیمت معامله را محاسبه میکنیم
     const _gheymatMoameleh = this.gheymatSahmKharidar;
     // ردیف معامله را آماده میکنیم
-    const moamelehNewRow = this.prepareNewMoamelehRow(
-      _tedadSahmMoameleh,
-      _gheymatMoameleh
-    );
+    const moamelehNewRow: any = {
+      tedadSahmMoameleh: _tedadSahmMoameleh,
+      gheymatMoameleh: _gheymatMoameleh,
+      arzeshSahmMoameleh: _tedadSahmMoameleh * _gheymatMoameleh,
+      kharidar: this.avalinKharidar.user._id,
+      forushandeh: this.avalinForushandeh.user._id,
+      sabtKonandeh: this.authService.getUserId,
+      darkhastKharid: this.avalinKharidar._id,
+      darkhastForush: this.avalinForushandeh._id
+    };
 
     // آبجکت به روز رسانی درخواست خرید و فروش را ایجاد می کنیم
-    const moamelatDarkhastKharid = this.avalinKharidar.moameleha || [];
-    const moamelatDarkhastForush = this.avalinForushandeh.moameleha || [];
     const darkhastKharidUpdateObj: DarkhastType = {};
     const darkhastForushUpdateObj: DarkhastType = {};
+
     const darkhastKharidId: string = this.avalinKharidar._id;
     const darkhastForushId: string = this.avalinForushandeh._id;
 
     darkhastKharidUpdateObj.tedadMoamelehShodeh = _tedadMoamelehShodehKharidar;
     darkhastKharidUpdateObj.tedadBaghiMandeh = _tedadBaghimandehKharidar;
     darkhastKharidUpdateObj.vazeiat = vazeiatDarkhastKharid;
-    moamelatDarkhastKharid.push(moamelehNewRow);
-    darkhastKharidUpdateObj.moameleha = moamelatDarkhastKharid;
 
     darkhastForushUpdateObj.tedadBaghiMandeh = _tedadBaghimandehForushandeh;
     darkhastForushUpdateObj.tedadMoamelehShodeh = _tedadMoamelehShodehForushandeh;
     darkhastForushUpdateObj.vazeiat = vazeiatDarkhastForush;
-    moamelatDarkhastForush.push(moamelehNewRow);
-    darkhastForushUpdateObj.moameleha = moamelatDarkhastForush;
 
     // ثبت معامله
     this.apiService.sabtMoameleh(moamelehNewRow).subscribe(
-      newMoameleh => {
-        moamelehNewRow._id = newMoameleh._id;
+      (newMoameleh: MoamelehType) => {
         this.toastr.success('معامله جدید با موفقیت ثبت شد');
         this.updateDarkhastKharid(
           darkhastKharidUpdateObj,
@@ -114,30 +120,28 @@ export class MoamelatComponent {
         ).subscribe(
           data => {
             // برای ردیف درخواست خرید ، یک ردیف معامله ثبت میکنیم
-            this.toastr.success('مشخصات درخواست خرید با موفقیت به روزرسانی شد');
+            // this.toastr.success('مشخصات درخواست خرید با موفقیت به روزرسانی شد');
             this.updateDarkhastForush(
               darkhastForushUpdateObj,
               darkhastForushId
             ).subscribe(
               () => {
                 // برای ردیف درخواست فروش ، یک ردیف معامله ثبت میکنیم
-                this.toastr.success(
-                  'مشخصات درخواست فروش با موفقیت به روزرسانی شد'
-                );
+                // this.toastr.success('مشخصات درخواست فروش با موفقیت به روزرسانی شد');
                 // نمای گریدهای خرید و فروش را به روز رسانی میکنیم
                 this.safeKharidComponent.loadDarkhastData();
                 this.safeForushComponent.loadDarkhastData();
                 // جدول دارایی سهام - پورتفو - خریدار و فروشنده را به روز رسانی میکنیم
-                this.UpdatePortfoKharidar(
-                  this.avalinKharidar,
-                  _tedadSahmMoameleh,
-                  newMoameleh
-                );
-                this.UpdatePortfoForushandeh(
-                  this.avalinForushandeh,
-                  _tedadSahmMoameleh,
-                  newMoameleh
-                );
+                // this.UpdatePortfoKharidar(
+                //   this.avalinKharidar,
+                //   _tedadSahmMoameleh,
+                //   newMoameleh
+                // );
+                // this.UpdatePortfoForushandeh(
+                //   this.avalinForushandeh,
+                //   _tedadSahmMoameleh,
+                //   newMoameleh
+                // );
               },
               error => {
                 console.log(error);
@@ -161,105 +165,109 @@ export class MoamelatComponent {
     );
   }
 
-  private UpdatePortfoKharidar(
-    avalinKharidar: DarkhastType,
-    _tedadSahmMoameleh: number,
-    moamelehNewRow: MoamelehType
-  ) {
-    this.apiService.getPortfohByUsername(avalinKharidar.user.username).subscribe(
-      portfo => {
-        portfo = portfo[0];
-        // تعداد سهم جدید خریدار را محاسبه میکنیم
-        const tedadSahmJadid = portfo.tedadSahm + _tedadSahmMoameleh;
-        const moamelatPortfoKharidar = portfo.moameleha || [];
-        const portfoKharidarUpdateObj: PortfoType = {
-          tedadSahm: tedadSahmJadid
-          // ,moamelat: moamelatPortfoKharidar
-        };
+  // private UpdatePortfoKharidar(
+  //   avalinKharidar: DarkhastType,
+  //   _tedadSahmMoameleh: number,
+  //   moamelehNewRow: MoamelehType
+  // ) {
+  //   this.apiService
+  //     .getPortfohByUsername(avalinKharidar.user.username)
+  //     .subscribe(
+  //       portfo => {
+  //         portfo = portfo[0];
+  //         // تعداد سهم جدید خریدار را محاسبه میکنیم
+  //         const tedadSahmJadid = portfo.tedadSahm + _tedadSahmMoameleh;
+  //         const moamelatPortfoKharidar = portfo.moameleha || [];
+  //         const portfoKharidarUpdateObj: PortfoType = {
+  //           tedadSahm: tedadSahmJadid
+  //           // ,moamelat: moamelatPortfoKharidar
+  //         };
 
-        // افزودن معامله به لیست معاملات پورتفو خریدار
-        portfoKharidarUpdateObj.moameleha.push(moamelehNewRow);
-        // پورتفو را به روزرسانی میکنیم
-        this.apiService
-          .updatePortfoById(portfoKharidarUpdateObj, portfo._id)
-          .subscribe(
-            () => {
-              this.toastr.success(
-                'مشخصات جدول پورتفو خریدار با موفقیت به روزرسانی شد'
-              );
-            },
-            error => {
-              console.log(error);
-              this.toastr.error(
-                'خطا در به روز رسانی جدول پورتفو خریدار.با پشتیبان سامانه تماس بگیرید'
-              );
-            }
-          );
-      },
-      error => {
-        console.log(error);
-        this.toastr.error(
-          'خطا در به بازیابی مشخصات پورتفو خریدار.با پشتیبان سامانه تماس بگیرید'
-        );
-      }
-    );
-  }
+  //         // افزودن معامله به لیست معاملات پورتفو خریدار
+  //         portfoKharidarUpdateObj.moameleha.push(moamelehNewRow);
+  //         // پورتفو را به روزرسانی میکنیم
+  //         this.apiService
+  //           .updatePortfoById(portfoKharidarUpdateObj, portfo._id)
+  //           .subscribe(
+  //             () => {
+  //               this.toastr.success(
+  //                 'مشخصات جدول پورتفو خریدار با موفقیت به روزرسانی شد'
+  //               );
+  //             },
+  //             error => {
+  //               console.log(error);
+  //               this.toastr.error(
+  //                 'خطا در به روز رسانی جدول پورتفو خریدار.با پشتیبان سامانه تماس بگیرید'
+  //               );
+  //             }
+  //           );
+  //       },
+  //       error => {
+  //         console.log(error);
+  //         this.toastr.error(
+  //           'خطا در به بازیابی مشخصات پورتفو خریدار.با پشتیبان سامانه تماس بگیرید'
+  //         );
+  //       }
+  //     );
+  // }
 
-  private UpdatePortfoForushandeh(
-    avalinForushandeh: DarkhastType,
-    _tedadSahmMoameleh: number,
-    moamelehNewRow: MoamelehType
-  ) {
-    this.apiService.getPortfohByUsername(avalinForushandeh.user.username).subscribe(
-      portfo => {
-        // تعداد سهم جدید فروشنده را محاسبه میکنیم
-        portfo = portfo[0];
-        const tedadSahmJadid = portfo.tedadSahm - _tedadSahmMoameleh;
-        const moamelatPortfoForushandeh = portfo.moameleha || [];
-        const portfoForushandehUpdateObj: PortfoType = {
-          tedadSahm: tedadSahmJadid
-          // ,moamelat: moamelatPortfoForushandeh
-        };
-        // افزودن معامله به لیست معاملات پورتفو فروشنده
-        portfoForushandehUpdateObj.moameleha.push(moamelehNewRow);
-        // پورتفو فروشنده را به روزرسانی میکنیم
-        this.apiService
-          .updatePortfoById(portfoForushandehUpdateObj, portfo._id)
-          .subscribe(
-            () => {
-              this.toastr.success(
-                'مشخصات جدول پورتفو فروشنده با موفقیت به روزرسانی شد'
-              );
-            },
-            error => {
-              console.log(error);
-              this.toastr.error(
-                'خطا در به روز رسانی جدول پورتفو فروشنده.با پشتیبان سامانه تماس بگیرید'
-              );
-            }
-          );
-      },
-      error => {
-        console.log(error);
-        this.toastr.error(
-          'خطا در به بازیابی مشخصات پورتفو فروشنده.با پشتیبان سامانه تماس بگیرید'
-        );
-      }
-    );
-  }
+  // private UpdatePortfoForushandeh(
+  //   avalinForushandeh: DarkhastType,
+  //   _tedadSahmMoameleh: number,
+  //   moamelehNewRow: MoamelehType
+  // ) {
+  //   this.apiService
+  //     .getPortfohByUsername(avalinForushandeh.user.username)
+  //     .subscribe(
+  //       portfo => {
+  //         // تعداد سهم جدید فروشنده را محاسبه میکنیم
+  //         portfo = portfo[0];
+  //         const tedadSahmJadid = portfo.tedadSahm - _tedadSahmMoameleh;
+  //         const moamelatPortfoForushandeh = portfo.moameleha || [];
+  //         const portfoForushandehUpdateObj: PortfoType = {
+  //           tedadSahm: tedadSahmJadid
+  //           // ,moamelat: moamelatPortfoForushandeh
+  //         };
+  //         // افزودن معامله به لیست معاملات پورتفو فروشنده
+  //         portfoForushandehUpdateObj.moameleha.push(moamelehNewRow);
+  //         // پورتفو فروشنده را به روزرسانی میکنیم
+  //         this.apiService
+  //           .updatePortfoById(portfoForushandehUpdateObj, portfo._id)
+  //           .subscribe(
+  //             () => {
+  //               this.toastr.success(
+  //                 'مشخصات جدول پورتفو فروشنده با موفقیت به روزرسانی شد'
+  //               );
+  //             },
+  //             error => {
+  //               console.log(error);
+  //               this.toastr.error(
+  //                 'خطا در به روز رسانی جدول پورتفو فروشنده.با پشتیبان سامانه تماس بگیرید'
+  //               );
+  //             }
+  //           );
+  //       },
+  //       error => {
+  //         console.log(error);
+  //         this.toastr.error(
+  //           'خطا در به بازیابی مشخصات پورتفو فروشنده.با پشتیبان سامانه تماس بگیرید'
+  //         );
+  //       }
+  //     );
+  // }
 
-  private prepareNewMoamelehRow(
-    _tedadSahmMoameleh: number,
-    _gheymatMoameleh: number
-  ): MoamelehType {
-    const moameleh: MoamelehType = {
-      tedadSahmMoameleh: _tedadSahmMoameleh,
-      gheymatMoameleh: _gheymatMoameleh,
-      arzeshSahmMoameleh: _tedadSahmMoameleh * _gheymatMoameleh
-    };
+  // private prepareNewMoamelehRow(
+  //   _tedadSahmMoameleh: number,
+  //   _gheymatMoameleh: number
+  // ): MoamelehType {
+  //   const moameleh: MoamelehType = {
+  //     tedadSahmMoameleh: _tedadSahmMoameleh,
+  //     gheymatMoameleh: _gheymatMoameleh,
+  //     arzeshSahmMoameleh: _tedadSahmMoameleh * _gheymatMoameleh
+  //   };
 
-    return moameleh;
-  }
+  //   return moameleh;
+  // }
 
   private updateDarkhastForush(
     darkhastForushUpdateObj: DarkhastType,
