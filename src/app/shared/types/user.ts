@@ -13,5 +13,5 @@ export interface UserType {
     enabled?: boolean;
     confirmed?: boolean;
     claims?: ClaimType[];
-    userFiles?: UserFileType[];
+    fileha?: UserFileType[];
 }

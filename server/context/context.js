@@ -159,14 +159,13 @@ var UserFileSchema = new mongoose.Schema({
     type: String
   },
   noeFile: {
-    type: String
-  },
-  fileType: {
     type: Schema.Types.ObjectId,
-    ref: 'NoeFile'
+    ref: 'NoeFile',
+    autopopulate: true
   }
 });
 
+UserFileSchema.plugin(autopopulate);
 // User Schema
 var UserSchema = new mongoose.Schema({
   username: {
@@ -201,9 +200,7 @@ var UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  tedadSahm: Number,
-  claims: [ClaimSchema],
-  userFiles: [UserFileSchema],
+  tedadSahm: { type: Number, default: 0 },
   darkhastha: [{
     type: Schema.Types.ObjectId,
     ref: 'Darkhast'
@@ -218,11 +215,12 @@ var UserSchema = new mongoose.Schema({
   }],
   fileha: [{
     type: Schema.Types.ObjectId,
-    ref: 'UserFile'
-  }]
+    ref: 'UserFile',
+    autopopulate: true
+  }],
 });
 
-// UserSchema.plugin(autopopulate);
+UserSchema.plugin(autopopulate);
 
 UserSchema.virtual('fullName').get(function () {
   return this.name + ' ' + this.family

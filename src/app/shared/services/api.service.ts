@@ -126,6 +126,13 @@ export class ApiService {
     );
   }
 
+  // User methods
+  getUserByUserId(userId: string) {
+    return this.httpClient.get<UserType>(
+      this.apiUri + '/user/byUserId/' + userId
+    );
+  }
+
   async getUserByUsernameAsync(username: string) {
     const result = await this.httpClient
       .get<UserType[]>(this.apiUri + '/user/byUsername/' + username)
@@ -150,9 +157,9 @@ export class ApiService {
     return this.httpClient.get<UserType>(this.apiUri + '/user/' + id);
   }
 
-  getUserFilesByUsername(username: string) {
+  getUserFilesByUserId(userId: string) {
     return this.httpClient.get<UserFileType[]>(
-      this.apiUri + '/user/getUserFiles/' + username
+      this.apiUri + '/user/getUserFiles/' + userId
     );
   }
 
@@ -173,9 +180,9 @@ export class ApiService {
     );
   }
 
-  addFileToUser(username: string, userFile: UserFileType) {
+  addFileToUser(userId: string,noeFileId: string, userFile: UserFileType) {
     return this.httpClient.put<UserType>(
-      this.apiUri + '/user/updateUserFiles/' + username,
+      this.apiUri + `/user/updateUserFiles/${userId}/noeFileId/${noeFileId}`,
       userFile
     );
   }

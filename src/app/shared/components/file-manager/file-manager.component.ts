@@ -45,9 +45,9 @@ export class FileManagerComponent implements OnInit {
 
   selectedFile?: File;
   listNoeFile: NoeFileType[] = [];
-  noeFile = '';
+  noeFileId = '';
   progress = 0;
-  userFiles: UserFileType[] = [] as UserFileType[];
+  fileha: UserFileType[] = [] as UserFileType[];
   uploadedFile: UserFileType = {} as UserFileType;
   imageUrl = '#';
 
@@ -69,10 +69,11 @@ export class FileManagerComponent implements OnInit {
     );
   }
 
-  public getUserFile(username: string) {
-    this.apiService.getUserFilesByUsername(username).subscribe(
+  public getUserFile(userId: string) {
+    this.apiService.getUserFilesByUserId(userId).subscribe(
       userFiles => {
-        this.userFiles = userFiles;
+
+        this.fileha = userFiles;
       },
       error => {
         console.log(error);
@@ -97,7 +98,6 @@ export class FileManagerComponent implements OnInit {
 
           this.uploadedFile.filename = file.filename;
           this.uploadedFile.mimetype = file.mimetype;
-          this.uploadedFile.noeFile = this.noeFile;
           this.uploadedFile.uploadDate = file.uploadDate;
           this.uploadedFile.encoding = file.encoding;
           this.uploadedFile.md5 = file.md5;
@@ -105,14 +105,14 @@ export class FileManagerComponent implements OnInit {
           this.uploadedFile.size = file.size;
 
           this.apiService
-            .addFileToUser(this.user.username, this.uploadedFile)
+            .addFileToUser(this.user._id, this.noeFileId, this.uploadedFile)
             .subscribe(
               updatedUser => {
-                this.userFiles = updatedUser.userFiles;
+                this.fileha = updatedUser.fileha;
                 this.userChanged.emit(updatedUser);
                 this.toastr.success('تصویر مورد نظر با موفقیت بارگذاری شد');
                 this.selectedFile = null;
-                this.noeFile = '';
+                this.noeFileId = '';
                 setTimeout(() => {
                   this.progress = 0;
                 }, 2000);
@@ -125,7 +125,7 @@ export class FileManagerComponent implements OnInit {
         this.toastr.error('خطا در بارگذاری تصویر');
         console.log('Upload Error:', err);
         this.selectedFile = null;
-        this.noeFile = '';
+        this.noeFileId = '';
         this.progress = 0;
       },
       () => {
@@ -188,7 +188,7 @@ export class FileManagerComponent implements OnInit {
         if (answer == 'Yes') {
           this.fileMangerService.deleteFile(this.user._id, filename).subscribe(
             updatedUser => {
-              this.userFiles = updatedUser.userFiles;
+              this.fileha = updatedUser.userFiles;
               this.userChanged.emit(updatedUser);
               this.toastr.success('تصویر مورد نظر با موفقیت حذف شد');
             },

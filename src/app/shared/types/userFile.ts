@@ -1,7 +1,9 @@
+import { NoeFileType } from "./noeFile";
+
 export interface UserFileType {
     _id?: string;
     mimetype?: string;
-    noeFile?: string;
+    noeFile?: NoeFileType;
     uploadDate?: string;
     filename?: string;
     encoding?: string;

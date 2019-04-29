@@ -21,12 +21,12 @@ export class ProfileComponent implements OnInit {
   @ViewChild('filemanager') fileManagerComponent: FileManagerComponent;
 
   ngOnInit() {
-    const username = this.authService.getUsername();
-    this.apiService.getUserByUsername(username)
+    const userId = this.authService.getUserId();
+    this.apiService.getUserByUserId(userId)
       .subscribe(
         (userData) => {
-          this.user = userData[0];
-          this.fileManagerComponent.getUserFile(this.user.username);
+          this.user = userData;
+          this.fileManagerComponent.getUserFile(this.user._id);
         },
         (error) => {
           console.log(error);
