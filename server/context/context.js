@@ -166,6 +166,7 @@ var UserFileSchema = new mongoose.Schema({
 });
 
 UserFileSchema.plugin(autopopulate);
+
 // User Schema
 var UserSchema = new mongoose.Schema({
   username: {

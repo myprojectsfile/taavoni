@@ -183,16 +183,22 @@ module.exports = function (app) {
   // update user files list  
   function updateUserFiles(userId, filename) {
     return new Promise((resolve, reject) => {
-      context.User.findById(userId, function (userErr, user) {
-        if (userErr) reject(userErr);
-        if (!user) resolve(null);
-        let userFileList = user.userFiles;
-        let updatedUserFilesList = userFileList.filter(file => file.filename !== filename);
-        user.userFiles = updatedUserFilesList;
-        user.save((saveErr) => {
-          if (saveErr) reject(saveErr);
-          resolve(user);
-        });
+      context.User.findOne({ '_id': userId }, (error, user) => {
+        if (error) reject(error);
+        if (user) {
+          user.fileha.filter(file => {
+            return file.filename === filename;
+          });
+          user.save((error) => {
+            if (error) reject(error);
+            context.UserFile.findOneAndRemove({ 'filename': filename }, (error, userFile) => {
+              if (error) reject(error);
+              if (userFile) {
+                resolve(true);
+              }
+            });
+          });
+        }
       });
     });
   }

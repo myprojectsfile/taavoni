@@ -71,8 +71,7 @@ export class FileManagerComponent implements OnInit {
 
   public getUserFile(userId: string) {
     this.apiService.getUserFilesByUserId(userId).subscribe(
-      userFiles => {
-
+      (userFiles:any) => {
         this.fileha = userFiles;
       },
       error => {

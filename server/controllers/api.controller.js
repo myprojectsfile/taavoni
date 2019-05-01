@@ -179,7 +179,7 @@ get_user_files_by_userId = async (req, res) => {
   try {
     const user = await context.User.findOne({ '_id': req.params.userId });
     if (user) {
-      user.populate('fileha').execPopulate();
+      await user.populate('fileha').execPopulate();
       res.send(user.fileha);
     }
     res.status(404).send();
@@ -796,8 +796,8 @@ update_user_files_by_userId = async (req, res) => {
   try {
     const user = await context.User.findOne({ '_id': req.params.userId });
     if (user) {
+      req.body.noeFile = req.params.noeFileId;
       const userFile = await new context.UserFile(req.body).save();
-      userFile.noeFile = req.params.noeFileId;
       user.fileha.push(userFile._id);
       await user.save();
       await user.populate('fileha').execPopulate();
