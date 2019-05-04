@@ -186,9 +186,11 @@ module.exports = function (app) {
       context.User.findOne({ '_id': userId }, (error, user) => {
         if (error) reject(error);
         if (user) {
-          user.fileha.filter(file => {
-            return file.filename === filename;
+          let userFiles = [];
+          user.fileha.forEach(file => {
+            if (file.filename != filename) userFiles.push(file._id);
           });
+          user.fileha = userFiles;
           user.save((error) => {
             if (error) reject(error);
             context.UserFile.findOneAndRemove({ 'filename': filename }, (error, userFile) => {
