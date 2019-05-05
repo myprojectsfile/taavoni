@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 a:hover span {
   color: red;
   cursor: pointer;

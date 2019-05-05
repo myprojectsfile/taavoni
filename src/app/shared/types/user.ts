@@ -14,4 +14,5 @@ export interface UserType {
     confirmed?: boolean;
     claims?: ClaimType[];
     fileha?: UserFileType[];
+    tedadSahm?: number;
 }
