@@ -71,7 +71,7 @@ export class FileManagerComponent implements OnInit {
 
   public getUserFile(userId: string) {
     this.apiService.getUserFilesByUserId(userId).subscribe(
-      (userFiles:any) => {
+      (userFiles: any) => {
         this.fileha = userFiles;
       },
       error => {
@@ -187,7 +187,7 @@ export class FileManagerComponent implements OnInit {
         if (answer == 'Yes') {
           this.fileMangerService.deleteFile(this.user._id, filename).subscribe(
             updatedUser => {
-              this.fileha = updatedUser.userFiles;
+              this.fileha = updatedUser.fileha;
               this.userChanged.emit(updatedUser);
               this.toastr.success('تصویر مورد نظر با موفقیت حذف شد');
             },
@@ -198,7 +198,5 @@ export class FileManagerComponent implements OnInit {
           );
         }
       });
-
-
   }
 }

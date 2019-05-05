@@ -168,7 +168,9 @@ module.exports = function (app) {
                 // remove file from userFile in profile collection
                 updateUserFiles(req.params.userId, req.params.filename).then(
                   (user) => {
-                    res.status(200).json(user);
+                    user.populate('fileha').execPopulate(()=>{
+                      res.status(200).json(user);
+                    })
                   },
                   (error) => {
                     res.status(500).json(error);
@@ -193,11 +195,9 @@ module.exports = function (app) {
           user.fileha = userFiles;
           user.save((error) => {
             if (error) reject(error);
-            context.UserFile.findOneAndRemove({ 'filename': filename }, (error, userFile) => {
+            context.UserFile.findOneAndRemove({ 'filename': filename }, (error) => {
               if (error) reject(error);
-              if (userFile) {
-                resolve(true);
-              }
+              resolve(user);
             });
           });
         }
