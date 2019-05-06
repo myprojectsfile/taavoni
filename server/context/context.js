@@ -212,7 +212,8 @@ var UserSchema = new mongoose.Schema({
   }],
   claimha: [{
     type: Schema.Types.ObjectId,
-    ref: 'Claim'
+    ref: 'Claim',
+    autopopulate: true
   }],
   fileha: [{
     type: Schema.Types.ObjectId,

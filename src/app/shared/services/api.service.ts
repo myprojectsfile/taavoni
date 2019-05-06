@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { DarkhastType } from '../types/darkhast';
 import { MoamelehType } from '../types/moameleh';
 import { AuthService } from '../../auth/auth.service';
-import { PortfoType } from '../types/portfo';
 import { UserType } from '../types/user';
 import { GheymatType } from '../types/gheymat';
 import { ClaimType } from '../types/claim';
@@ -98,16 +97,10 @@ export class ApiService {
     return this.httpClient.put(this.apiUri + '/darkhast/' + rowKey, darkhast);
   }
 
-  getUserPortfo() {
-    const username = this.authService.getUsername();
-    return this.httpClient.get<PortfoType>(
-      this.apiUri + '/portfo/byUsername/' + username
-    );
-  }
 
   getUserPortfoById() {
     const userId = this.authService.getUserId();
-    return this.httpClient.get<PortfoType>(
+    return this.httpClient.get<UserType>(
       this.apiUri + '/portfo/byId/' + userId
     );
   }
@@ -135,7 +128,7 @@ export class ApiService {
 
   async getUserByUsernameAsync(username: string) {
     const result = await this.httpClient
-      .get<UserType[]>(this.apiUri + '/user/byUsername/' + username)
+      .get<UserType>(this.apiUri + '/user/byUsername/' + username)
       .toPromise();
     return result;
   }
@@ -148,7 +141,7 @@ export class ApiService {
 
   async getUserByCodeMelliAsync(codeMelli: string) {
     const result = await this.httpClient
-      .get<UserType[]>(this.apiUri + '/user/byCodeMelli/' + codeMelli)
+      .get<UserType>(this.apiUri + '/user/byCodeMelli/' + codeMelli)
       .toPromise();
     return result;
   }
@@ -187,23 +180,6 @@ export class ApiService {
     );
   }
 
-  // Profile methods
-  getPortfohByUsername(username: string) {
-    return this.httpClient.get<PortfoType>(
-      this.apiUri + '/portfo/byUsername/' + username
-    );
-  }
-
-  updatePortfoById(portfo: PortfoType, id: string) {
-    return this.httpClient.put<PortfoType>(
-      this.apiUri + '/portfo/' + id,
-      portfo
-    );
-  }
-
-  sabtPortfo(portfo: PortfoType) {
-    return this.httpClient.post(this.apiUri + '/portfo', portfo);
-  }
 
   checkUserHasNoActiveCrossRequest(noeDarkhast: number) {
     const userId = this.authService.getUserId();

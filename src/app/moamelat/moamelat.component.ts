@@ -4,7 +4,6 @@ import { MoamelehType } from '../shared/types/moameleh';
 import { ToastrService } from 'ngx-toastr';
 import { DarkhastType } from '../shared/types/darkhast';
 import { Observable } from '../../../node_modules/rxjs';
-import { PortfoType } from '../shared/types/portfo';
 import { ApiService } from '../shared/services/api.service';
 import { AuthService } from '../auth/auth.service';
 
@@ -165,110 +164,7 @@ export class MoamelatComponent {
     );
   }
 
-  // private UpdatePortfoKharidar(
-  //   avalinKharidar: DarkhastType,
-  //   _tedadSahmMoameleh: number,
-  //   moamelehNewRow: MoamelehType
-  // ) {
-  //   this.apiService
-  //     .getPortfohByUsername(avalinKharidar.user.username)
-  //     .subscribe(
-  //       portfo => {
-  //         portfo = portfo[0];
-  //         // تعداد سهم جدید خریدار را محاسبه میکنیم
-  //         const tedadSahmJadid = portfo.tedadSahm + _tedadSahmMoameleh;
-  //         const moamelatPortfoKharidar = portfo.moameleha || [];
-  //         const portfoKharidarUpdateObj: PortfoType = {
-  //           tedadSahm: tedadSahmJadid
-  //           // ,moamelat: moamelatPortfoKharidar
-  //         };
-
-  //         // افزودن معامله به لیست معاملات پورتفو خریدار
-  //         portfoKharidarUpdateObj.moameleha.push(moamelehNewRow);
-  //         // پورتفو را به روزرسانی میکنیم
-  //         this.apiService
-  //           .updatePortfoById(portfoKharidarUpdateObj, portfo._id)
-  //           .subscribe(
-  //             () => {
-  //               this.toastr.success(
-  //                 'مشخصات جدول پورتفو خریدار با موفقیت به روزرسانی شد'
-  //               );
-  //             },
-  //             error => {
-  //               console.log(error);
-  //               this.toastr.error(
-  //                 'خطا در به روز رسانی جدول پورتفو خریدار.با پشتیبان سامانه تماس بگیرید'
-  //               );
-  //             }
-  //           );
-  //       },
-  //       error => {
-  //         console.log(error);
-  //         this.toastr.error(
-  //           'خطا در به بازیابی مشخصات پورتفو خریدار.با پشتیبان سامانه تماس بگیرید'
-  //         );
-  //       }
-  //     );
-  // }
-
-  // private UpdatePortfoForushandeh(
-  //   avalinForushandeh: DarkhastType,
-  //   _tedadSahmMoameleh: number,
-  //   moamelehNewRow: MoamelehType
-  // ) {
-  //   this.apiService
-  //     .getPortfohByUsername(avalinForushandeh.user.username)
-  //     .subscribe(
-  //       portfo => {
-  //         // تعداد سهم جدید فروشنده را محاسبه میکنیم
-  //         portfo = portfo[0];
-  //         const tedadSahmJadid = portfo.tedadSahm - _tedadSahmMoameleh;
-  //         const moamelatPortfoForushandeh = portfo.moameleha || [];
-  //         const portfoForushandehUpdateObj: PortfoType = {
-  //           tedadSahm: tedadSahmJadid
-  //           // ,moamelat: moamelatPortfoForushandeh
-  //         };
-  //         // افزودن معامله به لیست معاملات پورتفو فروشنده
-  //         portfoForushandehUpdateObj.moameleha.push(moamelehNewRow);
-  //         // پورتفو فروشنده را به روزرسانی میکنیم
-  //         this.apiService
-  //           .updatePortfoById(portfoForushandehUpdateObj, portfo._id)
-  //           .subscribe(
-  //             () => {
-  //               this.toastr.success(
-  //                 'مشخصات جدول پورتفو فروشنده با موفقیت به روزرسانی شد'
-  //               );
-  //             },
-  //             error => {
-  //               console.log(error);
-  //               this.toastr.error(
-  //                 'خطا در به روز رسانی جدول پورتفو فروشنده.با پشتیبان سامانه تماس بگیرید'
-  //               );
-  //             }
-  //           );
-  //       },
-  //       error => {
-  //         console.log(error);
-  //         this.toastr.error(
-  //           'خطا در به بازیابی مشخصات پورتفو فروشنده.با پشتیبان سامانه تماس بگیرید'
-  //         );
-  //       }
-  //     );
-  // }
-
-  // private prepareNewMoamelehRow(
-  //   _tedadSahmMoameleh: number,
-  //   _gheymatMoameleh: number
-  // ): MoamelehType {
-  //   const moameleh: MoamelehType = {
-  //     tedadSahmMoameleh: _tedadSahmMoameleh,
-  //     gheymatMoameleh: _gheymatMoameleh,
-  //     arzeshSahmMoameleh: _tedadSahmMoameleh * _gheymatMoameleh
-  //   };
-
-  //   return moameleh;
-  // }
-
+  
   private updateDarkhastForush(
     darkhastForushUpdateObj: DarkhastType,
     darkhastForushId: string

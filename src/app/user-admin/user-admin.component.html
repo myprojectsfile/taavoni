@@ -168,11 +168,11 @@
                 </table>
               </div>
               <div class="col-sm text-left">
-                <table class="w-100" border="1" *ngIf="user.claims">
+                <table class="w-100" border="1" *ngIf="user.claimha">
                   <tr class="text-center">
                     <th>لیست دسترسی های کاربر &nbsp; <i class="fa fa-user"></i></th>
                   </tr>
-                  <tr (click)="removeClaimFromUser(userClaim._id)" *ngFor="let userClaim of user.claims">
+                  <tr (click)="removeClaimFromUser(userClaim._id)" *ngFor="let userClaim of user.claimha">
                     <td class="removeFrom">
                       <div class="row">
                         <div class="col-sm text-left">

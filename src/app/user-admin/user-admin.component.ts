@@ -53,9 +53,9 @@ export class UserAdminComponent implements OnInit {
   async findUser() {
     if (this.username) {
       const user = await this.apiService.getUserByUsernameAsync(this.username);
-      if (user.length > 0) {
-        this.user = user[0];
-        this.claimList = await this.getClaimListAsync();
+      if (user) {
+        this.user = user;
+        // this.claimList = await this.getClaimListAsync();
         // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
         this.filterClaimList();
       } else {
@@ -66,9 +66,9 @@ export class UserAdminComponent implements OnInit {
 
     } else if (this.codeMelli) {
       const user = await this.apiService.getUserByCodeMelliAsync(this.codeMelli);
-      if (user.length > 0) {
-        this.user = user[0];
-        this.claimList = await this.getClaimListAsync();
+      if (user) {
+        this.user = user;
+        // this.claimList = await this.getClaimListAsync();
         // حذف کلیم هایی که کاربر دارد از لیست کلیم ها
         this.filterClaimList();
       } else {
@@ -89,9 +89,9 @@ export class UserAdminComponent implements OnInit {
 
   addClaimToUser(id) {
     if (this.user) {
-      // push claim to userclaims
+      // push claim to user claimha
       const claimItem = this.claimList.find((claimObject) => claimObject._id === id);
-      this.user.claims.push(claimItem);
+      this.user.claimha.push(claimItem);
       // slice claim from claimList
       // tslint:disable-next-line:no-shadowed-variable
       this.claimList = this.claimList.filter(function (claimItem) {
@@ -113,11 +113,11 @@ export class UserAdminComponent implements OnInit {
 
   removeClaimFromUser(id) {
     // add to claimLIst
-    const claimItem = this.user.claims.find((claimObject) => claimObject._id === id);
+    const claimItem = this.user.claimha.find((claimObject) => claimObject._id === id);
     this.claimList.push(claimItem);
-    // remove from user claims
+    // remove from user claimha
     // tslint:disable-next-line:no-shadowed-variable
-    this.user.claims = this.user.claims.filter(function (claimItem) {
+    this.user.claimha = this.user.claimha.filter(function (claimItem) {
       return claimItem._id !== id;
     });
 
@@ -138,7 +138,7 @@ export class UserAdminComponent implements OnInit {
   filterClaimList() {
     this.claimList = this.claimList.filter((claim) => {
       if (this.user) {
-        const userClaim = this.user.claims.find((claimObject) => claimObject._id === claim._id);
+        const userClaim = this.user.claimha.find((claimObject) => claimObject._id === claim._id);
         if (userClaim) { return false; } else { return true; }
       } else { return true; }
     });

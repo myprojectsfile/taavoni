@@ -4,10 +4,10 @@ import { DarkhastType } from './queue';
 export interface MoamelehType {
   _id?: string;
   tarikhMoameleh?: string;
-  noeMoameleh?: string;
   tedadSahmMoameleh: number;
   gheymatMoameleh?: number;
   arzeshSahmMoameleh?: number;
+  noeMoameleh?: string;
   kharidar?: UserType;
   forushandeh?: UserType;
   sabtKonandeh?: UserType;

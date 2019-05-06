@@ -1,5 +1,7 @@
 import { ClaimType } from './claim';
 import { UserFileType } from './userFile';
+import { DarkhastType } from './queue';
+import { MoamelehType } from './moameleh';
 
 export interface UserType {
     _id?: string;
@@ -8,11 +10,13 @@ export interface UserType {
     name?: string;
     family?: string;
     fullName?: string;
-    codeMelli?: string;
     mobile?: string;
+    codeMelli?: string;
     enabled?: boolean;
     confirmed?: boolean;
-    claims?: ClaimType[];
-    fileha?: UserFileType[];
     tedadSahm?: number;
+    darkhastha?:DarkhastType[];
+    moameleha?:MoamelehType[];
+    claimha?: ClaimType[];
+    fileha?: UserFileType[];
 }

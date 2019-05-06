@@ -407,7 +407,7 @@ getTedadSahmUser = function (req, res) {
 };
 
 getUserByUsername = function (req, res) {
-  context.User.find({
+  context.User.findOne({
     'username': req.params.username
   }, '-password', function (err, user) {
     if (err) {
@@ -435,7 +435,7 @@ getUserByUserId = async (req, res) => {
 
 
 getUserByCodeMelli = function (req, res) {
-  context.User.find({
+  context.User.findOne({
     'codeMelli': req.params.codeMelli
   }, '-password', function (err, user) {
     if (err) {

@@ -14,5 +14,4 @@ export interface DarkhastType {
   tozihat?: string;
   noeDarkhst?: string;
   user?: UserType;
-  moameleha?: MoamelehType[];
 }
