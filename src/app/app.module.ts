@@ -69,10 +69,9 @@ export function tokenGetter() {
     BrowserModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      timeOut: 3000,
+      timeOut: 2500,
       positionClass: 'toast-top-center',
-      preventDuplicates: true,
-      progressBar: true
+      preventDuplicates: true
     }),
     AppRoutingModule,
     DxDataGridModule,

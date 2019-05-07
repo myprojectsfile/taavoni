@@ -76,7 +76,7 @@ export class AuthService {
       const userClaims: ClaimType[] = tokenPayload.user.claimha;
       if (!userClaims) { return false; } else {
         const claimItem = userClaims.find((userClaimItem) => {
-          return userClaimItem === claim;
+          return userClaimItem._id === claim;
         });
         if (claimItem) { return true; }
       }

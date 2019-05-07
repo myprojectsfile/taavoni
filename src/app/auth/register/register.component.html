@@ -1,12 +1,12 @@
-<div class="row mt-5">
-  <div class="d-flex col-sm justify-content-center mx-auto m-3">
+<div class="row mt-5 pt-5">
+  <div class="d-flex col-sm justify-content-center mx-auto m-3" style="max-width: 700px;">
     <div class="card w-50">
       <div class="d-flex justify-content-center p-2">
         <img class="card-img-top" src="assets/pics/register.png" style="max-width: 128px;" alt="">
       </div>
       <div class="card-body text-center">
         <h4 class="card-title">ثبت نام در سامانه</h4>
-        <form #f="ngForm" novalidate style="direction: rtl;" (ngSubmit)="register()">
+        <form #f="ngForm" novalidate style="direction: rtl;" (ngSubmit)="register()"  (keyup.enter)="register()">
           <div class="form-group">
             <label for="username" class="sr-only">نام کاربری</label>
             <input type="text" required class="form-control form-control-sm" name="username" id="username" #usernameModel="ngModel" [(ngModel)]="username" placeholder="نام کاربری (کد سهامداری)">
