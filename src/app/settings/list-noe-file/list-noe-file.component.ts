@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import 'rxjs/add/operator/catch';
 import { DxDataGridComponent } from 'devextreme-angular/ui/data-grid';
 import { ConfirmService } from '../../shared/services/confirm.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-noe-file',
@@ -19,6 +20,7 @@ export class ListNoeFileComponent implements OnInit {
   oldNoeFile: number;
   editingRowKey: string;
   editingMode: boolean;
+  rowIndex: number;
   gridInstance: DxDataGridComponent['instance'];
 
   constructor(
@@ -63,13 +65,20 @@ export class ListNoeFileComponent implements OnInit {
             rowKey
           );
           this.apiService.hazfNoeFile(rowKey).subscribe(
-            () => {
+            (response: Response) => {
               this.toastr.success('نوع سند با موفقیت حذف گردید');
               this.listNoeFileGrid.instance.deleteRow(rowIndex);
             },
-            error => {
-              this.toastr.error('خطا در حذف نوع سند');
-              console.log(error);
+            (error: HttpErrorResponse) => {
+              if (error.status === 405) {
+                this.toastr.error(
+                  'این نوع سند قبلا مورد استفاده قرار کرفته است',
+                  'این نوع سند قابل حذف نمی باشد'
+                );
+              } else {
+                this.toastr.error('خطا در حذف نوع سند');
+                console.log(error);
+              }
             }
           );
         }
@@ -79,6 +88,7 @@ export class ListNoeFileComponent implements OnInit {
     this.editingMode = true;
     const rowKey = d.data._id;
     this.editingRowKey = rowKey;
+    this.rowIndex = d.rowIndex;
     const rowData: NoeFileType = d.data;
     const rowIndex = this.listNoeFileGrid.instance.getRowIndexByKey(d.data._id);
     this.oldNoeFile = this.listNoeFileGrid.instance.cellValue(
@@ -104,6 +114,7 @@ export class ListNoeFileComponent implements OnInit {
     this.apiService.sabtNoeFile(this.noeFile).subscribe(
       result => {
         this.toastr.info('نوع سند جدید با موفقیت ثبت شد.', 'نوع سند جدید');
+        this.noeFile.noeFile = '';
         this.getListNoeFile();
       },
       error => {

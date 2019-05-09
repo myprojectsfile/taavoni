@@ -32,16 +32,16 @@
       </dxi-column>
 
       <div *dxTemplate="let d of 'deleteButtonTemplate'">
-        <a (click)="delete(d)"><span class="fa fa-trash" span tooltip="حذف نوع سند" placement="right"
-            style="font-size: 13pt;"></span></a>
+        <a *ngIf="!editingMode" (click)="delete(d)"><span class="fa fa-trash" span tooltip="حذف نوع سند"
+            placement="right" style="font-size: 13pt;"></span></a>
       </div>
       <div *dxTemplate="let d of 'editButtonTemplate'">
         <a *ngIf="!editingMode" (click)="editRow(d)"><span tooltip="ویرایش" placement="right" class="fa fa-edit"
             style="font-size: 13pt;"></span></a>
-        <a *ngIf="editingMode" (click)="cancelEdit(d)" class="mx-3"><span tooltip="لغو تغییرات" placement="right"
-            class="fa fa-window-close" style="font-size: 13pt;"></span></a>
-        <a *ngIf="editingMode" (click)="saveChange(d)"><span tooltip="ثبت تغییرات" placement="right" class="fa fa-save"
-            style="font-size: 13pt;"></span></a>
+        <a *ngIf="editingMode  && d.rowIndex===rowIndex" (click)="cancelEdit(d)" class="mx-3"><span
+            tooltip="لغو تغییرات" placement="right" class="fa fa-window-close" style="font-size: 13pt;"></span></a>
+        <a *ngIf="editingMode && d.rowIndex===rowIndex" (click)="saveChange(d)"><span tooltip="ثبت تغییرات"
+            placement="right" class="fa fa-save" style="font-size: 13pt;"></span></a>
       </div>
     </dx-data-grid>
   </div>

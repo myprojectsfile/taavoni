@@ -140,8 +140,8 @@ module.exports = function (app) {
     .post(post_noeFile);
 
   app.route('/api/noeFile/:id')
-    .put(update_noeFile)
-    .delete(delete_noeFile);
+    .put(checkIsAuthenticated, update_noeFile)
+    .delete(checkIsAuthenticated, delete_noeFile);
 };
 
 
@@ -177,7 +177,9 @@ get_claim_list = function (req, res) {
 
 get_user_files_by_userId = async (req, res) => {
   try {
-    const user = await context.User.findOne({ '_id': req.params.userId });
+    const user = await context.User.findOne({
+      '_id': req.params.userId
+    });
     if (user) {
       await user.populate('fileha').execPopulate();
       res.send(user.fileha);
@@ -219,9 +221,19 @@ post_noeFile = function (req, res) {
 };
 
 delete_noeFile = function (req, res) {
-  context.NoeFile.findByIdAndDelete(req.params.id, (err) => {
-    if (err) return res.status(500).send(err);
-    return res.status(200).end();
+  context.UserFile.findOne({
+    "noeFile": req.params.id
+  }, (err, noeFile) => {
+    if (err) res.send(err);
+    if (noeFile) {
+      // send not allowed response
+      res.status(405).send();
+    } else {
+      context.NoeFile.findByIdAndDelete(req.params.id, (err) => {
+        if (err) return res.status(500).send(err);
+        return res.status(200).end();
+      });
+    }
   });
 };
 
@@ -229,14 +241,14 @@ update_noeFile = function (req, res) {
   context.NoeFile.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, noeFile) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, noeFile) {
+    if (err) res.status(500).send(err);
 
-      if (!noeFile) res.status(404).send();
-      // return new row
-      res.json(noeFile);
-    });
+    if (!noeFile) res.status(404).send();
+    // return new row
+    res.json(noeFile);
+  });
 };
 
 post_gheymatSahm = function (req, res) {
@@ -256,18 +268,18 @@ checkUserHasNoActiveCrossRequest = function (req, res) {
   const userId = req.params.userId;
 
   context.Darkhast.find({
-    'user': userId,
-    'noeDarkhast': noeDarkhast
-  }, function (err, darkhastha) {
-    if (err) {
-      res.statusCode = 500;
-      res.send(err);
-    }
+      'user': userId,
+      'noeDarkhast': noeDarkhast
+    }, function (err, darkhastha) {
+      if (err) {
+        res.statusCode = 500;
+        res.send(err);
+      }
 
-    if (darkhastha.length > 0) res.send(false);
-    else res.send(true);
+      if (darkhastha.length > 0) res.send(false);
+      else res.send(true);
 
-  }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
     .sort('tarikhDarkhast');
 }
 
@@ -287,8 +299,8 @@ get_safeKharid = async function (req, res) {
 
 get_safeForush = function (req, res) {
   context.Darkhast.find({
-    'noeDarkhast': 'فروش'
-  }, null, {
+      'noeDarkhast': 'فروش'
+    }, null, {
       sort: {
         'gheymatSahm': 'asc',
         'tarikhDarkhast': 'asc'
@@ -305,27 +317,27 @@ get_safeForush = function (req, res) {
 
 get_tedadKolSahamForushUser = function (req, res) {
   context.Darkhast.find({
-    'noeDarkhast': 'فروش',
-    'user': req.params.userId
-  }, 'tedadBaghiMandeh', function (err, result) {
-    if (err) {
-      res.statusCode = 500;
-      res.send(err);
-    }
+      'noeDarkhast': 'فروش',
+      'user': req.params.userId
+    }, 'tedadBaghiMandeh', function (err, result) {
+      if (err) {
+        res.statusCode = 500;
+        res.send(err);
+      }
 
-    // محاسبه مجموع کل سهام کاربر
-    let i = 0;
-    let sum = 0;
+      // محاسبه مجموع کل سهام کاربر
+      let i = 0;
+      let sum = 0;
 
-    for (i = 0; i < result.length; i++) {
-      sum = sum + result[i].tedadBaghiMandeh;
-    };
+      for (i = 0; i < result.length; i++) {
+        sum = sum + result[i].tedadBaghiMandeh;
+      };
 
-    res.json({
-      'tedadKolSahamForush': sum
-    });
+      res.json({
+        'tedadKolSahamForush': sum
+      });
 
-  }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
+    }).where('vazeiat').in(['در انتظار', 'در حال انجام'])
     .sort('tarikhDarkhast');
 };
 
@@ -421,7 +433,9 @@ getUserByUsername = function (req, res) {
 
 getUserByUserId = async (req, res) => {
   try {
-    const user = await context.User.findOne({ '_id': req.params.userId });
+    const user = await context.User.findOne({
+      '_id': req.params.userId
+    });
     if (user) {
       res.send(user);
     }
@@ -638,42 +652,42 @@ update_darkhastKharid = function (req, res) {
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, darkhast) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, darkhast) {
+    if (err) res.status(500).send(err);
 
-      if (!darkhast) res.status(404).send();
-      // return new row
-      res.json(darkhast);
-    });
+    if (!darkhast) res.status(404).send();
+    // return new row
+    res.json(darkhast);
+  });
 };
 
 update_darkhastForush = function (req, res) {
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, darkhast) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, darkhast) {
+    if (err) res.status(500).send(err);
 
-      if (!darkhast) res.status(404).send();
+    if (!darkhast) res.status(404).send();
 
-      res.json(darkhast);
-    });
+    res.json(darkhast);
+  });
 };
 
 update_moameleh = function (req, res) {
   context.Moameleh.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, moameleh) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, moameleh) {
+    if (err) res.status(500).send(err);
 
-      if (!moameleh) res.status(404).send();
+    if (!moameleh) res.status(404).send();
 
-      res.json(moameleh);
-    });
+    res.json(moameleh);
+  });
 };
 
 update_darkhast_byid = function (req, res) {
@@ -682,55 +696,55 @@ update_darkhast_byid = function (req, res) {
   context.Darkhast.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, darkhast) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, darkhast) {
+    if (err) res.status(500).send(err);
 
-      if (!darkhast) res.status(404).send();
+    if (!darkhast) res.status(404).send();
 
-      res.json(darkhast);
-    });
+    res.json(darkhast);
+  });
 };
 
 update_portfo_byid = function (req, res) {
   context.Portfo.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, portfo) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, portfo) {
+    if (err) res.status(500).send(err);
 
-      if (!portfo) res.status(404).send();
+    if (!portfo) res.status(404).send();
 
-      res.json(portfo);
-    });
+    res.json(portfo);
+  });
 };
 
 update_user_byid = function (req, res) {
   context.User.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, user) {
-      if (err) res.status(500).send(err);
+    new: true
+  }, function (err, user) {
+    if (err) res.status(500).send(err);
 
-      if (!user) res.status(404).send();
+    if (!user) res.status(404).send();
 
-      // find object and call 'save' method to firing 'pre and post' save middleware
-      context.User.findOne({
-        _id: req.params.id
-      }, (err, user) => {
+    // find object and call 'save' method to firing 'pre and post' save middleware
+    context.User.findOne({
+      _id: req.params.id
+    }, (err, user) => {
+      if (err) res.status(500).end(err);
+
+      if (!user) res.status(404).end();
+
+      user.save((err) => {
         if (err) res.status(500).end(err);
 
-        if (!user) res.status(404).end();
-
-        user.save((err) => {
-          if (err) res.status(500).end(err);
-
-          res.json(user);
-        })
-      });
+        res.json(user);
+      })
     });
+  });
 };
 
 // update_user_byid = function (req, res) {
@@ -755,14 +769,14 @@ update_claim_byid = function (req, res) {
   context.Claim.findOneAndUpdate({
     _id: req.params.id
   }, req.body, {
-      new: true
-    }, function (err, claim) {
-      if (err) res.status(500).send(err);
-      else {
-        if (!claim) res.status(404).send();
-        else res.json(claim);
-      }
-    });
+    new: true
+  }, function (err, claim) {
+    if (err) res.status(500).send(err);
+    else {
+      if (!claim) res.status(404).send();
+      else res.json(claim);
+    }
+  });
 };
 
 update_user_pass_byid = function (req, res) {
@@ -794,7 +808,9 @@ update_user_pass_byid = function (req, res) {
 
 update_user_files_by_userId = async (req, res) => {
   try {
-    const user = await context.User.findOne({ '_id': req.params.userId });
+    const user = await context.User.findOne({
+      '_id': req.params.userId
+    });
     if (user) {
       req.body.noeFile = req.params.noeFileId;
       const userFile = await new context.UserFile(req.body).save();

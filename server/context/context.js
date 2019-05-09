@@ -99,6 +99,8 @@ DarkhastSchema.pre('save', function (next) {
   const self = this;
   if (self.tarikhDarkhast == null) {
     self.tarikhDarkhast = moment().locale('fa').format('YYYY/M/D HH:mm:ss');
+  } else {
+    self.tarikhUpdate = moment().locale('fa').format('YYYY/M/D HH:mm:ss');
   }
   next();
 });
@@ -201,7 +203,10 @@ var UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  tedadSahm: { type: Number, default: 0 },
+  tedadSahm: {
+    type: Number,
+    default: 0
+  },
   darkhastha: [{
     type: Schema.Types.ObjectId,
     ref: 'Darkhast'
@@ -228,8 +233,12 @@ UserSchema.virtual('fullName').get(function () {
   return this.name + ' ' + this.family
 });
 
-UserSchema.set('toObject', { virtuals: true });
-UserSchema.set('toJSON', { virtuals: true });
+UserSchema.set('toObject', {
+  virtuals: true
+});
+UserSchema.set('toJSON', {
+  virtuals: true
+});
 
 function hashNewPassword(user, next) {
   const saltRounds = 10;

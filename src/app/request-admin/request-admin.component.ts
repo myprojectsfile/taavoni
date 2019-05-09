@@ -20,6 +20,7 @@ export class RequestAdminComponent implements OnInit {
   oldTedadSahm: number;
   editingRowKey: string;
   editingMode: boolean;
+  rowIndex: number;
   gridInstance: DxDataGridComponent['instance'];
 
   constructor(
@@ -68,6 +69,7 @@ export class RequestAdminComponent implements OnInit {
               );
               this.toastr.success('درخواست با موفقیت لغو گردید');
               this.listDarkhastGrid.instance.cancelEditData();
+              this.getListDarkhast();
             },
             error => {
               this.toastr.error('خطا در لغو درخواست');
@@ -79,7 +81,11 @@ export class RequestAdminComponent implements OnInit {
   }
 
   editRow(d) {
+    console.log(d);
+
     this.editingMode = true;
+    this.rowIndex = d.rowIndex;
+
     const rowKey = d.data._id;
     this.editingRowKey = rowKey;
     const rowData: DarkhastType = d.data;
@@ -103,32 +109,49 @@ export class RequestAdminComponent implements OnInit {
         if (answer === 'Yes') {
           const newTedadSahm = e.newData.tedadSahm;
           const oldTedadSahm = this.oldTedadSahm;
+          const tedadMoamelehShodeh = e.oldData.tedadMoamelehShodeh;
+
           if (newTedadSahm < oldTedadSahm) {
-            console.log(e);
-            const rowData = e.oldData;
-            rowData.tedadSahm = newTedadSahm;
-            this.apiService
-              .updateDarkhast(rowData, this.editingRowKey)
-              .subscribe(
-                () => {
-                  this.toastr.success('تعداد با موفقیت کاهش یافت');
-                  this.editingMode = false;
-                  this.listDarkhastGrid.instance.cancelEditData();
-                  e.cancel = true;
-                  this.getListDarkhast();
-                },
-                error => {
-                  this.toastr.error('خطا در کاهش تعداد');
-                  e.cancel = true;
-                  this.listDarkhastGrid.instance.cancelEditData();
-                  console.log(error);
-                }
+            if (newTedadSahm >= tedadMoamelehShodeh) {
+              const rowData = e.oldData;
+              rowData.tedadSahm = newTedadSahm;
+              rowData.tedadBaghiMandeh = newTedadSahm - tedadMoamelehShodeh;
+              if (rowData.tedadBaghiMandeh === 0) {
+                rowData.vazeiat = 'انجام شده';
+              }
+
+              this.apiService
+                .updateDarkhast(rowData, this.editingRowKey)
+                .subscribe(
+                  () => {
+                    this.toastr.success('تعداد با موفقیت کاهش یافت');
+                    this.editingMode = false;
+                    this.listDarkhastGrid.instance.cancelEditData();
+                    e.cancel = true;
+                    this.getListDarkhast();
+                  },
+                  error => {
+                    this.toastr.error('خطا در کاهش تعداد');
+                    e.cancel = true;
+                    this.listDarkhastGrid.instance.cancelEditData();
+                    console.log(error);
+                  }
+                );
+            } else {
+              this.toastr.error(
+                'تعداد جدید نباید کمتر از تعداد معامله شده باشد'
               );
+              e.cancel = true;
+              this.editingMode = false;
+              this.listDarkhastGrid.instance.cancelEditData();
+              this.getListDarkhast();
+            }
           } else {
             this.toastr.error('شما تنها مجاز به کاهش تعداد هستید');
             e.cancel = true;
             this.editingMode = false;
             this.listDarkhastGrid.instance.cancelEditData();
+            this.getListDarkhast();
           }
         } else {
           e.cancel = true;
