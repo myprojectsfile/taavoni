@@ -26,18 +26,18 @@
         </div> -->
 
         <div *dxTemplate="let d of 'cancelButtonTemplate'">
-          <a *ngIf="d.data.vazeiat!='لغو شده'" (click)="cancel(d)"><span tooltip="لغو درخواست" placement="right"
-              class="fa fa-ban" style="font-size: 13pt;"></span></a>
+          <a *ngIf="d.data.vazeiat!='لغو شده' && d.data.vazeiat!='انجام شده'" (click)="cancel(d)"><span
+              tooltip="لغو درخواست" placement="right" class="fa fa-ban" style="font-size: 13pt;"></span></a>
         </div>
 
         <div *dxTemplate="let d of 'editButtonTemplate'">
-          <span *ngIf="d.data.vazeiat!='لغو شده'">
+          <span *ngIf="d.data.vazeiat!='لغو شده' && d.data.vazeiat!='انجام شده'">
             <a *ngIf="!editingMode" (click)="editRow(d)"><span tooltip="ویرایش" placement="right" class="fa fa-edit"
                 style="font-size: 13pt;"></span></a>
-            <a *ngIf="editingMode" (click)="cancelEdit(d)" class="mx-3"><span tooltip="لغو تغییرات" placement="right"
-                class="fa fa-window-close" style="font-size: 13pt;"></span></a>
-            <a *ngIf="editingMode" (click)="saveChange(d)"><span tooltip="ثبت تغییرات" placement="right"
-                class="fa fa-save" style="font-size: 13pt;"></span></a>
+            <a *ngIf="editingMode && d.rowIndex===rowIndex" (click)="cancelEdit(d)" class="mx-3"><span
+                tooltip="لغو تغییرات" placement="right" class="fa fa-window-close" style="font-size: 13pt;"></span></a>
+            <a *ngIf="editingMode && d.rowIndex===rowIndex" (click)="saveChange(d)"><span tooltip="ثبت تغییرات"
+                placement="right" class="fa fa-save" style="font-size: 13pt;"></span></a>
           </span>
         </div>
       </dx-data-grid>
