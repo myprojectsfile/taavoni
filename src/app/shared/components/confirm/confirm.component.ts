@@ -12,7 +12,7 @@ export class ConfirmComponent {
   title: string;
   message: string;
   options: string[];
-  answer: string = "";
+  answer = '';
 
   respond(answer: string) {
     this.answer = answer;

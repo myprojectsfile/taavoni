@@ -35,6 +35,6 @@ export class ConfirmService {
           subscription.unsubscribe();
         }
       };
-    }
+    };
   }
 }

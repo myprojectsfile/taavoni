@@ -15,8 +15,8 @@ export interface UserType {
     enabled?: boolean;
     confirmed?: boolean;
     tedadSahm?: number;
-    darkhastha?:DarkhastType[];
-    moameleha?:MoamelehType[];
+    darkhastha?: DarkhastType[];
+    moameleha?: MoamelehType[];
     claimha?: ClaimType[];
     fileha?: UserFileType[];
 }

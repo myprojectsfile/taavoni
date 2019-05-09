@@ -173,7 +173,7 @@ export class ApiService {
     );
   }
 
-  addFileToUser(userId: string,noeFileId: string, userFile: UserFileType) {
+  addFileToUser(userId: string, noeFileId: string, userFile: UserFileType) {
     return this.httpClient.put<UserType>(
       this.apiUri + `/user/updateUserFiles/${userId}/noeFileId/${noeFileId}`,
       userFile

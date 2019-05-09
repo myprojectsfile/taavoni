@@ -1,4 +1,4 @@
-import { NoeFileType } from "./noeFile";
+import { NoeFileType } from './noeFile';
 
 export interface UserFileType {
     _id?: string;

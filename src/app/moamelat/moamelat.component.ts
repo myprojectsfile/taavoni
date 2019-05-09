@@ -164,7 +164,7 @@ export class MoamelatComponent {
     );
   }
 
-  
+
   private updateDarkhastForush(
     darkhastForushUpdateObj: DarkhastType,
     darkhastForushId: string

@@ -108,7 +108,7 @@ export class AuthService {
 
   userHasConfiremed(): boolean {
     const token = this.getToken();
-    let userHasConfiremed: boolean = false;
+    let userHasConfiremed = false;
 
     if (token) {
       const tokenPayload: any = this.tokenPayload();
@@ -116,6 +116,6 @@ export class AuthService {
       userHasConfiremed = user.confirmed;
     }
 
-    return userHasConfiremed
+    return userHasConfiremed;
   }
 }

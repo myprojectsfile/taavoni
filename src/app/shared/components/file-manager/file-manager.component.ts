@@ -33,7 +33,7 @@ export class FileManagerComponent implements OnInit {
     private apiService: ApiService,
     private toastr: ToastrService,
     private confirmService: ConfirmService
-  ) { }
+  ) {}
 
   @HostBinding('attr.user')
   @Input()
@@ -50,8 +50,6 @@ export class FileManagerComponent implements OnInit {
   fileha: UserFileType[] = [] as UserFileType[];
   uploadedFile: UserFileType = {} as UserFileType;
   imageUrl = '#';
-
-
 
   ngOnInit() {
     this.getListNoeFile();
@@ -116,7 +114,7 @@ export class FileManagerComponent implements OnInit {
                   this.progress = 0;
                 }, 2000);
               },
-              error => { }
+              error => {}
             );
         }
       },
@@ -145,7 +143,7 @@ export class FileManagerComponent implements OnInit {
           .setAttribute('src', url);
         this.openModal();
       },
-      error => { }
+      error => {}
     );
   }
 
@@ -169,7 +167,7 @@ export class FileManagerComponent implements OnInit {
         dwldLink.click();
         document.body.removeChild(dwldLink);
       },
-      error => { }
+      error => {}
     );
   }
 
@@ -179,12 +177,9 @@ export class FileManagerComponent implements OnInit {
 
   deleteFile(filename: string) {
     this.confirmService
-      .confirm(
-        "اخطار",
-        "آیا از حذف این فایل مطمئن هستید؟",
-        ["Yes", "No"])
-      .subscribe((answer) => {
-        if (answer == 'Yes') {
+      .confirm('اخطار', 'آیا از حذف این فایل مطمئن هستید؟', ['Yes', 'No'])
+      .subscribe(answer => {
+        if (answer === 'Yes') {
           this.fileMangerService.deleteFile(this.user._id, filename).subscribe(
             updatedUser => {
               this.fileha = updatedUser.fileha;
