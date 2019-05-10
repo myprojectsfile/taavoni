@@ -287,6 +287,11 @@ get_safeKharid = async function (req, res) {
   try {
     const safeKharid = await context.Darkhast.find({
       'noeDarkhast': 'خرید'
+    }, null, {
+      sort: {
+        'gheymatSahm': 'desc',
+        'tarikhDarkhast': 'asc'
+      }
     }).where('vazeiat').in(['در انتظار', 'در حال انجام']);
 
     if (safeKharid) {
