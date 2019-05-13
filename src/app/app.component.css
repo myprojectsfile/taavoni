@@ -12,7 +12,7 @@
 }
 
 #content-wrap {
-  padding-bottom: 14rem;
+  padding-bottom: 15rem;
   background-color: #f8f9fa;
 }
 
@@ -20,7 +20,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 13rem;
+  height: 14rem;
 }
 
 .navbar {
