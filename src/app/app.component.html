@@ -92,10 +92,13 @@
     <!-- all other page content -->
     <router-outlet></router-outlet>
   </div>
-
   <footer id="footer" class="bg-info">
     <div class="container-fluid py-4">
       <div class="d-flex flex-row flex-wrap justify-content-center align-items-center">
+        <!-- send a message start -->
+        <div class="col-sm-8" style="direction:rtl;">
+          <app-send-message></app-send-message>
+        </div>
         <!-- contact information -->
         <div class="col-sm-4 d-flex align-items-center">
           <div class="d-flex flex-wrap flex-column">
@@ -119,11 +122,6 @@
           </div>
         </div>
         <!-- contact information end -->
-
-        <!-- send a message start -->
-        <div class="col-sm-8">
-          10
-        </div>
         <!-- send a message end -->
       </div>
     </div>

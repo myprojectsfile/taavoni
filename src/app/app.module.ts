@@ -37,6 +37,7 @@ import { ConfirmComponent } from './shared/components/confirm/confirm.component'
 import { SettingsComponent } from './settings/settings.component';
 import { ListNoeFileComponent } from './settings/list-noe-file/list-noe-file.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { SendMessageComponent } from './send-message/send-message.component';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -62,7 +63,8 @@ export function tokenGetter() {
     FileManagerComponent,
     ConfirmComponent,
     SettingsComponent,
-    ListNoeFileComponent
+    ListNoeFileComponent,
+    SendMessageComponent
   ],
   entryComponents: [ConfirmComponent],
   imports: [
