@@ -142,8 +142,20 @@ module.exports = function (app) {
   app.route('/api/noeFile/:id')
     .put(checkIsAuthenticated, update_noeFile)
     .delete(checkIsAuthenticated, delete_noeFile);
+
+  app.route('/api/message')
+    .post(post_message);
 };
 
+post_message = async (req, res) => {
+  try {
+    const message = new context.Messages(req.body);
+    const newMessage = await message.save(req.body);
+    res.status(200).send(newMessage);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
 
 get_akharinGhehmatSahm = function (req, res) {
   context.GheymatRoozSahm.findOne({}, function (err, gheymat) {

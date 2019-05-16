@@ -9,6 +9,7 @@ import { GheymatType } from '../types/gheymat';
 import { ClaimType } from '../types/claim';
 import { NoeFileType } from '../types/noeFile';
 import { UserFileType } from '../types/userFile';
+import { MessageType } from '../types/message';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +31,18 @@ export class ApiService {
 
   sabtDarkhastKharid(darkhast: DarkhastType) {
     const userId = this.authService.getUserId();
-    return this.httpClient.post(this.apiUri + `/safeKharid/${userId}`, darkhast);
+    return this.httpClient.post(
+      this.apiUri + `/safeKharid/${userId}`,
+      darkhast
+    );
   }
 
   sabtDarkhastForush(darkhast: DarkhastType) {
     const userId = this.authService.getUserId();
-    return this.httpClient.post(this.apiUri + `/safeForush/${userId}`, darkhast);
+    return this.httpClient.post(
+      this.apiUri + `/safeForush/${userId}`,
+      darkhast
+    );
   }
 
   getListDarkhast(noeDarkhast: string) {
@@ -80,10 +87,7 @@ export class ApiService {
   }
 
   sabtMoameleh(moameleh: any) {
-    return this.httpClient.post<any>(
-      this.apiUri + '/moameleh',
-      moameleh
-    );
+    return this.httpClient.post<any>(this.apiUri + '/moameleh', moameleh);
   }
 
   getListDarkhastUser() {
@@ -96,7 +100,6 @@ export class ApiService {
   updateDarkhast(darkhast: DarkhastType, rowKey: string) {
     return this.httpClient.put(this.apiUri + '/darkhast/' + rowKey, darkhast);
   }
-
 
   getUserPortfoById() {
     const userId = this.authService.getUserId();
@@ -180,7 +183,6 @@ export class ApiService {
     );
   }
 
-
   checkUserHasNoActiveCrossRequest(noeDarkhast: number) {
     const userId = this.authService.getUserId();
     return this.httpClient.get(
@@ -222,5 +224,9 @@ export class ApiService {
 
   hazfNoeFile(id: string) {
     return this.httpClient.delete(this.apiUri + '/noeFile/' + id);
+  }
+
+  sabtMessage(message: MessageType) {
+    return this.httpClient.post<MessageType>(this.apiUri + '/message', message);
   }
 }

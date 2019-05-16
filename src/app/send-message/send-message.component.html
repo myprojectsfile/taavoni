@@ -4,25 +4,34 @@
     <div class="d-flex flex-row flex-wrap">
       <div class="col-sm-12 col-md-3">
         <div class="form-group">
-          <input type="text" class="form-control form-control-sm" name="name" id="name" placeholder="نام">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="message.name" name="name" id="name"
+            placeholder="نام [اختیاری]">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control form-control-sm" style="margin-top: 25px;" name="familhy" id="family"
-            placeholder="شماره تماس">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="message.phone" name="phone" id="phone"
+            placeholder="شماره تماس [اختیاری]">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control form-control-sm" style="margin-top: 25px;" name="receiver"
-            id="receiver" placeholder="گیرنده پیام">
+          <input type="email" class="form-control form-control-sm" [(ngModel)]="message.email" name="email" id="email"
+            placeholder="آدرس ایمیل [اختیاری]">
+        </div>
+        <div class="form-group">
+          <select class="form-control form-control-sm" required name="girandeh" [(ngModel)]="message.girandeh"
+            id="girandeh" #girandehSelect placeholder="گیرنده پیام">
+            <option id="receiver" [ngValue]="-1">[گیرنده پیام]</option>
+            <option id="kharid" [ngValue]="0">مدیرعامل</option>
+            <option id="forush" [ngValue]="1">رئیس هیات مدیره</option>
+          </select>
         </div>
       </div>
       <div class="col-sm-12 col-md-9">
         <div class="d-flex flex-column">
           <div class="form-group">
-            <textarea rows="4" type="" class="form-control form-control-sm" name="message" id="message"
-              placeholder="متن پیام"></textarea>
+            <textarea rows="6" type="" class="form-control form-control-sm" style="max-height: 120px;" name="message"
+              id="message" placeholder="متن پیام"></textarea>
           </div>
           <div class="form-group">
-            <div class="btn btn-warning btn-sm btn-block" style="margin-top: 7px;">ارسال پیام</div>
+            <div class="btn btn-warning btn-sm btn-block" (click)="sabtMessage()">ارسال پیام</div>
           </div>
         </div>
       </div>

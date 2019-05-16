@@ -13,14 +13,14 @@
 
 #content-wrap {
   padding-bottom: 15rem;
-  background-color: #f8f9fa;
+  /* background-color: #f8f9fa; */
 }
 
 #footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 14rem;
+  /* height: 14rem; */
 }
 
 .navbar {

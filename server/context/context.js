@@ -275,6 +275,39 @@ UserSchema.pre('save', function (next) {
   }
 })
 
+
+var MessageSchema = new Schema({
+  name: String,
+  phone: String,
+  email: String,
+  ferestandeh: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: true
+  },
+  girandeh: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: true
+  },
+  message: String,
+  tarikh: String,
+  pasokh: {
+    type: Schema.Types.ObjectId,
+    ref: 'Message'
+  }
+});
+
+MessageSchema.pre('save', function (next) {
+  const self = this;
+  if (self.tarikh == null) {
+    self.tarikh = moment().locale('fa').format('YYYY/M/D HH:mm:ss');
+  }
+  next();
+});
+
+
+
 // UserSchema.post('save', async function (doc, next) {
 
 //   await Portfo.update({
@@ -384,6 +417,7 @@ var User = mongoose.model('User', UserSchema);
 var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
 var Portfo = mongoose.model('Portfo', PortfoSchema)
 var GheymatRoozSahm = mongoose.model('GheymatRoozSahm', GheymatRoozSahmSchema);
+var Messages = mongoose.model('Messages', MessageSchema);
 
 
 
@@ -397,5 +431,6 @@ module.exports = {
   User: User,
   Moameleh: Moameleh,
   Portfo: Portfo,
-  GheymatRoozSahm: GheymatRoozSahm
+  GheymatRoozSahm: GheymatRoozSahm,
+  Messages: Messages
 }
