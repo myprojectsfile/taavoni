@@ -60,23 +60,30 @@
             <a class="nav-link" href="#">اطلاعیه ها</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="#">اطلاعیه ها</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#">پروژه ها</a>
+          </li>
+          <li class="nav-item">
+            <a pageScroll [pageScrollDuration]="1000" class="nav-link" href="#sendMessageSection">ارسال پیام به
+              مسئولین</a>
           </li>
         </ul>
         <ul class="navbar-nav  text-right">
           <li class="nav-item" *ngIf="!authService.isAuthenticated()">
             <a class="nav-link" routerLink="/register">
-              <i class="fa fa-user-plus"></i> ثبت نام
+              <i class="fas fa-user-plus"></i> ثبت نام
             </a>
           </li>
           <li class="nav-item" *ngIf="!authService.isAuthenticated()">
             <a class="nav-link" routerLink="/login">
-              <i class="fa fa-sign-in"></i> ورود
+              <i class="fas fa-sign-in-alt"></i> ورود
             </a>
           </li>
           <li class="nav-item" *ngIf="authService.isAuthenticated()">
             <a class="nav-link btn" (click)="authService.logout()">
-              <i class="fa fa-sign-out"></i> خروج
+              <i class="fas fa-sign-out-alt"></i> خروج
             </a>
           </li>
           <li class="nav-item" *ngIf="authService.isAuthenticated()">
@@ -96,7 +103,7 @@
     <div class="container-fluid py-4">
       <div class="d-flex flex-row flex-wrap justify-content-center align-items-center">
         <!-- send a message start -->
-        <div class="col-lg-8" style="direction:rtl;">
+        <div id="sendMessageSection" class="col-lg-8" style="direction:rtl;">
           <app-send-message></app-send-message>
         </div>
         <!-- send a message end -->

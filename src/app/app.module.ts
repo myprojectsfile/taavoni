@@ -38,6 +38,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { ListNoeFileComponent } from './settings/list-noe-file/list-noe-file.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SendMessageComponent } from './send-message/send-message.component';
+import { NgxPageScrollModule } from 'ngx-page-scroll';
+
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -87,7 +89,8 @@ export function tokenGetter() {
       }
     }),
     ModalModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    NgxPageScrollModule
   ],
   providers: [
     ApiService,

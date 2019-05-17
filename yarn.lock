@@ -5413,6 +5413,20 @@ ngx-bootstrap@^4.0.1:
   resolved "https://registry.npmjs.org/ngx-bootstrap/-/ngx-bootstrap-4.0.1.tgz#b361a5fe71ab0a6d37e4fd2fc551684b031697e6"
   integrity sha512-1O30RTmKO66F8+z5n3V+Y2/aZDhMjt4Se8dobTWmB7un9bJWovx7BQjjNqa0BsssA47LvqEnExNLhoTlSlE30A==
 
+ngx-page-scroll-core@^6.0.0-beta.1:
+  version "6.0.0-beta.1"
+  resolved "https://registry.npmjs.org/ngx-page-scroll-core/-/ngx-page-scroll-core-6.0.0-beta.1.tgz#63935fde912c4370614ffde7089ad17956f2e672"
+  integrity sha512-dwaHAaItja6n/IgRgnQHvJoHXSRb8EqpG4hbgVMYbvMDamOM0sUV7hY4fi/coD6/YZ7MkcpQqno401PhpOlXSg==
+  dependencies:
+    tslib "^1.9.0"
+
+ngx-page-scroll@^6.0.0-beta.1:
+  version "6.0.0-beta.1"
+  resolved "https://registry.npmjs.org/ngx-page-scroll/-/ngx-page-scroll-6.0.0-beta.1.tgz#db2b2343048adcaf5879d1d226b9753b004b3006"
+  integrity sha512-NUECFyIU/KBH+KZh4qxO+bCi+9oylBUji/g/Y/VmMEV8TBCLN4CpuAZUvtZKjTPw09yR54GzPsW5M4Sq+IGlhQ==
+  dependencies:
+    tslib "^1.9.0"
+
 ngx-toastr@^9.1.1:
   version "9.2.0"
   resolved "https://registry.npmjs.org/ngx-toastr/-/ngx-toastr-9.2.0.tgz#cda6a95d87751eb22030e40013d14f890e5bfb01"

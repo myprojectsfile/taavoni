@@ -10,6 +10,7 @@ import { ClaimType } from '../types/claim';
 import { NoeFileType } from '../types/noeFile';
 import { UserFileType } from '../types/userFile';
 import { MessageType } from '../types/message';
+import { SematType } from '../types/semat';
 
 @Injectable({
   providedIn: 'root'
@@ -228,5 +229,9 @@ export class ApiService {
 
   sabtMessage(message: MessageType) {
     return this.httpClient.post<MessageType>(this.apiUri + '/message', message);
+  }
+
+  getSematha() {
+    return this.httpClient.get<SematType[]>(this.apiUri + '/semat');
   }
 }

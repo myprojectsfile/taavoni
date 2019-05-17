@@ -8,27 +8,28 @@
             placeholder="نام [اختیاری]">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="message.phone" name="phone" id="phone"
-            placeholder="شماره تماس [اختیاری]">
+          <input type="text" class="form-control form-control-sm  text-left" [(ngModel)]="message.phone" name="phone"
+            id="phone" placeholder="شماره تماس [اختیاری]">
         </div>
         <div class="form-group">
-          <input type="email" class="form-control form-control-sm" [(ngModel)]="message.email" name="email" id="email"
-            placeholder="آدرس ایمیل [اختیاری]">
+          <input type="email" class="form-control form-control-sm text-left" [(ngModel)]="message.email" name="email"
+            id="email" placeholder="آدرس ایمیل [اختیاری]">
         </div>
         <div class="form-group">
           <select class="form-control form-control-sm" required name="girandeh" [(ngModel)]="message.girandeh"
-            id="girandeh" #girandehSelect placeholder="گیرنده پیام">
-            <option id="receiver" [ngValue]="-1">[گیرنده پیام]</option>
-            <option id="kharid" [ngValue]="0">مدیرعامل</option>
-            <option id="forush" [ngValue]="1">رئیس هیات مدیره</option>
+            id="girandeh" #girandehSelect placeholder="[انتخاب گیرنده پیام]">
+            <!-- <option id="receiver" [ngValue]="-1">[گیرنده پیام]</option> -->
+            <option *ngFor="let semat of sematha" [ngValue]="semat.user._id">{{semat.semat}}</option>
+            <!-- <option id="kharid" [ngValue]="0">مدیرعامل</option>
+            <option id="forush" [ngValue]="1">رئیس هیات مدیره</option> -->
           </select>
         </div>
       </div>
       <div class="col-sm-12 col-md-9">
         <div class="d-flex flex-column">
           <div class="form-group">
-            <textarea rows="6" type="" class="form-control form-control-sm" style="max-height: 120px;" name="message"
-              id="message" placeholder="متن پیام"></textarea>
+            <textarea rows="6" type="" class="form-control form-control-sm" [(ngModel)]="message.message"
+              style="max-height: 120px;" name="message" id="message" placeholder="متن پیام"></textarea>
           </div>
           <div class="form-group">
             <div class="btn btn-warning btn-sm btn-block" (click)="sabtMessage()">ارسال پیام</div>

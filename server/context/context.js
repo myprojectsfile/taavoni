@@ -225,6 +225,10 @@ var UserSchema = new mongoose.Schema({
     ref: 'UserFile',
     autopopulate: true
   }],
+  semat: {
+    type: Schema.Types.ObjectId,
+    ref: 'Semat'
+  }
 });
 
 UserSchema.plugin(autopopulate);
@@ -236,9 +240,22 @@ UserSchema.virtual('fullName').get(function () {
 UserSchema.set('toObject', {
   virtuals: true
 });
+
 UserSchema.set('toJSON', {
   virtuals: true
 });
+
+var SematSchema = new Schema({
+  semat: String,
+  toozihat: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: true
+  }
+});
+
+SematSchema.plugin(autopopulate);
 
 function hashNewPassword(user, next) {
   const saltRounds = 10;
@@ -418,6 +435,7 @@ var Moameleh = mongoose.model('Moameleh', MoamelehSchema)
 var Portfo = mongoose.model('Portfo', PortfoSchema)
 var GheymatRoozSahm = mongoose.model('GheymatRoozSahm', GheymatRoozSahmSchema);
 var Messages = mongoose.model('Messages', MessageSchema);
+var Semat = mongoose.model('Semat', SematSchema);
 
 
 
@@ -432,5 +450,6 @@ module.exports = {
   Moameleh: Moameleh,
   Portfo: Portfo,
   GheymatRoozSahm: GheymatRoozSahm,
-  Messages: Messages
+  Messages: Messages,
+  Semat: Semat
 }
