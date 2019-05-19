@@ -155,6 +155,14 @@ post_message = async (req, res) => {
   try {
     const message = new context.Messages(req.body);
     const newMessage = await message.save(req.body);
+    // add newMessage to user's messages
+    let user = await context.User.findOne({
+      '_id': req.body.girandeh
+    });
+    if (user) {
+      user.messages.push(newMessage);
+      await user.save();
+    }
     res.status(200).send(newMessage);
   } catch (error) {
     res.status(500).send(error.message);
@@ -164,7 +172,15 @@ post_message = async (req, res) => {
 post_semat = async (req, res) => {
   try {
     const semat = new context.Semat(req.body);
-    const newSemat = await semat.save(req.body);
+    const newSemat = await semat.save();
+    // find user and update semat field
+    let user = await context.User.findOne({
+      '_id': req.body.user
+    });
+    if (user) {
+      user.semat = newSemat._id;
+      await user.save();
+    }
     res.status(200).json(newSemat);
   } catch (error) {
     res.status(500).send(error.message);

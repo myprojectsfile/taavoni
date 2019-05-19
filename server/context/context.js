@@ -228,7 +228,11 @@ var UserSchema = new mongoose.Schema({
   semat: {
     type: Schema.Types.ObjectId,
     ref: 'Semat'
-  }
+  },
+  messages: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Messages'
+  }]
 });
 
 UserSchema.plugin(autopopulate);
