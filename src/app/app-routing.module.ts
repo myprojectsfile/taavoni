@@ -13,6 +13,7 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ListNoeFileComponent } from './settings/list-noe-file/list-noe-file.component';
+import { ChartMoamelatComponent } from './chart-moamelat/chart-moamelat.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       }
     ]
+  },
+  {
+    path: 'charts',
+    component: ChartMoamelatComponent
   },
   { path: '**', redirectTo: '' }
 ];

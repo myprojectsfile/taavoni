@@ -39,6 +39,8 @@ import { ListNoeFileComponent } from './settings/list-noe-file/list-noe-file.com
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
+import { ChartsModule } from 'ng2-charts';
+import { ChartMoamelatComponent } from './chart-moamelat/chart-moamelat.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -66,7 +68,8 @@ export function tokenGetter() {
     ConfirmComponent,
     SettingsComponent,
     ListNoeFileComponent,
-    SendMessageComponent
+    SendMessageComponent,
+    ChartMoamelatComponent
   ],
   entryComponents: [ConfirmComponent],
   imports: [
@@ -90,7 +93,8 @@ export function tokenGetter() {
     }),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    NgxPageScrollModule
+    NgxPageScrollModule,
+    ChartsModule
   ],
   providers: [
     ApiService,
