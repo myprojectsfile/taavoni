@@ -147,10 +147,31 @@ module.exports = function (app) {
     .post(post_message);
 
   app.route('/api/semat')
-    .post(post_semat)
+    .post(checkIsAuthenticated, post_semat)
     .get(get_sematha);
+
+  // Aggregation methods
+  app.route('/api/aggregate/darkhast/byVazeiat')
+    .get(get_darkhast_byVazeiat)
 };
 
+
+get_darkhast_byVazeiat = async (req, res) => {
+  try {
+    const darkhast = await context.Darkhast.aggregate([{
+      $group: {
+        _id: '$vazeiat',
+        // vazeiat: '$vazeiat',
+        tedadDarkhast: {
+          $sum: 1
+        }
+      }
+    }]);
+    res.send(darkhast);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
 post_message = async (req, res) => {
   try {
     const message = new context.Messages(req.body);

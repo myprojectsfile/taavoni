@@ -15,12 +15,9 @@ export class SendMessageComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   sabtMessage() {
-    this.apiService.sabtMessage(this.message).subscribe(
-      newMessage => {
-        console.log(newMessage);
-      },
-      error => {}
-    );
+    this.apiService
+      .sabtMessage(this.message)
+      .subscribe(newMessage => {}, error => {});
   }
 
   ngOnInit() {
@@ -31,7 +28,6 @@ export class SendMessageComponent implements OnInit {
     this.apiService.getSematha().subscribe(
       sematha => {
         this.sematha = sematha;
-        console.log(sematha);
       },
       error => {}
     );

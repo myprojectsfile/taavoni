@@ -41,6 +41,8 @@ import { SendMessageComponent } from './send-message/send-message.component';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { ChartsModule } from 'ng2-charts';
 import { ChartMoamelatComponent } from './chart-moamelat/chart-moamelat.component';
+import { ChartDarkhastVazeiatComponent } from './chart-darkhast-vazeiat/chart-darkhast-vazeiat.component';
+import { ChartSafeDarkhastComponent } from './chart-safe-darkhast/chart-safe-darkhast.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -69,7 +71,9 @@ export function tokenGetter() {
     SettingsComponent,
     ListNoeFileComponent,
     SendMessageComponent,
-    ChartMoamelatComponent
+    ChartMoamelatComponent,
+    ChartDarkhastVazeiatComponent,
+    ChartSafeDarkhastComponent
   ],
   entryComponents: [ConfirmComponent],
   imports: [

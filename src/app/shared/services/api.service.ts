@@ -234,4 +234,15 @@ export class ApiService {
   getSematha() {
     return this.httpClient.get<SematType[]>(this.apiUri + '/semat');
   }
+
+  getAggDarkhastByVazeiat() {
+    return this.httpClient.get<DarkhastByVazeiat[]>(
+      this.apiUri + '/aggregate/darkhast/byVazeiat'
+    );
+  }
+}
+
+export interface DarkhastByVazeiat {
+  _id: string;
+  tedadDarkhast: number;
 }
