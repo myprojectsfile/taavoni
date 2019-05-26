@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+import { ApiService, DarkhastAggType } from '../shared/services/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-chart-safe-darkhast',
@@ -9,17 +11,11 @@ import { Color, Label } from 'ng2-charts';
 })
 export class ChartSafeDarkhastComponent implements OnInit {
   public lineChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'صف خرید' },
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'صف فروش' }
+    { data: [0] },
+    { data: [0] }
   ];
   public lineChartLabels: Label[] = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July'
+    'صف درخواست خرید و فروش'
   ];
   public lineChartOptions: ChartOptions = {
     responsive: true
@@ -38,7 +34,26 @@ export class ChartSafeDarkhastComponent implements OnInit {
   public lineChartType: ChartType = 'bar';
   public lineChartPlugins = [];
 
-  constructor() {}
+  constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.apiService.getAggDarkhastSaff().subscribe(
+      (darkhastha: DarkhastAggType[]) => {
+
+        darkhastha.forEach((darkhast,index) => {
+          // this.lineChartData.push({ data: [darkhast.tedadSahm, 0], label: darkhast._id });
+          this.lineChartData[index].data.push(darkhast.tedadSahm);
+          this.lineChartData[index].label = darkhast._id;
+        });
+        
+      },
+      error => {
+        this.toastr.error(
+          'خطا در دریافت اطلاعات نمودار صف درخواست ها',
+          'خطا در فرواخوانی سرویس'
+        );
+        console.log(error);
+      }
+    );
+  }
 }

@@ -236,13 +236,19 @@ export class ApiService {
   }
 
   getAggDarkhastByVazeiat() {
-    return this.httpClient.get<DarkhastByVazeiat[]>(
+    return this.httpClient.get<DarkhastAggType[]>(
       this.apiUri + '/aggregate/darkhast/byVazeiat'
+    );
+  }
+  getAggDarkhastSaff() {
+    return this.httpClient.get<DarkhastAggType[]>(
+      this.apiUri + '/aggregate/darkhast/saff'
     );
   }
 }
 
-export interface DarkhastByVazeiat {
-  _id: string;
-  tedadDarkhast: number;
+export interface DarkhastAggType {
+  _id?: string;
+  tedadDarkhast?: number;
+  tedadSahm?:number;
 }
