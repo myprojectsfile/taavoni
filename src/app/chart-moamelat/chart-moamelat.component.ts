@@ -30,7 +30,7 @@ export class ChartMoamelatComponent implements OnInit {
   public lineChartColors: Color[] = [
     {
       borderColor: 'black',
-      backgroundColor: '#58e6e6'
+      backgroundColor: '#9af9f9'
     }
   ];
   public lineChartLegend = true;
