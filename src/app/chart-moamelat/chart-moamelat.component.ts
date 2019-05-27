@@ -21,12 +21,16 @@ export class ChartMoamelatComponent implements OnInit {
     'July'
   ];
   public lineChartOptions: ChartOptions = {
+    title: {
+      display: true,
+      text: 'روند انجام معاملات خرید و فروش'
+    },
     responsive: true
   };
   public lineChartColors: Color[] = [
     {
       borderColor: 'black',
-      backgroundColor: '#1ed9ff'
+      backgroundColor: '#58e6e6'
     }
   ];
   public lineChartLegend = true;

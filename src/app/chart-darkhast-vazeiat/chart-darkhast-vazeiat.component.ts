@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart, ChartType, ChartOptions } from 'chart.js';
+import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 // import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as pluginDataLabels from 'chartjs-plugin-labels';
 import { ApiService } from '../shared/services/api.service';
 import { ToastrService } from 'ngx-toastr';
+declare var Chart: any;
 
 @Component({
   selector: 'app-chart-darkhast-vazeiat',
@@ -14,7 +15,8 @@ import { ToastrService } from 'ngx-toastr';
 export class ChartDarkhastVazeiatComponent implements OnInit {
   public pieChartOptions: ChartOptions = {
     title: {
-      text: 'تعداد درخواست های خرید و فروش'
+      display: true,
+      text: 'وضعیت صف درخواست ها'
     },
     responsive: true,
     legend: {
@@ -41,11 +43,15 @@ export class ChartDarkhastVazeiatComponent implements OnInit {
   public pieChartPlugins = [pluginDataLabels];
   public pieChartColors = [
     {
-      backgroundColor: ['#f75cf9', '#ffed4c', '#B9C406', '#b54edb']
+      backgroundColor: ['#fbd5dd', '#ffecd9', '#dbf2f2', '#ebe0ff']
     }
   ];
 
-  constructor(private apiService: ApiService, private toastr: ToastrService) {}
+  constructor(private apiService: ApiService, private toastr: ToastrService) {
+    Chart.Legend.prototype.afterFit = function() {
+      this.height = this.height + 5;
+    };
+  }
 
   ngOnInit() {
     Chart.defaults.global.defaultFontColor = 'black';
