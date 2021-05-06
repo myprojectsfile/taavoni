@@ -67,7 +67,7 @@
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.4.0",
     "serve-favicon": "^2.5.0",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
