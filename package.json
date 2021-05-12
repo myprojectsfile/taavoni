@@ -34,7 +34,7 @@
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.2",
     "bootstrap-v4-rtl": "^4.1.1-0",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.6.0",
     "chartjs-plugin-labels": "^1.1.0",
     "core-js": "^2.5.4",
