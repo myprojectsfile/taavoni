@@ -41,7 +41,7 @@
     "cors": "^2.8.4",
     "devextreme": "^18.1.6",
     "devextreme-angular": "^18.1.6",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "gm": "^1.23.1",
     "gridfs-stream": "^1.1.1",
     "hammerjs": "^2.0.8",
